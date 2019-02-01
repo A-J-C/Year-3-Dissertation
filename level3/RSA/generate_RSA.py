@@ -24,11 +24,11 @@ import math
 
 # allows me to run this file directly, i.e. not wrapped up in the package
 if __package__:
-    from RSA import generate_prime
-    from RSA import helper
+    from utils import generate_prime
+    from utils import helper
 else:
-    import generate_prime
-    import helper
+    from utils import generate_prime
+    from utils import helper
 
 
 ############ GENERATION CLASS #########

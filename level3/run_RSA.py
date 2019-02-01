@@ -115,7 +115,7 @@ def tests(k = 10, iter = 10000, algo = "bf", csvFile = "res.csv"):
 
 if __name__ == '__main__':
 
-    if sys.argv[1] == "test":
+    if len(sys.argv) > 1 and sys.argv[1] == "test":
         tests(int(sys.argv[2]), int(sys.argv[3]), sys.argv[4], sys.argv[5])
     elif len(sys.argv) == 5:
         run(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]))
