@@ -20,6 +20,10 @@
 import sys
 import math
 
+# allows me to run this file directly, i.e. not wrapped up in the package
+if not __package__:
+    sys.path.append('../')
+
 from RSA.solver import Solver
 
 
@@ -28,7 +32,7 @@ from RSA.solver import Solver
 class BFSolver(Solver):
     """ inherits from the default solver Class """
 
-    def __init__(self, n, e, v):
+    def __init__(self, n = 0, e = 0, v = True):
         super(BFSolver, self).__init__(n, e, v)
 
     def solve(self):

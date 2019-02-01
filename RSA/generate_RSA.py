@@ -23,12 +23,11 @@ import secrets
 import math
 
 # allows me to run this file directly, i.e. not wrapped up in the package
-if __package__:
-    from utils import generate_prime
-    from utils import helper
-else:
-    from ..utils import generate_prime
-    from ..utils import helper
+if not __package__:
+    sys.path.append('../')
+
+from utils import generate_prime
+from utils import helper
 
 
 ############ GENERATION CLASS #########
@@ -179,7 +178,7 @@ class KeyGen:
 ############ COMMAND LINE INTERFACE #########
 
 if __name__ == '__main__':
-    rsaKey = KeyGen()
+    rsaKey = KeyGen(verbose = True)
 
     if len(sys.argv) >= 2:
         rsaKey.setK(int(sys.argv[1]))
