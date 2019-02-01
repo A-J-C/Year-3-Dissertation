@@ -22,11 +22,11 @@ import secrets
 import math
 
 # allows me to run this file directly, i.e. not wrapped up in the package
-if __package__:
-    from ECC import curves
-else:
-    import curves
-    import helper
+if not __package__:
+    sys.path.append('../')
+
+from ECC import curves
+from utils import generate_prime
 
 
 ############ GENERATION CLASS #########
@@ -73,15 +73,24 @@ class KeyGen:
 
     ############ COMPUTATION FUNCTIONS #########
 
+    def initialiseCurve(self):
+        # sanity check
+        if self.fp == 0:
+            self.generatePrime()
+
+        self.curve = Curve(fp = fp, verbose = self.verbose)         # create new curve
+        self.curve.generateCurve()                                  # creates a and b coefficients
+
+
     def generatePrime(self):
         """ generates prime of bit-length n """
 
         # sanity check
-        if self. <= 1:
+        if self.n <= 1:
             print("Number of bits must be greater than 1")
             return False                                            # unsuccessful
 
-        self.fp = generate_prime.getPrime(bit, self.verbose)
+        self.fp = generate_prime.getPrime(self.n, self.verbose)
 
         if self.verbose:
             print("fp:", self.fp)
@@ -90,65 +99,13 @@ class KeyGen:
         return True                                                 # successful
 
 
-    def generatePublicKey(self):
-        """ generates a k-bit key from two primes (will either be k or k-1) """
-
-        # sanity check
-        if self.p == 0 or self.q == 0:
-            print ("Please ensure p and q are generated first")
-            return False                                            # unsuccessful
-
-        # calculate n
-        self.n = self.p * self.q
-
-        # calculate Euler's totient
-        self.phi = (self.p - 1) * (self.q - 1)
-
-        # generate an e coprime to phi
-        self.e = secrets.randbelow(self.phi)
-
-        # keep generating until we are sure it is coprime
-        while (helper.gcd(self.e, self.phi) != 1):
-            self.e = secrets.randbelow(self.phi)
-
-        if self.verbose:
-            print("n:", self.n)
-            print("e:", self.e)
-            print("n bit length:", math.ceil(math.log(self.n, 2)))
-
-        return True                                                 # successful
-
-
-    def generatePrivateKey(self):
-        """ generate private key, for reversing trapdoor function """
-
-        # sanity check
-        if self.e == 0:
-            print ("Please ensure e is calculated first")
-            return False                                            # unsuccessful
-
-        # satisfies e.d = 1 (mod phi)
-        # need to find the modular inverse of e
-        self.d = helper.modInverse(self.e, self.phi)
-
-        if self.verbose:
-            print("Private-Key, d:", self.d)
-
-        return True                                                 # successful
-
-
     def generateKeys(self):
-        """ generates both public and private keys """
-        success = self.generatePrimes()
-        if not success:
-            return False                                            # unsuccessful
+        """ generates a publickey, private key pair from the curve """
 
-        success = self.generatePublicKey()
-        if not success:
-            return False                                            # unsuccessful
+        self.G = self.curve.G                                       # get generator
 
-        success= self.generatePrivateKey()
-        return success
+
+        return True                                                 # successful
 
 
     ############ OUTPUT FUNCTIONS #########

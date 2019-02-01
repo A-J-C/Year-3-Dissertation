@@ -147,6 +147,38 @@ def lucasTest(n):
     return True
 
 
+def checks(candidate, primesList, r = 10):
+    """ given a candidate and list of primes checks for pseudo-primes """
+
+    ############ 6k BASIC CHECK #########
+    # all primes > 3 are of the form 6k + 1 or 6k -1 so skip testing any not of this form
+    mod6 = candidate % 6
+
+    if candidate > 3 and mod6 != 1 and mod6 != 5:
+        return False                                    # if check fails return False
+
+    ############ TRIAL-DIVISION CHECK #########
+    if not trialDivision(candidate, primeList):
+        return False                                    # if check fails return False
+
+    ############ Miller-Rabin CHECK #########
+    if not millerRabin(candidate, r):
+        return False                                    # if check fails return False
+
+    ############ Lucas CHECK #########
+    return lucasTest(candidate)                         # final check
+
+
+def isPrime(n, primes):
+    """ given a number n checks if it is a pseudo-prime """
+
+    k = math.log(n, 2)                          # number of bits in n
+    primeList = getListOfPrimes(k)              # get primes
+    r = getRounds(k)
+
+    return checks(n, primesList, r)             # run checks
+
+
 def getPrime(k = 50, verbose = True, extraOutput = False):
     """ returns a prime number that is k bits long """
 
@@ -189,23 +221,7 @@ def getPrime(k = 50, verbose = True, extraOutput = False):
         if extraOutput:
             print("New candidate...")
 
-        ############ 6k BASIC CHECK #########
-        # all primes > 3 are of the form 6k + 1 or 6k -1 so skip testing any not of this form
-        mod6 = candidate % 6
-
-        if candidate > 3 and mod6 != 1 and mod6 != 5:
-            continue                            # if check fails continue to new candidate
-
-        ############ TRIAL-DIVISION CHECK #########
-        if not trialDivision(candidate, primeList):
-            continue                            # if check fails continue to new candidate
-
-        ############ Miller-Rabin CHECK #########
-        if not millerRabin(candidate, r):
-            continue                            # if check fails continue to new candidate
-
-        ############ Lucas CHECK #########
-        prime = lucasTest(candidate)            # final check
+        prime = checks(candidate, primeList, r) # run checks
 
 
     ############ OUTPUT #########

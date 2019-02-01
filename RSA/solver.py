@@ -16,6 +16,10 @@
 
 ############ IMPORTS #########
 
+# allows me to run this file directly, i.e. not wrapped up in the package
+if not __package__:
+    sys.path.append('../')
+    
 from RSA.generate_RSA import KeyGen
 
 
