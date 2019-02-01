@@ -16,11 +16,7 @@
 
 ############ IMPORTS #########
 
-# allows me to run this file directly, i.e. not wrapped up in the package
-if __package__:
-    from RSA.generate_RSA import KeyGen
-else:
-    from generate_RSA import KeyGen
+from RSA.generate_RSA import KeyGen
 
 
 ############ FUNCTIONS #########

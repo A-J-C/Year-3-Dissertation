@@ -27,8 +27,8 @@ if __package__:
     from utils import generate_prime
     from utils import helper
 else:
-    from utils import generate_prime
-    from utils import helper
+    from ..utils import generate_prime
+    from ..utils import helper
 
 
 ############ GENERATION CLASS #########

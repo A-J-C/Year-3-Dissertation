@@ -20,13 +20,8 @@
 import sys
 import secrets
 
-# allows me to run this file directly, i.e. not wrapped up in the package
-if __package__:
-    from RSA.solver import Solver
-    from utils import helper
-else:
-    from solver import Solver
-    from utils import helper
+from RSA.solver import Solver
+from utils import helper
 
 
 ############ EXTRA FUNCTIONS #########

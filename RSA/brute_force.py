@@ -20,11 +20,7 @@
 import sys
 import math
 
-# allows me to run this file directly, i.e. not wrapped up in the package
-if __package__:
-    from RSA.solver import Solver
-else:
-    from solver import Solver
+from RSA.solver import Solver
 
 
 ############ MAIN CODE #########
