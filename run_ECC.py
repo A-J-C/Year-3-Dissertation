@@ -65,15 +65,13 @@ def run(k = 10, brute = True, pRho = True, verbose = True):
 
     keys = generate_ECC.KeyGen(k, verbose)                                      # create new instance
     keys.generateCurve()                                                        # find a good curve
-    
+
     sanity = keys.generateKeys()                                                # get key and primes
 
     if not sanity:
         if verbose:
             print ("Please fix input and try again")
         return False
-
-    keys.printKeys()                                                            # print generated keys
 
     ############ BRUTE FORCE ATTACK #########
     bf_res = {}
