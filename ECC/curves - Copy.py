@@ -16,6 +16,7 @@
 
 import secrets
 import math
+from cypari import pari
 
 # allows me to run this file directly, i.e. not wrapped up in the package
 if not __package__:
@@ -134,7 +135,9 @@ class Curve:
         self.G = None                                                   # generator value
         self.ord = 0                                                    # order of G over curve
         self.verbose = verbose                                          # additional output
-
+        self.E = None                                                   # pari version of curve
+        self.initPari()                                                 # initialise pari curve
+        
 
     ############ SETTERS #########
 
@@ -157,30 +160,6 @@ class Curve:
 
     ############ COMPUTATION FUNCTIONS #########
 
-    def generateCurve(self):
-        """ tries random a and b coefficients, untill a curve of a prime number
-            order > Fp/4 is produced """
-
-        self.G = None                                                   # clear any previous generators
-        self.ord = 0                                                    # clear any previous order
-        self.a = secrets.randbelow(self.fp)                             # generate random coefficient
-        self.b = secrets.randbelow(self.fp)                             # generate random coefficient
-
-        print("trying (%d, %d)" % (self.a, self.b))
-        if not self.valid():                                            # if not valid
-            return self.generateCurve()                                 # try again
-
-        G = self.getG()                                                 # get generator point
-        order = self.order(G)                                           # get order of curve
-
-        if order < fp/4:                                                # if order is too small
-            return self.generateCurve()                                 # try again
-
-        if not generate_prime.isPrime(ord):                             # if order isn't prime
-            return self.generateCurve()                                 # try again
-
-        return True                                                     # else we have a good curve
-
 
     def valid(self):
         """ checks the graph is valid over the real numbers """
@@ -190,6 +169,9 @@ class Curve:
         return self.discriminant != 0
 
 
+    def initPari(self):
+        """ initialises the pari version of the curve for fast implementation """
+        
     def pointAtInf(self):
         """ defines the point at infinity for the curve """
 
@@ -220,16 +202,13 @@ class Curve:
         """ gives the order of a point on the curve """
 
         # check point is on curve first
-        if not self.onCurve(point):
+        # and pari curve exists 
+        if not self.onCurve(point) or self.E == None:
             return 0
-
-        # replace with this at some point https://en.wikipedia.org/wiki/Schoof%27s_algorithm
-        Q = point
-        orderP = 1
-        #Add P to Q repeatedly until obtaining the identity (point at infinity).
-        while not Q.inf:
-            Q = Q + point
-            orderP += 1
+        
+        P = "[" + str(point.x) + "," + str(point.y) + "]"               # string representation of point
+        oderP = pari(self.E).ellorder(P)                                # use Pari to calculate order
+        
         return orderP
 
 
@@ -269,6 +248,31 @@ class Curve:
 
         return eq
 
+
+############ GENERATOR FUNCTIONS #########
+
+def generateCurve(self):
+    """ tries random a and b coefficients, untill a curve of a prime number
+        order > Fp/4 is produced """
+
+    self.G = None                                                   # clear any previous generators
+    self.ord = 0                                                    # clear any previous order
+    self.a = secrets.randbelow(10)                                  # generate random coefficient
+    self.b = secrets.randbelow(10)                                  # generate random coefficient
+
+    if not self.valid():                                            # if not valid
+        return self.generateCurve()                                 # try again
+
+    G = self.getG()                                                 # get generator point
+    order = self.order(G)                                           # get order of curve
+
+    if order < fp/4:                                                # if order is too small
+        return self.generateCurve()                                 # try again
+
+    if not generate_prime.isPrime(ord):                             # if order isn't prime
+        return self.generateCurve()                                 # try again
+
+    return True                                                     # else we have a good curve
         
 C = Curve(6, 6, 971)
 P = Point(419, 770, C)

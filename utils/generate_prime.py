@@ -147,7 +147,7 @@ def lucasTest(n):
     return True
 
 
-def checks(candidate, primesList, r = 10):
+def checks(candidate, primeList, r = 10):
     """ given a candidate and list of primes checks for pseudo-primes """
 
     ############ 6k BASIC CHECK #########
@@ -176,7 +176,7 @@ def isPrime(n, primes):
     primeList = getListOfPrimes(k)              # get primes
     r = getRounds(k)
 
-    return checks(n, primesList, r)             # run checks
+    return checks(n, primeList, r)             # run checks
 
 
 def getPrime(k = 50, verbose = True, extraOutput = False):
