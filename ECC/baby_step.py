@@ -12,7 +12,7 @@
 #    Instructions: intended use is to import this file and use the Class as defined
 #
 #    CLI: for testing can be used from command line -
-#           python3 baby_step.py PK_C PK_Q PK_G [verbose]
+#           python3 baby_stepg.py PK_C PK_Q PK_G [verbose]
 #
 
 ############ IMPORTS #########
