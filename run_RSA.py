@@ -17,9 +17,9 @@
 
 ############ IMPORTS #########
 
+import math
 import sys
 import time
-import math
 from RSA import *
 
 
@@ -88,6 +88,7 @@ def run(k = 10, brute = True, pRho = True, verbose = True):
         rho_res = runSolver(keys, rho, "POLLARD'S RHO", verbose)                # check solver
 
     return bf_res, rho_res
+
 
 def tests(k = 10, iter = 10000, algo = "bf", csvFile = "res.csv"):
     """ run tests to generate statistics """

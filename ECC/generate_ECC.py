@@ -124,12 +124,14 @@ class KeyGen:
     def generateKeys(self):
         """ generates a publickey, private key pair from the curve """
 
+        if self.curve == None or self.curve.ord == 0:
+            return False                                            # curve not set up correctly
+
         self.k = secrets.randbelow(self.curve.ord)                  # get random number below order
 
         self.Q = self.G * self.k                                    # Q = kP
 
-        if self.verbose:
-            self.printKeys()
+        return True
 
     ############ OUTPUT FUNCTIONS #########
 
