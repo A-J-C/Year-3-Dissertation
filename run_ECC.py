@@ -64,7 +64,8 @@ def run(k = 10, brute = True, pRho = True, verbose = True):
         print("\n" + "="*10, "GENERATING", "="*10)
 
     keys = generate_ECC.KeyGen(k, verbose)                                      # create new instance
-
+    keys.generateCurve()                                                        # find a good curve
+    
     sanity = keys.generateKeys()                                                # get key and primes
 
     if not sanity:
@@ -77,13 +78,13 @@ def run(k = 10, brute = True, pRho = True, verbose = True):
     ############ BRUTE FORCE ATTACK #########
     bf_res = {}
     if brute:
-        bf = brute_force.BFSolver(keys.n, keys.e, verbose)                      # create new instance with public key info
+        bf = brute_force.BFSolver(keys.curve, keys.G, keys.Q, verbose)          # create new instance with public key info
         bf_res = runSolver(keys, bf, "BRUTE FORCE", verbose)                    # check solver
 
     ############ BABYSTEP-GIANTSTEP ATTACK #########
     bsgs_res = {}
     if babyStep:
-        bg = baby_step.BGSolver(keys.n, keys.e, verbose)                        # create new instance with public key info
+        bg = baby_step.BGSolver(keys.curve, keys.G, keys.Q, verbose)            # create new instance with public key info
         bg_res = runSolver(keys, bg, "BABYSTEP_GIANTSTEP", verbose)             # check solver
 
     return bf_res, bsgs_res

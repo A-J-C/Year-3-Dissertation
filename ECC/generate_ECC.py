@@ -56,7 +56,6 @@ class KeyGen:
         self.curve = None                                           # public-key curve
         self.k = 0                                                  # private key
         self.verbose = verbose                                      # verbose mode for additonal output
-        self.generateCurve()                                        # generate parameters
 
 
     ############ SETTERS #########
