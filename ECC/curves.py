@@ -72,7 +72,9 @@ class Point:
     def __eq__(self, point):
         """ given a second point returns if equal or not """
 
-        if self.inf or point.inf:                                       # if one of the points is infinity
+        if point == None:
+            return False
+        elif self.inf or point.inf:                                     # if one of the points is infinity
             return self.inf == point.inf                                # return if both are infinity
         else:
             return (self.x == point.x and                               # else check points are equal

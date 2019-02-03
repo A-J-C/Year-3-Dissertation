@@ -130,6 +130,8 @@ class KeyGen:
 
         self.Q = self.G * self.k                                    # Q = kP
 
+        self.printKeys()
+        
         return True
 
     ############ OUTPUT FUNCTIONS #########

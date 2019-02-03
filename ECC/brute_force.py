@@ -3,8 +3,8 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 1.1
-#    Date: 27/01/18
+#    Version: 1.0
+#    Date: 03/02/18
 #
 #    Functionality: uses a brute force attack to discover a private ECC key from
 #                   a given public key set
@@ -24,7 +24,7 @@ import math
 if not __package__:
     sys.path.append('../')
 
-from RSA.solver import Solver
+from ECC.solver import Solver
 
 
 ############ MAIN CODE #########
@@ -40,21 +40,21 @@ class BFSolver(Solver):
             inf point is reached """
 
         # sanity check
-        if self.G == None or self.C == None or self.Q == None:
+        if self.G == None or self.curve == None or self.Q == None:
             print("Can't solve not all parameters are set")
             return False                                            # unsuccessful
 
         ############ FIND MULTIPLIER #########
         self.count = 1                                              # initial count
-        P = G                                                       # copy point
+        P = self.G                                                  # copy point
 
         # loop through all numbers looking for candidate until infinity
-        while P != Q and P != C.pointAtInf():
-            P += G                                                  # add another G
+        while P != self.Q and P != self.curve.pointAtInf():
+            P += self.G                                             # add another G
             self.count += 1                                         # increment count
 
         # sanity check
-        if P != Q:
+        if P != self.Q:
             print ("Point not found")
             return 0
 
