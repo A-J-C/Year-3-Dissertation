@@ -3,13 +3,21 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 1.1
-#    Date: 01/02/18
+#    Version: 2.0
+#    Date: 03/02/18
 #
 #    Functionality: defines curves and points for ECC
 #
 #    Instructions: intended use is to import this file as a module and to
 #                  use the two defined classes
+#
+#    Notes: makes use of a python wrapper for the maths language PARI/GP
+#           https://pari.math.u-bordeaux.fr/
+#           This implements the SEA algorithm amongst others to speed up
+#           finding the order of a point on the curve
+#           this algorithm is vital for my curve generation to work on large
+#           key sizes. So I have used it minimally in my code as implementing
+#           the SEA algorithm effectively would be an entire project in itself
 #
 
 ############ IMPORTS #########
@@ -113,10 +121,21 @@ class Point:
         if self.inf or k == 0:
             return self.curve.pointAtInf()                              # return point at infinity
 
-        # repeated squares algo
+        # repeated squares algorith
+
+        Q = self.curve.pointAtInf()                                     # copy to Q
+        G = self
         
-        
-        return Point(0, 0, self.curve)
+        while k > 0:                                                    # continue while k is greater than 0
+
+            if k % 2 == 1:                                              # if k is odd
+                k -= 1
+                Q = G + Q                                               # add a single G to Q
+            else:
+                k //= 2
+                G += G                                                  # double G
+
+        return Q
 
 
     def __str__(self):
@@ -214,6 +233,8 @@ class Curve:
             return 0
         
         P = "[" + str(point.x) + "," + str(point.y) + "]"               # string representation of point
+
+        # finds order using Schoof-Elkies-Atkin algorithm
         orderP = pari(self.E).ellorder(P)                               # use Pari to calculate order
         
         return int(orderP)

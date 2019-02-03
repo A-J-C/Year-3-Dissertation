@@ -3,8 +3,8 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 1.1
-#    Date: 01/02/18
+#    Version: 2.0
+#    Date: 03/02/18
 #
 #    Functionality: produces a pulic/private key pair for ECC
 #
@@ -48,7 +48,7 @@ def getRandCurve(n, v):
 class KeyGen:
     """ used to generate an ECC curve over a n-bit prime field """
 
-    def __init__(self, n = 10, verbose = False):
+    def __init__(self, n = 10, verbose = True):
         self.n = n                                                  # n-bit field
         self.p = 0                                                  # prime our field is over
         self.G = None                                               # generator point for curve
@@ -100,8 +100,10 @@ class KeyGen:
         
         order, p = 0, 1
         C, G = None, None
+        checks = 0
         
         while order < p/4:                                          # loop till order big enough
+            checks += 1
             C = getRandCurve(self.n, self.verbose)                  # get random curve of correct size
              
             while not C.valid():                                    # if not valid
@@ -111,7 +113,9 @@ class KeyGen:
             order = C.ord                                           # get order of curve
             p = C.fp                                                # get prime field                                              
 
-        print(C)
+        if self.verbose:
+            print("Checked %d curves" % checks)
+            
         self.curve = C                                              # we now have a good curve
         self.G = G                                                  # and generator
         self.p = p
@@ -124,18 +128,22 @@ class KeyGen:
 
         self.Q = self.G * self.k                                    # Q = kP
 
-
+        if self.verbose:
+            self.printKeys()
 
     ############ OUTPUT FUNCTIONS #########
 
     def printKeys(self):
         """ prints out current value of keys """
 
-        if self.verbose:
-            print("Public-Key: (%s, %s, %s)" % (self.curve, self.G, self.Q))
-            print("Private-Key:", self.k)
-            print("n is %d bits" % math.ceil(math.log(self.p, 2)))
-            print()
+        print(("Public-Key: {\n" +
+              "    Curve: %s\n" +
+              "    Base-Point: %s\n" +
+              "    Public-Point: %s\n" +
+              "}") % (self.curve, self.G, self.Q))
+        print("Private-Key:", self.k)
+        print("n is %d bits" % math.ceil(math.log(self.p, 2)))
+        print()
             
 
 
@@ -151,5 +159,4 @@ if __name__ == '__main__':
         rsaKey.setVerbose(int(sys.argv[2]))
 
     eccKey.generateKeys()
-    eccKey.printKeys()
 
