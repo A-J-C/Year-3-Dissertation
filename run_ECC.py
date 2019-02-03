@@ -19,7 +19,7 @@
 import math
 import sys
 import time
-from generateECC import *
+from ECC import *
 
 
 ############ FUNCTIONS #########
@@ -52,7 +52,7 @@ def runSolver(keys, solver, name, verbose):
 
 ############ MASTER PROGRAM #########
 
-def run(k = 10, brute = True, pRho = True, verbose = True):
+def run(k = 10, brute = True, babyStep = True, verbose = True):
     """ creates a k-bit ECC key, cracks it with several algorithms, and generates
         statistics to compare their performance """
 
@@ -76,13 +76,13 @@ def run(k = 10, brute = True, pRho = True, verbose = True):
     ############ BRUTE FORCE ATTACK #########
     bf_res = {}
     if brute:
-        bf = brute_force.BFSolver(keys.curve, keys.G, keys.Q, verbose)          # create new instance with public key info
+        bf = brute_force.BFSolver(keys.curve, keys.Q, keys.G, verbose)          # create new instance with public key info
         bf_res = runSolver(keys, bf, "BRUTE FORCE", verbose)                    # check solver
 
     ############ BABYSTEP-GIANTSTEP ATTACK #########
     bsgs_res = {}
     if babyStep:
-        bg = baby_step.BGSolver(keys.curve, keys.G, keys.Q, verbose)            # create new instance with public key info
+        bg = baby_step.BGSolver(keys.curve, keys.Q, keys.G, verbose)            # create new instance with public key info
         bg_res = runSolver(keys, bg, "BABYSTEP_GIANTSTEP", verbose)             # check solver
 
     return bf_res, bsgs_res
