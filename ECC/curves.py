@@ -3,14 +3,44 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
+<<<<<<< HEAD
 #    Version: 1.1
 #    Date: 01/02/18
+=======
+#    Version: 2.0
+#    Date: 03/02/18
+>>>>>>> working
 #
 #    Functionality: defines curves and points for ECC
 #
 #    Instructions: intended use is to import this file as a module and to
 #                  use the two defined classes
 #
+<<<<<<< HEAD
+=======
+#    Notes: makes use of a python wrapper for the maths language PARI/GP
+#           https://pari.math.u-bordeaux.fr/
+#           This implements the SEA algorithm amongst others to speed up
+#           finding the order of a point on the curve
+#           this algorithm is vital for my curve generation to work on large
+#           key sizes. So I have used it minimally in my code as implementing
+#           the SEA algorithm effectively would be an entire project in itself
+#
+
+############ IMPORTS #########
+
+import secrets
+import math
+from cypari import pari
+
+# allows me to run this file directly, i.e. not wrapped up in the package
+if not __package__:
+    import sys
+    sys.path.append('../')
+
+from utils import generate_prime
+from utils import helper
+>>>>>>> working
 
 
 ############ POINT CLASS #########
@@ -20,10 +50,17 @@ class Point:
         and defines point equality, addition and multiplication """
 
     def __init__(self, x, y, curve):
+<<<<<<< HEAD
         self.x = x                                                  # set point at x
         self.y = y                                                  # set point at y
         self.curve = curve                                          # set curve point belongs to
         self.inf = False                                            # this point isn't at infinity
+=======
+        self.x = x                                                      # set point at x
+        self.y = y                                                      # set point at y
+        self.curve = curve                                              # set curve point belongs to
+        self.inf = False                                                # this point isn't at infinity
+>>>>>>> working
 
 
     ############ SETTERS #########
@@ -50,11 +87,19 @@ class Point:
     def __eq__(self, point):
         """ given a second point returns if equal or not """
 
+<<<<<<< HEAD
         if self.inf or point.inf:                                   # if one of the points is infinity
             return self.inf == point.inf                            # return if both are infinity
         else:
             return self.x == point.x and                            # else check points are equal
                 self.y == point.y
+=======
+        if self.inf or point.inf:                                       # if one of the points is infinity
+            return self.inf == point.inf                                # return if both are infinity
+        else:
+            return (self.x == point.x and                               # else check points are equal
+                self.y == point.y)
+>>>>>>> working
 
 
     def __add__(self, point):
@@ -72,6 +117,7 @@ class Point:
         if point.inf:
             return self
 
+<<<<<<< HEAD
         deltaX = (point.x - self.x) % self.curve.fp                 # diff x coords
         deltaY = (point.y - self.y) % fp                            # diff y coords
 
@@ -93,13 +139,62 @@ class Point:
 
 
     def __mult__(self, k):
+=======
+        deltaX = (point.x - self.x) % self.curve.fp                     # diff x coords
+        deltaY = (point.y - self.y) % self.curve.fp                     # diff y coords
+
+        # if x have same coord
+        if point.x == self.x:
+            if point.y == self.y:                                       # point doubling case
+                grad = ((3 * self.x * self.x + self.curve.a)            # 3x^2 + a
+                    * helper.modInverse(2 * self.y, self.curve.fp))           
+            else:                                                       # self.y == - point.y
+                return self.curve.pointAtInf()                          # return point at infinity
+        else:                                                           # standard case
+            grad = deltaY * helper.modInverse(deltaX, self.curve.fp)    # compute gradient
+
+        grad = grad % self.curve.fp                                     # ensure it is over the field 
+        x3 = (grad * grad - self.x - point.x) % self.curve.fp           # compute new x coord
+        y3 = (- self.y - grad*(x3 - self.x)) % self.curve.fp            # compute new y coord
+
+        return Point(x3, y3, self.curve)                                # return a new point with updated coords
+
+
+    def __mul__(self, k):
+>>>>>>> working
         """ defines multiplication via repeated squares """
 
         # sanity check
         if self.inf or k == 0:
+<<<<<<< HEAD
             return self.curve.pointAtInf()                          # return point at infinity
 
         # repeated squares algo
+=======
+            return self.curve.pointAtInf()                              # return point at infinity
+
+        # repeated squares algorith
+
+        Q = self.curve.pointAtInf()                                     # copy to Q
+        G = self
+        
+        while k > 0:                                                    # continue while k is greater than 0
+
+            if k % 2 == 1:                                              # if k is odd
+                k -= 1
+                Q = G + Q                                               # add a single G to Q
+            else:
+                k //= 2
+                G += G                                                  # double G
+
+        return Q
+
+
+    def __str__(self):
+        """ defines how it should be printed """
+        return "(" + str(self.x) + ", " + str(self.y) + ")" 
+        
+>>>>>>> working
 
 ############ CURVE CLASS #########
 
@@ -108,11 +203,24 @@ class Curve:
         (Weierstrass form) """
 
 
+<<<<<<< HEAD
     def __init__(self, a, b, fp):
         self.a = a                                                  # set x coefficent
         self.b = b                                                  # set constant
         self.fp = fp                                                # set prime field
 
+=======
+    def __init__(self, a = 0, b = 0, fp = 0, verbose = True):
+        self.a = a                                                      # set x coefficent
+        self.b = b                                                      # set constant
+        self.fp = fp                                                    # set prime field
+        self.G = None                                                   # generator value
+        self.ord = 0                                                    # order of G over curve
+        self.verbose = verbose                                          # additional output
+        self.E = None                                                   # pari version of curve
+        self.initPari()                                                 # initialise pari curve
+        
+>>>>>>> working
 
     ############ SETTERS #########
 
@@ -128,9 +236,20 @@ class Curve:
         """ sets value for fp """
         self.fp = fp
 
+<<<<<<< HEAD
 
     ############ COMPUTATION FUNCTIONS #########
 
+=======
+    def setG(self, G):
+        """ sets generator value """
+        self.G = G
+
+
+    ############ COMPUTATION FUNCTIONS #########
+
+
+>>>>>>> working
     def valid(self):
         """ checks the graph is valid over the real numbers """
 
@@ -139,6 +258,24 @@ class Curve:
         return self.discriminant != 0
 
 
+<<<<<<< HEAD
+=======
+    def initPari(self):
+        """ initialises the pari version of the curve for fast implementation """
+
+        curve = "["+str(self.a)+","+str(self.b)+"]"+" , "+str(self.fp)  # get string rep of curve 
+        self.E = pari('ellinit(' + curve + ')')                         # create pari version of curve
+
+        
+    def pointAtInf(self):
+        """ defines the point at infinity for the curve """
+
+        inf = Point(0, 0, self)
+        inf.setInf(True)
+        return inf
+        
+        
+>>>>>>> working
     def onCurve(self, point):
         """ checks that a given point is on curve """
 
@@ -151,16 +288,24 @@ class Curve:
             return True
 
         # check it satisfies equation
+<<<<<<< HEAD
         leftHS = point.y * point.y
         rightHS = point.x*point.x*point.x + self.a*point.x + self.b
 
         return leftHS == rightHS                                    # check equation is satisfied
+=======
+        leftHS = (point.y * point.y) % self.fp
+        rightHS = (point.x*point.x*point.x + self.a*point.x + self.b) % self.fp
+
+        return leftHS == rightHS                                        # check equation is satisfied
+>>>>>>> working
 
 
     def order(self, point):
         """ gives the order of a point on the curve """
 
         # check point is on curve first
+<<<<<<< HEAD
         if not self.onCurve(point):
             return 0
 
@@ -172,3 +317,54 @@ class Curve:
             Q = Q + point
             orderP += 1
         return orderP
+=======
+        # and pari curve exists 
+        if not self.onCurve(point) or self.E == None:
+            return 0
+        
+        P = "[" + str(point.x) + "," + str(point.y) + "]"               # string representation of point
+
+        # finds order using Schoof-Elkies-Atkin algorithm
+        orderP = pari(self.E).ellorder(P)                               # use Pari to calculate order
+        
+        return int(orderP)
+
+
+    def getG(self):
+        """ returns a generator point using Pari """
+
+        # if exists return it
+        if self.G != None:
+            return self.G
+
+        # else generate it
+        
+        pG = pari(self.E).ellgenerators()[0]                            # get first generator using pari
+        pG = str(pG)                                                    # get string representation
+        Gx = int(pG.split(",")[0].split("(")[1])                        # extract x coord 
+        Gy = int(pG.split(",")[2].split("(")[1])                        # extract y coord
+
+        G = Point(Gx, Gy, self)                                         # create as Point class 
+        self.G = G                                                      # store result
+
+        self.ord = self.order(G)                                        # store order
+
+        return G                                                        # return point 
+        
+
+    def __str__(self):
+        """ string representation of the Curve """
+
+        eq = "y^2 = x^3"
+
+        if self.a:
+            eq += " + " + str(self.a) + "x"
+
+        if self.b:
+            eq += " + " + str(self.b)
+
+        eq += " % " + str(self.fp)
+
+        return eq
+
+>>>>>>> working

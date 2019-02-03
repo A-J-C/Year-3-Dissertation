@@ -3,8 +3,13 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
+<<<<<<< HEAD
 #    Version: 1.1
 #    Date: 01/02/18
+=======
+#    Version: 2.0
+#    Date: 03/02/18
+>>>>>>> working
 #
 #    Functionality: produces a pulic/private key pair for ECC
 #
@@ -22,6 +27,7 @@ import secrets
 import math
 
 # allows me to run this file directly, i.e. not wrapped up in the package
+<<<<<<< HEAD
 if __package__:
     from RSA import generate_prime
     from RSA import helper
@@ -44,10 +50,48 @@ class KeyGen:
         self.d = 0              # private key
         self.k = k              # bit length of n
         self.verbose = verbose  # verbose mode for additonal output
+=======
+if not __package__:
+    sys.path.append('../')
+
+from ECC import curves
+from utils import generate_prime
+
+
+############ HELPER FUNCTIONS #########
+
+def getRandCurve(n, v):
+    """ returns a random curve over a random prime n-bits long """
+
+    p = generate_prime.getPrime(n, v)                               # get a random n-bit prime
+    a = secrets.randbelow(10)                                       # generate random coefficient
+    b = secrets.randbelow(10)                                       # generate random coefficient
+
+    C = curves.Curve(a, b, p, v)                                    # create curve
+
+    return C
+
+        
+############ GENERATION CLASS #########
+
+class KeyGen:
+    """ used to generate an ECC curve over a n-bit prime field """
+
+    def __init__(self, n = 10, verbose = True):
+        self.n = n                                                  # n-bit field
+        self.p = 0                                                  # prime our field is over
+        self.G = None                                               # generator point for curve
+        self.Q = None                                               # pulbic-key point on curve
+        self.curve = None                                           # public-key curve
+        self.k = 0                                                  # private key
+        self.verbose = verbose                                      # verbose mode for additonal output
+        self.generateCurve()                                        # generate parameters
+>>>>>>> working
 
 
     ############ SETTERS #########
 
+<<<<<<< HEAD
     def setK(self, k):
         """ sets value for bit length of n """
         self.k = k
@@ -71,6 +115,27 @@ class KeyGen:
     def setPHI(self, phi):
         """ sets totient value for n """
         self.phi = phi
+=======
+    def setN(self, n):
+        """ sets value for bit length of Fp """
+        self.n = n
+
+    def setP(self, p):
+        """ directly set value of prime field """
+        self.p = p
+
+    def setG(self, g):
+        """ sets generator point """
+        self.G = g
+
+    def setQ(self, q):
+        """ sets public-key point value """
+        self.Q = q
+
+    def setCurve(self, curve):
+        """ sets curve directly """
+        self.curve = curve
+>>>>>>> working
 
     def setVerbose(self, verbose):
         """ sets additional output or not """
@@ -79,6 +144,7 @@ class KeyGen:
 
     ############ COMPUTATION FUNCTIONS #########
 
+<<<<<<< HEAD
     def generatePrimes(self):
         """ generates two primes of bit-length k/2 """
 
@@ -162,22 +228,78 @@ class KeyGen:
         success= self.generatePrivateKey()
         return success
 
+=======
+    def generateCurve(self):
+        """ tries random a, b and p coefficients, until a curve with G
+            order > Fp/4 is produced
+            where p is n bits long """
+
+        # sanity check
+        if self.n <= 1:
+            print("Number of bits must be greater than 1")
+            return False                                            # unsuccessful
+        
+        order, p = 0, 1
+        C, G = None, None
+        checks = 0
+        
+        while order < p/4:                                          # loop till order big enough
+            checks += 1
+            C = getRandCurve(self.n, self.verbose)                  # get random curve of correct size
+             
+            while not C.valid():                                    # if not valid
+                C = getRandCurve(self.n, self.verbose)              # try again
+
+            G = C.getG()                                            # get generator point
+            order = C.ord                                           # get order of curve
+            p = C.fp                                                # get prime field                                              
+
+        if self.verbose:
+            print("Checked %d curves" % checks)
+            
+        self.curve = C                                              # we now have a good curve
+        self.G = G                                                  # and generator
+        self.p = p
+
+
+    def generateKeys(self):
+        """ generates a publickey, private key pair from the curve """
+
+        self.k = secrets.randbelow(self.curve.ord)                  # get random number below order
+
+        self.Q = self.G * self.k                                    # Q = kP
+
+        if self.verbose:
+            self.printKeys()
+>>>>>>> working
 
     ############ OUTPUT FUNCTIONS #########
 
     def printKeys(self):
         """ prints out current value of keys """
 
+<<<<<<< HEAD
         if self.verbose:
             print("Public-Key: (%d, %d)" % (self.n, self.e))
             print("Private-Key:", self.d)
             print("n is %d bits" % math.ceil(math.log(self.n, 2)))
             print()
+=======
+        print(("Public-Key: {\n" +
+              "    Curve: %s\n" +
+              "    Base-Point: %s\n" +
+              "    Public-Point: %s\n" +
+              "}") % (self.curve, self.G, self.Q))
+        print("Private-Key:", self.k)
+        print("n is %d bits" % math.ceil(math.log(self.p, 2)))
+        print()
+>>>>>>> working
 
 
 ############ COMMAND LINE INTERFACE #########
 
 if __name__ == '__main__':
+<<<<<<< HEAD
     rsaKey = KeyGen()
 
     if len(sys.argv) >= 2:
@@ -187,3 +309,15 @@ if __name__ == '__main__':
 
     rsaKey.generateKeys()
     rsaKey.printKeys()
+=======
+    eccKey = KeyGen(verbose=True)
+
+    if len(sys.argv) >= 2:
+        eccKey.setN(int(sys.argv[1]))
+    if len(sys.argv) == 3:
+        eccKey.setVerbose(int(sys.argv[2]))
+
+    eccKey.generateCurve()
+    eccKey.generateKeys()
+
+>>>>>>> working
