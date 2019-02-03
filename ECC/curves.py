@@ -106,7 +106,7 @@ class Point:
         return Point(x3, y3, self.curve)                                # return a new point with updated coords
 
 
-    def __mult__(self, k):
+    def __mul__(self, k):
         """ defines multiplication via repeated squares """
 
         # sanity check
@@ -114,6 +114,9 @@ class Point:
             return self.curve.pointAtInf()                              # return point at infinity
 
         # repeated squares algo
+        
+        
+        return Point(0, 0, self.curve)
 
 
     def __str__(self):
@@ -171,6 +174,10 @@ class Curve:
 
     def initPari(self):
         """ initialises the pari version of the curve for fast implementation """
+
+        curve = "["+str(self.a)+","+str(self.b)+"]"+" , "+str(self.fp)  # get string rep of curve 
+        self.E = pari('ellinit(' + curve + ')')                         # create pari version of curve
+
         
     def pointAtInf(self):
         """ defines the point at infinity for the curve """
@@ -207,33 +214,32 @@ class Curve:
             return 0
         
         P = "[" + str(point.x) + "," + str(point.y) + "]"               # string representation of point
-        oderP = pari(self.E).ellorder(P)                                # use Pari to calculate order
+        orderP = pari(self.E).ellorder(P)                               # use Pari to calculate order
         
-        return orderP
+        return int(orderP)
 
 
     def getG(self):
-        """ returns a generator point, since we are working over a prime field
-            all finite points are complete generators (except infinity) by
-            Lagrange's theorem """
+        """ returns a generator point using Pari """
 
         # if exists return it
         if self.G != None:
             return self.G
 
         # else generate it
+        
+        pG = pari(self.E).ellgenerators()[0]                            # get first generator using pari
+        pG = str(pG)                                                    # get string representation
+        Gx = int(pG.split(",")[0].split("(")[1])                        # extract x coord 
+        Gy = int(pG.split(",")[2].split("(")[1])                        # extract y coord
 
-        # get an arbitrary point
-        y = 0.5
-        while y != int(y):                                              # loop till y is a natural number
-            x = secrets.randbelow(10)                                   # arbitrary point
-            y2 = x * x * x + self.a * x + self.b
-            y = math.sqrt(y2)                                           # calculate y
-            print (x, y)
+        G = Point(Gx, Gy, self)                                         # create as Point class 
+        self.G = G                                                      # store result
 
-        self.G = Point(x, y, self)  
-        return self.G                                                   # return new point
+        self.ord = self.order(G)                                        # store order
 
+        return G                                                        # return point 
+        
 
     def __str__(self):
         """ string representation of the Curve """
@@ -246,35 +252,7 @@ class Curve:
         if self.b:
             eq += " + " + str(self.b)
 
+        eq += " % " + str(self.fp)
+
         return eq
 
-
-############ GENERATOR FUNCTIONS #########
-
-def generateCurve(self):
-    """ tries random a and b coefficients, untill a curve of a prime number
-        order > Fp/4 is produced """
-
-    self.G = None                                                   # clear any previous generators
-    self.ord = 0                                                    # clear any previous order
-    self.a = secrets.randbelow(10)                                  # generate random coefficient
-    self.b = secrets.randbelow(10)                                  # generate random coefficient
-
-    if not self.valid():                                            # if not valid
-        return self.generateCurve()                                 # try again
-
-    G = self.getG()                                                 # get generator point
-    order = self.order(G)                                           # get order of curve
-
-    if order < fp/4:                                                # if order is too small
-        return self.generateCurve()                                 # try again
-
-    if not generate_prime.isPrime(ord):                             # if order isn't prime
-        return self.generateCurve()                                 # try again
-
-    return True                                                     # else we have a good curve
-        
-C = Curve(6, 6, 971)
-P = Point(419, 770, C)
-Q = P + P
-print(Q)

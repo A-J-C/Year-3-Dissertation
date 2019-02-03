@@ -29,19 +29,34 @@ from ECC import curves
 from utils import generate_prime
 
 
+############ HELPER FUNCTIONS #########
+
+def getRandCurve(n, v):
+    """ returns a random curve over a random prime n-bits long """
+
+    p = generate_prime.getPrime(n, v)                               # get a random n-bit prime
+    a = secrets.randbelow(10)                                       # generate random coefficient
+    b = secrets.randbelow(10)                                       # generate random coefficient
+
+    C = curves.Curve(a, b, p, v)                                    # create curve
+
+    return C
+
+        
 ############ GENERATION CLASS #########
 
 class KeyGen:
     """ used to generate an ECC curve over a n-bit prime field """
 
-    def __init__(self, n = 64, verbose = False):
-        self.n = n                      # n-bit field
-        self.fp = 0                     # prime our field is over
-        self.G = None                   # generator point for curve
-        self.Q = None                   # pulbic-key point on curve
-        self.curve = None               # public-key curve
-        self.k = k                      # private key
-        self.verbose = verbose          # verbose mode for additonal output
+    def __init__(self, n = 10, verbose = False):
+        self.n = n                                                  # n-bit field
+        self.p = 0                                                  # prime our field is over
+        self.G = None                                               # generator point for curve
+        self.Q = None                                               # pulbic-key point on curve
+        self.curve = None                                           # public-key curve
+        self.k = 0                                                  # private key
+        self.verbose = verbose                                      # verbose mode for additonal output
+        self.generateCurve()                                        # generate parameters
 
 
     ############ SETTERS #########
@@ -50,9 +65,9 @@ class KeyGen:
         """ sets value for bit length of Fp """
         self.n = n
 
-    def setFp(self, fp):
+    def setP(self, p):
         """ directly set value of prime field """
-        self.fp = fp
+        self.p = p
 
     def setG(self, g):
         """ sets generator point """
@@ -73,39 +88,42 @@ class KeyGen:
 
     ############ COMPUTATION FUNCTIONS #########
 
-    def initialiseCurve(self):
-        # sanity check
-        if self.fp == 0:
-            self.generatePrime()
-
-        self.curve = Curve(fp = fp, verbose = self.verbose)         # create new curve
-        self.curve.generateCurve()                                  # creates a and b coefficients
-
-
-    def generatePrime(self):
-        """ generates prime of bit-length n """
+    def generateCurve(self):
+        """ tries random a, b and p coefficients, until a curve with G
+            order > Fp/4 is produced
+            where p is n bits long """
 
         # sanity check
         if self.n <= 1:
             print("Number of bits must be greater than 1")
             return False                                            # unsuccessful
+        
+        order, p = 0, 1
+        C, G = None, None
+        
+        while order < p/4:                                          # loop till order big enough
+            C = getRandCurve(self.n, self.verbose)                  # get random curve of correct size
+             
+            while not C.valid():                                    # if not valid
+                C = getRandCurve(self.n, self.verbose)              # try again
 
-        self.fp = generate_prime.getPrime(self.n, self.verbose)
+            G = C.getG()                                            # get generator point
+            order = C.ord                                           # get order of curve
+            p = C.fp                                                # get prime field                                              
 
-        if self.verbose:
-            print("fp:", self.fp)
-            print()                                                 # makes output look nicer
-
-        return True                                                 # successful
+        print(C)
+        self.curve = C                                              # we now have a good curve
+        self.G = G                                                  # and generator
+        self.p = p
 
 
     def generateKeys(self):
         """ generates a publickey, private key pair from the curve """
 
-        self.G = self.curve.G                                       # get generator
+        self.k = secrets.randbelow(self.curve.ord)                  # get random number below order
 
+        self.Q = self.G * self.k                                    # Q = kP
 
-        return True                                                 # successful
 
 
     ############ OUTPUT FUNCTIONS #########
@@ -114,21 +132,24 @@ class KeyGen:
         """ prints out current value of keys """
 
         if self.verbose:
-            print("Public-Key: (%d, %d)" % (self.n, self.e))
-            print("Private-Key:", self.d)
-            print("n is %d bits" % math.ceil(math.log(self.n, 2)))
+            print("Public-Key: (%s, %s, %s)" % (self.curve, self.G, self.Q))
+            print("Private-Key:", self.k)
+            print("n is %d bits" % math.ceil(math.log(self.p, 2)))
             print()
+            
+
 
 
 ############ COMMAND LINE INTERFACE #########
 
 if __name__ == '__main__':
-    rsaKey = KeyGen()
+    eccKey = KeyGen(verbose=True)
 
     if len(sys.argv) >= 2:
         rsaKey.setK(int(sys.argv[1]))
     if len(sys.argv) == 3:
         rsaKey.setVerbose(int(sys.argv[2]))
 
-    rsaKey.generateKeys()
-    rsaKey.printKeys()
+    eccKey.generateKeys()
+    eccKey.printKeys()
+
