@@ -17,6 +17,9 @@
 #    CLI: for testing can be used from command line -
 #       python3 generate_prime.py [bitLength] [verbose mode] [even more output]
 #
+#    Notes: makes use of a python wrapper for the maths language PARI/GP
+#           https://pari.math.u-bordeaux.fr/
+#           For primes > 52 as 
 
 
 ############ IMPORTS #########
@@ -79,7 +82,7 @@ def trialDivision(c, primes):
 
     for prime in primes:                        # for each prime
         if c % prime == 0:                      # check if c is a multiple
-            return False                        # of it is return that it definitely isn't prime
+            return False                        # if it is return that it definitely isn't prime
 
     return True                                 # else reutrn that it might be prime
 
@@ -129,8 +132,8 @@ def millerRabin(n, r):
             for j in range(i):
 
                 #  get next z
-                z = powerRemainder(w, 2 ** i * d, n)
-
+                z = powerRemainder(w, 2 ** j * d, n)
+            
                 if z == 1:                      # n is definitely composite
                     return False                # return False
                 elif z == n -1 :                # n is prime or the witness is a strong liar
@@ -219,7 +222,7 @@ def getPrime(k = 50, verbose = True, extraOutput = False):
         candidate = getOddNumber(k)             # get an odd number as next candidate
 
         if extraOutput:
-            print("New candidate...")
+            print("New candidate...", candidate)
 
         prime = checks(candidate, primeList, r) # run checks
 
