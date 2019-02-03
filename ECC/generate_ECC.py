@@ -144,8 +144,6 @@ class KeyGen:
         print("Private-Key:", self.k)
         print("n is %d bits" % math.ceil(math.log(self.p, 2)))
         print()
-            
-
 
 
 ############ COMMAND LINE INTERFACE #########
@@ -154,9 +152,10 @@ if __name__ == '__main__':
     eccKey = KeyGen(verbose=True)
 
     if len(sys.argv) >= 2:
-        rsaKey.setK(int(sys.argv[1]))
+        eccKey.setN(int(sys.argv[1]))
     if len(sys.argv) == 3:
-        rsaKey.setVerbose(int(sys.argv[2]))
+        eccKey.setVerbose(int(sys.argv[2]))
 
+    eccKey.generateCurve()
     eccKey.generateKeys()
 
