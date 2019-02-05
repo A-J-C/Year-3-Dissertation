@@ -36,36 +36,3 @@ def modInverse(p, q) :
 
     # make x mod q to ensure it is postive
     return x % qOrig
-
-#Number Theoretic Functions ----------------------------------------------------------------------
-
-def divisors(n):
-    divs = [0]
-    for i in range(1, abs(n) + 1):
-        if n % i == 0:
-            divs.append(i)
-            divs.append(-i)
-    return divs
-
-#Extended Euclidean algorithm.
-def euclid(sml, big):
-    #When the smaller value is zero, it's done, gcd = b = 0*sml + 1*big.
-    if sml == 0:
-        return (big, 0, 1)
-    else:
-        #Repeat with sml and the remainder, big%sml.
-        g, y, x = euclid(big % sml, sml)
-        #Backtrack through the calculation, rewriting the gcd as we go. From the values just
-        #returned above, we have gcd = y*(big%sml) + x*sml, and rewriting big%sml we obtain
-        #gcd = y*(big - (big//sml)*sml) + x*sml = (x - (big//sml)*y)*sml + y*big.
-        return (g, x - (big//sml)*y, y)
-
-#Compute the multiplicative inverse mod n of a with 0 < a < n.
-def mult_inv(a, n):
-    g, x, y = euclid(a, n)
-    #If gcd(a,n) is not one, then a has no multiplicative inverse.
-    if g != 1:
-        raise ValueError('multiplicative inverse does not exist')
-    #If gcd(a,n) = 1, and gcd(a,n) = x*a + y*n, x is the multiplicative inverse of a.
-    else:
-        return x % n

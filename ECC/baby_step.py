@@ -55,11 +55,11 @@ class BGSolver(Solver):
         babySteps = {}                                              # store hash table as dictionary
 
         P = self.curve.pointAtInf()                                 # get starting point
-        babySteps[P] = 0                                            # initial point
+        babySteps[str(P)] = 0                                       # initial point
 
         for n in range(1, sqrtO):
             P += self.G                                             # increment to next nG
-            babySteps[P] = n                                        # create look up table
+            babySteps[str(P)] = n                                   # create look up table
             self.count += 1                                         # increment count
 
         # giant steps
@@ -67,8 +67,8 @@ class BGSolver(Solver):
             P = Q - self.G * (i*sqrtO)                              # Q - i.sqrtO.G
             self.count += 1                                         # increment count
 
-            if P in babySteps:                                      # if it is in out lookup table
-                n = babySteps[P]
+            if str(P) in babySteps:                                 # if it is in out lookup table
+                n = babySteps[str(P)]
                 self.k = n + i*sqrtO
                 break                                               # break out of for loop
         else:
