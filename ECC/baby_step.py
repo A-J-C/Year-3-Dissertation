@@ -12,7 +12,7 @@
 #    Instructions: intended use is to import this file and use the Class as defined
 #
 #    CLI: for testing can be used from command line -
-#           python3 baby_stepg.py PK_C PK_Q PK_G [verbose]
+#           python3 baby_step.py PK_C PK_Q PK_G [verbose]
 #
 
 ############ IMPORTS #########
@@ -24,42 +24,57 @@ import math
 if not __package__:
     sys.path.append('../')
 
-from RSA.solver import Solver
+from ECC.solver import Solver
 
 
 ############ MAIN CODE #########
 
-class BFSolver(Solver):
+class BGSolver(Solver):
     """ inherits from the default solver Class """
 
     def __init__(self, C = None, Q = None, G = None, v = True):
-        super(BFSolver, self).__init__(C, Q, G, v)
+        super(BGSolver, self).__init__(C, Q, G, v)
 
     def solve(self):
-        """ brute force by adding base point to itself until
-            inf point is reached """
+        """ baby-step giant-step uses a hash table to speed up
+            finding a solution """
 
         # sanity check
-        if self.G == None or self.C == None or self.Q == None:
+        if self.G == None or self.curve == None or self.Q == None:
             print("Can't solve not all parameters are set")
             return False                                            # unsuccessful
 
         ############ FIND MULTIPLIER #########
         self.count = 1                                              # initial count
-        P = G                                                       # copy point
 
-        # loop through all numbers looking for candidate until infinity
-        while P != Q and P != C.pointAtInf():
-            P += G                                                  # add another G
+        order = self.curve.order(self.G)                            # get order of base point
+
+        sqrtO = int(math.ceil(math.sqrt(order)))                    # root G's order
+
+        # form hash table of nG ∀ 0 < n < sqrtO
+        babySteps = {}                                              # store hash table as dictionary
+
+        P = self.curve.pointAtInf()                                 # get starting point
+        babySteps[P] = 0                                            # initial point
+
+        for n in range(1, sqrtO):
+            P += self.G                                             # increment to next nG
+            babySteps[P] = n                                        # create look up table
             self.count += 1                                         # increment count
 
-        # sanity check
-        if P != Q:
+        # giant steps
+        for i in range(sqrtO):
+            P = Q - self.G * (i*sqrtO)                              # Q - i.sqrtO.G
+            self.count += 1                                         # increment count
+
+            if P in babySteps:                                      # if it is in out lookup table
+                n = babySteps[P]
+                self.k = n + i*sqrtO
+                break                                               # break out of for loop
+        else:
+            # sanity check
             print ("Point not found")
             return 0
-
-        # set k once candidate found
-        self.k = self.count
 
         if self.verbose:
             print("k:", self.k)
@@ -70,7 +85,7 @@ class BFSolver(Solver):
 ############ COMMAND LINE INTERFACE #########
 
 if __name__ == '__main__':
-    solver = BFSolver()
+    solver = BGSolver()
 
     if len(sys.argv) >= 3:
         solver.setN(int(sys.argv[1]))
