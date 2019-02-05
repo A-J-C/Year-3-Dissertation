@@ -16,10 +16,13 @@
 
 ############ IMPORTS #########
 
+# needed for pydocs to correctly find everything
+sys.path.append('Programming/')
+
 # allows me to run this file directly, i.e. not wrapped up in the package
 if not __package__:
     sys.path.append('../')
-    
+
 from RSA.generate_RSA import KeyGen
 
 

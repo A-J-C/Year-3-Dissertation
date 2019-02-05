@@ -24,11 +24,14 @@
 
 import secrets
 import math
-from cypari import pari
+#from cypari import pari
+
+# needed for pydocs to correctly find everything
+sys.path.append('Programming/')
 
 # allows me to run this file directly, i.e. not wrapped up in the package
 if not __package__:
-    import sys
+    import sysx`
     sys.path.append('../')
 
 from utils import generate_prime

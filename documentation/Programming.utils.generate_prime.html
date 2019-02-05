@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module Programming.utils.generate_prime</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="Programming.html"><font color="#ffffff">Programming</font></a>.<a href="Programming.utils.html"><font color="#ffffff">utils</font></a>.generate_prime</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Calexj%5Cgoogle%20drive%5Cdocuments%5Cuniversity%5Cyear%203%5Cindividual%20project%5Cprogramming%5Cutils%5Cgenerate_prime.py">c:\users\alexj\google drive\documents\university\year 3\individual project\programming\utils\generate_prime.py</a></font></td></tr></table>
+    <p><tt>#&nbsp;&nbsp;&nbsp;&nbsp;File:&nbsp;generate_prime.py<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Author:&nbsp;Alexander&nbsp;Craig<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Project:&nbsp;An&nbsp;Analysis&nbsp;of&nbsp;the&nbsp;Security&nbsp;of&nbsp;RSA&nbsp;&amp;&nbsp;Elliptic&nbsp;Curve&nbsp;Cryptography<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Supervisor:&nbsp;Maximilien&nbsp;Gadouleau<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Version:&nbsp;1.3<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;27/01/18<br>
+#<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Functionality:&nbsp;Provides&nbsp;the&nbsp;functions&nbsp;needed&nbsp;to&nbsp;generatae&nbsp;k-bit&nbsp;primes,<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;doing&nbsp;so&nbsp;using&nbsp;Fermat&nbsp;tests&nbsp;and&nbsp;repeated&nbsp;applications&nbsp;of<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Miller-Rabin&nbsp;to&nbsp;produce&nbsp;probable&nbsp;primes.&nbsp;Followed&nbsp;by&nbsp;a<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;single&nbsp;Lucas&nbsp;test.<br>
+#<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Instructions:&nbsp;intended&nbsp;use&nbsp;is&nbsp;to&nbsp;import&nbsp;this&nbsp;file&nbsp;as&nbsp;a&nbsp;module&nbsp;and&nbsp;to<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;use&nbsp;the&nbsp;<a href="#-getPrime">getPrime</a>(n)&nbsp;function&nbsp;to&nbsp;generate&nbsp;a&nbsp;k-bit&nbsp;prime.<br>
+#<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;CLI:&nbsp;for&nbsp;testing&nbsp;can&nbsp;be&nbsp;used&nbsp;from&nbsp;command&nbsp;line&nbsp;-<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python3&nbsp;generate_prime.py&nbsp;[bitLength]&nbsp;[verbose&nbsp;mode]&nbsp;[even&nbsp;more&nbsp;output]<br>
+#<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Notes:&nbsp;makes&nbsp;use&nbsp;of&nbsp;a&nbsp;python&nbsp;wrapper&nbsp;for&nbsp;the&nbsp;maths&nbsp;language&nbsp;PARI/GP<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;https://pari.math.u-bordeaux.fr/<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For&nbsp;primes&nbsp;&gt;&nbsp;52&nbsp;as</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="math.html">math</a><br>
+</td><td width="25%" valign=top><a href="secrets.html">secrets</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top><a href="time.html">time</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-checks"><strong>checks</strong></a>(candidate, primeList, r=10)</dt><dd><tt>given&nbsp;a&nbsp;candidate&nbsp;and&nbsp;list&nbsp;of&nbsp;primes&nbsp;checks&nbsp;for&nbsp;pseudo-primes</tt></dd></dl>
+ <dl><dt><a name="-getListOfPrimes"><strong>getListOfPrimes</strong></a>(k, n=1000000)</dt><dd><tt>uses&nbsp;modified&nbsp;sieve&nbsp;of&nbsp;eratosthenes&nbsp;to&nbsp;get&nbsp;all&nbsp;primes<br>
+smaller&nbsp;than&nbsp;n&nbsp;or&nbsp;a&nbsp;function&nbsp;of&nbsp;k,&nbsp;whichever&nbsp;is&nbsp;lowest</tt></dd></dl>
+ <dl><dt><a name="-getOddNumber"><strong>getOddNumber</strong></a>(k)</dt><dd><tt>uses&nbsp;secrets&nbsp;module&nbsp;to&nbsp;generate&nbsp;a&nbsp;random&nbsp;k-bit&nbsp;number&nbsp;then&nbsp;ensures&nbsp;it&nbsp;is&nbsp;odd</tt></dd></dl>
+ <dl><dt><a name="-getPrime"><strong>getPrime</strong></a>(k=50, verbose=True, extraOutput=False)</dt><dd><tt>returns&nbsp;a&nbsp;prime&nbsp;number&nbsp;that&nbsp;is&nbsp;k&nbsp;bits&nbsp;long</tt></dd></dl>
+ <dl><dt><a name="-getRounds"><strong>getRounds</strong></a>(k)</dt><dd><tt>returns&nbsp;the&nbsp;recommended&nbsp;number&nbsp;of&nbsp;rounds&nbsp;needed&nbsp;given&nbsp;by&nbsp;FIPS</tt></dd></dl>
+ <dl><dt><a name="-isPrime"><strong>isPrime</strong></a>(n, primes)</dt><dd><tt>given&nbsp;a&nbsp;number&nbsp;n&nbsp;checks&nbsp;if&nbsp;it&nbsp;is&nbsp;a&nbsp;pseudo-prime</tt></dd></dl>
+ <dl><dt><a name="-lucasTest"><strong>lucasTest</strong></a>(n)</dt><dd><tt>performs&nbsp;single&nbsp;Lucas&nbsp;Test&nbsp;to&nbsp;check&nbsp;n&nbsp;for&nbsp;primality</tt></dd></dl>
+ <dl><dt><a name="-millerRabin"><strong>millerRabin</strong></a>(n, r)</dt><dd><tt>runs&nbsp;r&nbsp;rounds&nbsp;of&nbsp;miller&nbsp;rabin&nbsp;to&nbsp;check&nbsp;if&nbsp;n&nbsp;is&nbsp;a&nbsp;probable&nbsp;prime</tt></dd></dl>
+ <dl><dt><a name="-powerRemainder"><strong>powerRemainder</strong></a>(w, d, n)</dt><dd><tt>w&nbsp;**&nbsp;d&nbsp;mod&nbsp;n</tt></dd></dl>
+ <dl><dt><a name="-trialDivision"><strong>trialDivision</strong></a>(c, primes)</dt><dd><tt>tests&nbsp;a&nbsp;possible&nbsp;number&nbsp;against&nbsp;provided&nbsp;list&nbsp;of&nbsp;primes</tt></dd></dl>
+</td></tr></table>
+</body></html>
