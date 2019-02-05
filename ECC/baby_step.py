@@ -67,7 +67,7 @@ class BGSolver(Solver):
 
         # giant steps
         for i in range(sqrtO):
-            P = Q - self.G * (i*sqrtO)                              # Q - i.sqrtO.G
+            P = self.Q - self.G * (i*sqrtO)                         # Q - i.sqrtO.G
             self.count += 1                                         # increment count
 
             if str(P) in babySteps:                                 # if it is in out lookup table

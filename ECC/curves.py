@@ -119,6 +119,11 @@ class Point:
         return Point(x3, y3, self.curve)                                # return a new point with updated coords
 
 
+    def __sub__(self, point):
+        """ given a second point returns the subtracton of the two """
+        self += point.inverted()                                        # simply add the inverted point
+
+
     def __mul__(self, k):
         """ defines multiplication via repeated squares """
 
@@ -127,7 +132,6 @@ class Point:
             return self.curve.pointAtInf()                              # return point at infinity
 
         # repeated squares algorith
-
         Q = self.curve.pointAtInf()                                     # copy to Q
         G = self
 
@@ -147,6 +151,14 @@ class Point:
         """ defines how it should be printed """
         return "(" + str(self.x) + ", " + str(self.y) + ")"
 
+
+    def inverted(self):
+        """ returns the inverted point """
+
+        if self.inf:
+            return self                                                 # simple case of base point
+        else:
+            return Point(self.x, (-self.y) % self.curve.fp, self.curve) # invert over field
 
 ############ CURVE CLASS #########
 
@@ -186,6 +198,10 @@ class Curve:
 
 
     ############ COMPUTATION FUNCTIONS #########
+
+    def __eq__(self, curve):
+        """ defines curve equality """
+        return self.a == curve.a and self.b == curve.b and self.fp == curve.fp:
 
 
     def valid(self):
