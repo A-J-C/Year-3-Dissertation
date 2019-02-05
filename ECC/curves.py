@@ -121,7 +121,7 @@ class Point:
 
     def __sub__(self, point):
         """ given a second point returns the subtracton of the two """
-        self += point.inverted()                                        # simply add the inverted point
+        return self + point.inverted()                                  # simply add the inverted point
 
 
     def __mul__(self, k):
@@ -149,7 +149,11 @@ class Point:
 
     def __str__(self):
         """ defines how it should be printed """
-        return "(" + str(self.x) + ", " + str(self.y) + ")"
+
+        if self.inf:
+            return "Inf"
+        else:
+            return "(" + str(self.x) + ", " + str(self.y) + ")"
 
 
     def inverted(self):
@@ -159,6 +163,7 @@ class Point:
             return self                                                 # simple case of base point
         else:
             return Point(self.x, (-self.y) % self.curve.fp, self.curve) # invert over field
+
 
 ############ CURVE CLASS #########
 
@@ -201,7 +206,12 @@ class Curve:
 
     def __eq__(self, curve):
         """ defines curve equality """
-        return self.a == curve.a and self.b == curve.b and self.fp == curve.fp:
+        if curve == None:
+            return False
+        else:
+            return (self.a == curve.a and
+                    self.b == curve.b and
+                    self.fp == curve.fp)
 
 
     def valid(self):

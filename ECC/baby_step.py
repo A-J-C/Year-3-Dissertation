@@ -12,7 +12,8 @@
 #    Instructions: intended use is to import this file and use the Class as defined
 #
 #    CLI: for testing can be used from command line -
-#           python3 baby_step.py PK_C PK_Q PK_G [verbose]
+#           python3 baby_step.py curve_a curve_b curve_fp G_x G_y Q_x Q_y [verbose]
+#           for base-point G and public-point Q
 #
 
 ############ IMPORTS #########
@@ -28,7 +29,7 @@ if not __package__:
     sys.path.append('../')
 
 from ECC.solver import Solver
-
+from ECC.curves import *
 
 ############ MAIN CODE #########
 
@@ -51,7 +52,6 @@ class BGSolver(Solver):
         self.count = 1                                              # initial count
 
         order = self.curve.order(self.G)                            # get order of base point
-
         sqrtO = int(math.ceil(math.sqrt(order)))                    # root G's order
 
         # form hash table of nG ∀ 0 < n < sqrtO
@@ -90,10 +90,21 @@ class BGSolver(Solver):
 if __name__ == '__main__':
     solver = BGSolver()
 
-    if len(sys.argv) >= 3:
-        solver.setN(int(sys.argv[1]))
-        solver.setE(int(sys.argv[2]))
-    if len(sys.argv) == 4:
-        solver.setVerbose(int(sys.argv[3]))
+    if len(sys.argv) >= 8:
+        c_a = int(sys.argv[1])
+        c_b = int(sys.argv[2])
+        c_fp = int(sys.argv[3])
+        G_x = int(sys.argv[4])
+        G_y = int(sys.argv[5])
+        Q_x = int(sys.argv[6])
+        Q_y = int(sys.argv[7])
+        C = Curve(c_a, c_b, c_fp)
+        G = Point(G_x, G_y, C)
+        Q = Point(Q_x, Q_y, C)
+        solver.setCurve(C)
+        solver.setG(G)
+        solver.setQ(Q)
+    if len(sys.argv) == 9:
+        solver.setVerbose(int(sys.argv[8]))
 
     solver.solve()
