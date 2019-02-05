@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module Programming.RSA.pollard_rho</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="Programming.html"><font color="#ffffff">Programming</font></a>.<a href="Programming.RSA.html"><font color="#ffffff">RSA</font></a>.pollard_rho</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Calexj%5Cgoogle%20drive%5Cdocuments%5Cuniversity%5Cyear%203%5Cindividual%20project%5Cprogramming%5Crsa%5Cpollard_rho.py">c:\users\alexj\google drive\documents\university\year 3\individual project\programming\rsa\pollard_rho.py</a></font></td></tr></table>
+    <p><tt>#&nbsp;&nbsp;&nbsp;&nbsp;File:&nbsp;pollard_rho.py<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Author:&nbsp;Alexander&nbsp;Craig<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Project:&nbsp;An&nbsp;Analysis&nbsp;of&nbsp;the&nbsp;Security&nbsp;of&nbsp;RSA&nbsp;&amp;&nbsp;Elliptic&nbsp;Curve&nbsp;Cryptography<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Supervisor:&nbsp;Maximilien&nbsp;Gadouleau<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Version:&nbsp;1.1<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;27/01/18<br>
+#<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Functionality:&nbsp;uses&nbsp;Pollard's&nbsp;Rho&nbsp;method&nbsp;to&nbsp;discover&nbsp;a&nbsp;private&nbsp;RSA&nbsp;key&nbsp;from<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;given&nbsp;public&nbsp;key&nbsp;pair<br>
+#<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Instructions:&nbsp;intended&nbsp;use&nbsp;is&nbsp;to&nbsp;import&nbsp;this&nbsp;file&nbsp;and&nbsp;use&nbsp;the&nbsp;Class&nbsp;as&nbsp;defined<br>
+#<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;CLI:&nbsp;for&nbsp;testing&nbsp;can&nbsp;be&nbsp;used&nbsp;from&nbsp;command&nbsp;line&nbsp;-<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python3&nbsp;pollard_rho.py&nbsp;PK_n&nbsp;PK_e&nbsp;[verbose]<br>
+#</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="utils.helper.html">utils.helper</a><br>
+</td><td width="25%" valign=top><a href="secrets.html">secrets</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="RSA.solver.html#Solver">RSA.solver.Solver</a>(<a href="RSA.generate_RSA.html#KeyGen">RSA.generate_RSA.KeyGen</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="Programming.RSA.pollard_rho.html#RhoSolver">RhoSolver</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="RhoSolver">class <strong>RhoSolver</strong></a>(<a href="RSA.solver.html#Solver">RSA.solver.Solver</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#RhoSolver">RhoSolver</a>(n=0,&nbsp;e=0,&nbsp;v=True)<br>
+&nbsp;<br>
+inherits&nbsp;from&nbsp;the&nbsp;default&nbsp;solver&nbsp;Class<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="Programming.RSA.pollard_rho.html#RhoSolver">RhoSolver</a></dd>
+<dd><a href="RSA.solver.html#Solver">RSA.solver.Solver</a></dd>
+<dd><a href="RSA.generate_RSA.html#KeyGen">RSA.generate_RSA.KeyGen</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="RhoSolver-__init__"><strong>__init__</strong></a>(self, n=0, e=0, v=True)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="RhoSolver-solve"><strong>solve</strong></a>(self)</dt><dd><tt>uses&nbsp;pollardsRho&nbsp;for&nbsp;prime&nbsp;factorisation&nbsp;relies&nbsp;on&nbsp;birthday&nbsp;paradox,<br>
+picking&nbsp;enough&nbsp;numbers&nbsp;should&nbsp;result&nbsp;in&nbsp;a&nbsp;collision</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="RSA.solver.html#Solver">RSA.solver.Solver</a>:<br>
+<dl><dt><a name="RhoSolver-findPrivateKey"><strong>findPrivateKey</strong></a>(self)</dt><dd><tt>generates&nbsp;the&nbsp;correct&nbsp;private&nbsp;key,&nbsp;once&nbsp;p&nbsp;and&nbsp;q&nbsp;have&nbsp;been<br>
+calculated,&nbsp;and&nbsp;provided&nbsp;n&nbsp;and&nbsp;e&nbsp;from&nbsp;the&nbsp;public&nbsp;key&nbsp;are<br>
+provided</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="RSA.generate_RSA.html#KeyGen">RSA.generate_RSA.KeyGen</a>:<br>
+<dl><dt><a name="RhoSolver-generateKeys"><strong>generateKeys</strong></a>(self)</dt><dd><tt>generates&nbsp;both&nbsp;public&nbsp;and&nbsp;private&nbsp;keys</tt></dd></dl>
+
+<dl><dt><a name="RhoSolver-generatePrimes"><strong>generatePrimes</strong></a>(self)</dt><dd><tt>generates&nbsp;two&nbsp;primes&nbsp;of&nbsp;bit-length&nbsp;k/2</tt></dd></dl>
+
+<dl><dt><a name="RhoSolver-generatePrivateKey"><strong>generatePrivateKey</strong></a>(self)</dt><dd><tt>generate&nbsp;private&nbsp;key,&nbsp;for&nbsp;reversing&nbsp;trapdoor&nbsp;function</tt></dd></dl>
+
+<dl><dt><a name="RhoSolver-generatePublicKey"><strong>generatePublicKey</strong></a>(self)</dt><dd><tt>generates&nbsp;a&nbsp;k-bit&nbsp;key&nbsp;from&nbsp;two&nbsp;primes&nbsp;(will&nbsp;either&nbsp;be&nbsp;k&nbsp;or&nbsp;k-1)</tt></dd></dl>
+
+<dl><dt><a name="RhoSolver-printKeys"><strong>printKeys</strong></a>(self)</dt><dd><tt>prints&nbsp;out&nbsp;current&nbsp;value&nbsp;of&nbsp;keys</tt></dd></dl>
+
+<dl><dt><a name="RhoSolver-setE"><strong>setE</strong></a>(self, e)</dt><dd><tt>sets&nbsp;value&nbsp;for&nbsp;second&nbsp;part&nbsp;of&nbsp;public&nbsp;key</tt></dd></dl>
+
+<dl><dt><a name="RhoSolver-setK"><strong>setK</strong></a>(self, k)</dt><dd><tt>sets&nbsp;value&nbsp;for&nbsp;bit&nbsp;length&nbsp;of&nbsp;n</tt></dd></dl>
+
+<dl><dt><a name="RhoSolver-setN"><strong>setN</strong></a>(self, n)</dt><dd><tt>sets&nbsp;value&nbsp;for&nbsp;semi-prime</tt></dd></dl>
+
+<dl><dt><a name="RhoSolver-setP"><strong>setP</strong></a>(self, p)</dt><dd><tt>sets&nbsp;value&nbsp;for&nbsp;first&nbsp;prime</tt></dd></dl>
+
+<dl><dt><a name="RhoSolver-setPHI"><strong>setPHI</strong></a>(self, phi)</dt><dd><tt>sets&nbsp;totient&nbsp;value&nbsp;for&nbsp;n</tt></dd></dl>
+
+<dl><dt><a name="RhoSolver-setQ"><strong>setQ</strong></a>(self, q)</dt><dd><tt>sets&nbsp;value&nbsp;for&nbsp;second&nbsp;prime</tt></dd></dl>
+
+<dl><dt><a name="RhoSolver-setVerbose"><strong>setVerbose</strong></a>(self, verbose)</dt><dd><tt>sets&nbsp;additional&nbsp;output&nbsp;or&nbsp;not</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="RSA.generate_RSA.html#KeyGen">RSA.generate_RSA.KeyGen</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-g"><strong>g</strong></a>(x, n, c)</dt><dd><tt>polynomial&nbsp;function&nbsp;for&nbsp;semi-randomness</tt></dd></dl>
+</td></tr></table>
+</body></html>

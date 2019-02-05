@@ -1,0 +1,51 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module Programming.run_ECC</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="Programming.html"><font color="#ffffff">Programming</font></a>.run_ECC</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Calexj%5Cgoogle%20drive%5Cdocuments%5Cuniversity%5Cyear%203%5Cindividual%20project%5Cprogramming%5Crun_ecc.py">c:\users\alexj\google drive\documents\university\year 3\individual project\programming\run_ecc.py</a></font></td></tr></table>
+    <p><tt>#&nbsp;&nbsp;&nbsp;&nbsp;Author:&nbsp;Alexander&nbsp;Craig<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Project:&nbsp;An&nbsp;Analysis&nbsp;of&nbsp;the&nbsp;Security&nbsp;of&nbsp;RSA&nbsp;&amp;&nbsp;Elliptic&nbsp;Curve&nbsp;Cryptography<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Supervisor:&nbsp;Maximilien&nbsp;Gadouleau<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Version:&nbsp;1.0<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;03/02/18<br>
+#<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Functionality:&nbsp;utilises&nbsp;other&nbsp;programs&nbsp;to&nbsp;generate&nbsp;and&nbsp;subsequently&nbsp;break&nbsp;ECC<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keys&nbsp;using&nbsp;a&nbsp;variety&nbsp;of&nbsp;algorithms,&nbsp;while&nbsp;collecting&nbsp;diagnostics<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;compare&nbsp;and&nbsp;check&nbsp;the&nbsp;results&nbsp;of&nbsp;each&nbsp;of&nbsp;these&nbsp;algorithms<br>
+#<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Instructions:&nbsp;used&nbsp;to&nbsp;run&nbsp;all&nbsp;other&nbsp;files&nbsp;to&nbsp;be&nbsp;run&nbsp;from&nbsp;the&nbsp;command&nbsp;line:<br>
+#<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;CLI:&nbsp;python3&nbsp;run_ECC.py&nbsp;[bitLength]&nbsp;[bruteForce]&nbsp;[babyStep]<br>
+#</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="ECC.baby_step.html">ECC.baby_step</a><br>
+<a href="ECC.brute_force.html">ECC.brute_force</a><br>
+</td><td width="25%" valign=top><a href="ECC.generate_ECC.html">ECC.generate_ECC</a><br>
+<a href="math.html">math</a><br>
+</td><td width="25%" valign=top><a href="ECC.pollard_rho.html">ECC.pollard_rho</a><br>
+<a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top><a href="time.html">time</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-run"><strong>run</strong></a>(k=10, brute=True, babyStep=True, verbose=True)</dt><dd><tt>creates&nbsp;a&nbsp;k-bit&nbsp;ECC&nbsp;key,&nbsp;cracks&nbsp;it&nbsp;with&nbsp;several&nbsp;algorithms,&nbsp;and&nbsp;generates<br>
+statistics&nbsp;to&nbsp;compare&nbsp;their&nbsp;performance</tt></dd></dl>
+ <dl><dt><a name="-runSolver"><strong>runSolver</strong></a>(keys, solver, name, verbose)</dt><dd><tt>runs&nbsp;a&nbsp;check&nbsp;on&nbsp;the&nbsp;solver,&nbsp;given&nbsp;the&nbsp;correct&nbsp;keys</tt></dd></dl>
+</td></tr></table>
+</body></html>

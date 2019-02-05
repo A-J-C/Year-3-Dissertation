@@ -17,6 +17,7 @@
 ############ IMPORTS #########
 
 # needed for pydocs to correctly find everything
+import sys
 sys.path.append('Programming/')
 
 # allows me to run this file directly, i.e. not wrapped up in the package

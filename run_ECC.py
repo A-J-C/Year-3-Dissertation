@@ -16,8 +16,11 @@
 
 ############ IMPORTS #########
 
-import math
+# needed for pydocs to correctly find everything
 import sys
+sys.path.append('Programming/')
+
+import math
 import time
 from ECC import *
 
