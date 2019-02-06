@@ -76,8 +76,6 @@ def run(k = 10, brute = True, pRho = True, verbose = True):
             print ("Please fix input and try again")
         return False
 
-    keys.printKeys()                                                            # print generated keys
-
     ############ BRUTE FORCE ATTACK #########
     bf_res = {}
     if brute:

@@ -20,6 +20,15 @@ def gcd(p, q):
     return p
 
 
+def extgcd(p, q):
+    """ Euclid's Extended aglorithm """
+    if p == 0:
+        return (q, 0, 1)
+    else:
+        g, y, x = egcd(b % a, a)
+        return (g, x - (b // a) * y, y)
+
+
 def modInverse(p, q) :
     """ return modular multiplicative inverse using Euclid's Extended aglorithm """
     qOrig, y, x = q, 0, 1
@@ -33,6 +42,9 @@ def modInverse(p, q) :
         # x and y track quotients
         x, y = y, x - (p // q) * y
         p, q = q, p % q
+
+        if q == 0 and p != 1:               # means modInverse doesn't exist
+            return 0                        # so return before // 0 error
 
     # make x mod q to ensure it is postive
     return x % qOrig

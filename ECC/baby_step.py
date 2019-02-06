@@ -107,4 +107,6 @@ if __name__ == '__main__':
     if len(sys.argv) == 9:
         solver.setVerbose(int(sys.argv[8]))
 
-    solver.solve()
+    s = solver.solve()
+    if not s:
+        print("Input not of correct form: python3 baby_step.py curve_a curve_b curve_fp G_x G_y Q_x Q_y [verbose]")

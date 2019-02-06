@@ -163,6 +163,10 @@ class KeyGen:
             return False                                            # unsuccessful
 
         success= self.generatePrivateKey()
+
+        if success and self.verbose:
+            self.printKeys()
+
         return success
 
 
