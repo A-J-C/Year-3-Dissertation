@@ -12,8 +12,8 @@
     <p><tt>#&nbsp;&nbsp;&nbsp;&nbsp;Author:&nbsp;Alexander&nbsp;Craig<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Project:&nbsp;An&nbsp;Analysis&nbsp;of&nbsp;the&nbsp;Security&nbsp;of&nbsp;RSA&nbsp;&amp;&nbsp;Elliptic&nbsp;Curve&nbsp;Cryptography<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Supervisor:&nbsp;Maximilien&nbsp;Gadouleau<br>
-#&nbsp;&nbsp;&nbsp;&nbsp;Version:&nbsp;1.0<br>
-#&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;03/02/18<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Version:&nbsp;2.0<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;06/02/18<br>
 #<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Functionality:&nbsp;utilises&nbsp;other&nbsp;programs&nbsp;to&nbsp;generate&nbsp;and&nbsp;subsequently&nbsp;break&nbsp;ECC<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keys&nbsp;using&nbsp;a&nbsp;variety&nbsp;of&nbsp;algorithms,&nbsp;while&nbsp;collecting&nbsp;diagnostics<br>
@@ -33,11 +33,9 @@
 <td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="ECC.baby_step.html">ECC.baby_step</a><br>
 <a href="ECC.brute_force.html">ECC.brute_force</a><br>
 </td><td width="25%" valign=top><a href="ECC.generate_ECC.html">ECC.generate_ECC</a><br>
-<a href="math.html">math</a><br>
-</td><td width="25%" valign=top><a href="ECC.pollard_rho.html">ECC.pollard_rho</a><br>
-<a href="sys.html">sys</a><br>
-</td><td width="25%" valign=top><a href="time.html">time</a><br>
-</td></tr></table></td></tr></table><p>
+<a href="ECC.pollard_rho.html">ECC.pollard_rho</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#eeaa77">
 <td colspan=3 valign=bottom>&nbsp;<br>
@@ -47,5 +45,6 @@
 <td width="100%"><dl><dt><a name="-run"><strong>run</strong></a>(k=10, brute=True, babyStep=True, rho=True, verbose=True)</dt><dd><tt>creates&nbsp;a&nbsp;k-bit&nbsp;ECC&nbsp;key,&nbsp;cracks&nbsp;it&nbsp;with&nbsp;several&nbsp;algorithms,&nbsp;and&nbsp;generates<br>
 statistics&nbsp;to&nbsp;compare&nbsp;their&nbsp;performance</tt></dd></dl>
  <dl><dt><a name="-runSolver"><strong>runSolver</strong></a>(keys, solver, name, verbose)</dt><dd><tt>runs&nbsp;a&nbsp;check&nbsp;on&nbsp;the&nbsp;solver,&nbsp;given&nbsp;the&nbsp;correct&nbsp;keys</tt></dd></dl>
+ <dl><dt><a name="-tests"><strong>tests</strong></a>(k=10, iter=10000, algo='bf', csvFile='res.csv')</dt><dd><tt>run&nbsp;tests&nbsp;to&nbsp;generate&nbsp;statistics</tt></dd></dl>
 </td></tr></table>
 </body></html>

@@ -1,28 +1,28 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-<html><head><title>Python: module Programming.graphs_RSA</title>
+<html><head><title>Python: module Programming.graphs_ECC</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 </head><body bgcolor="#f0f0f8">
 
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
 <tr bgcolor="#7799ee">
 <td valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="Programming.html"><font color="#ffffff">Programming</font></a>.graphs_RSA</strong></big></big></font></td
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="Programming.html"><font color="#ffffff">Programming</font></a>.graphs_ECC</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Calexj%5Cgoogle%20drive%5Cdocuments%5Cuniversity%5Cyear%203%5Cindividual%20project%5Cprogramming%5Cgraphs_rsa.py">c:\users\alexj\google drive\documents\university\year 3\individual project\programming\graphs_rsa.py</a></font></td></tr></table>
-    <p><tt>#&nbsp;&nbsp;&nbsp;&nbsp;File:&nbsp;graphs_RSA.py<br>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Calexj%5Cgoogle%20drive%5Cdocuments%5Cuniversity%5Cyear%203%5Cindividual%20project%5Cprogramming%5Cgraphs_ecc.py">c:\users\alexj\google drive\documents\university\year 3\individual project\programming\graphs_ecc.py</a></font></td></tr></table>
+    <p><tt>#&nbsp;&nbsp;&nbsp;&nbsp;File:&nbsp;graphs_ECC.py<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Author:&nbsp;Alexander&nbsp;Craig<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Project:&nbsp;An&nbsp;Analysis&nbsp;of&nbsp;the&nbsp;Security&nbsp;of&nbsp;RSA&nbsp;&amp;&nbsp;Elliptic&nbsp;Curve&nbsp;Cryptography<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Supervisor:&nbsp;Maximilien&nbsp;Gadouleau<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Version:&nbsp;1.0<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;06/02/18<br>
 #<br>
-#&nbsp;&nbsp;&nbsp;&nbsp;Functionality:&nbsp;utilises&nbsp;other&nbsp;programs&nbsp;to&nbsp;generate&nbsp;and&nbsp;subsequently&nbsp;break&nbsp;RSA<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Functionality:&nbsp;utilises&nbsp;other&nbsp;programs&nbsp;to&nbsp;generate&nbsp;and&nbsp;subsequently&nbsp;break&nbsp;ECC<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keys&nbsp;using&nbsp;a&nbsp;variety&nbsp;of&nbsp;algorithms,&nbsp;generating&nbsp;a&nbsp;few&nbsp;graphs<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;show&nbsp;general&nbsp;trends&nbsp;as&nbsp;we&nbsp;go<br>
 #<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Instructions:&nbsp;used&nbsp;to&nbsp;run&nbsp;all&nbsp;other&nbsp;files&nbsp;to&nbsp;be&nbsp;run&nbsp;from&nbsp;the&nbsp;command&nbsp;line:<br>
 #<br>
-#&nbsp;&nbsp;&nbsp;&nbsp;CLI:&nbsp;python3&nbsp;graphs_RSA.py&nbsp;[minBit]&nbsp;[maxBitBruteForce]&nbsp;[maxBitPollard'sRho]<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;CLI:&nbsp;python3&nbsp;graphs_ECC.py&nbsp;[minBit]&nbsp;[maxBitBruteForce]&nbsp;[maxBitBabyStep]&nbsp;[maxBitPollard'sRho]<br>
 #</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -31,16 +31,17 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="RSA.brute_force.html">RSA.brute_force</a><br>
-<a href="RSA.generate_RSA.html">RSA.generate_RSA</a><br>
-<a href="math.html">math</a><br>
-</td><td width="25%" valign=top><a href="numpy.html">numpy</a><br>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="ECC.baby_step.html">ECC.baby_step</a><br>
+<a href="ECC.brute_force.html">ECC.brute_force</a><br>
+<a href="ECC.generate_ECC.html">ECC.generate_ECC</a><br>
+</td><td width="25%" valign=top><a href="math.html">math</a><br>
+<a href="numpy.html">numpy</a><br>
 <a href="matplotlib.pyplot.html">matplotlib.pyplot</a><br>
-<a href="RSA.pollard_rho.html">RSA.pollard_rho</a><br>
-</td><td width="25%" valign=top><a href="secrets.html">secrets</a><br>
+</td><td width="25%" valign=top><a href="ECC.pollard_rho.html">ECC.pollard_rho</a><br>
+<a href="secrets.html">secrets</a><br>
 <a href="sys.html">sys</a><br>
-<a href="threading.html">threading</a><br>
-</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+</td><td width="25%" valign=top><a href="threading.html">threading</a><br>
+</td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#eeaa77">
 <td colspan=3 valign=bottom>&nbsp;<br>
@@ -49,7 +50,7 @@
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><dl><dt><a name="-getResults"><strong>getResults</strong></a>(solver, ind, minBit, maxBit)</dt><dd><tt>produces&nbsp;a&nbsp;graph,&nbsp;given&nbsp;a&nbsp;solver,&nbsp;result&nbsp;index&nbsp;and&nbsp;bit&nbsp;range</tt></dd></dl>
  <dl><dt><a name="-stop"><strong>stop</strong></a>()</dt></dl>
- <dl><dt><a name="-testGraphs"><strong>testGraphs</strong></a>(minBit=10, bf_bit=44, rho_bit=54)</dt><dd><tt>generates&nbsp;graphs&nbsp;testing&nbsp;all&nbsp;algorithms&nbsp;to&nbsp;show&nbsp;general&nbsp;trends<br>
+ <dl><dt><a name="-testGraphs"><strong>testGraphs</strong></a>(minBit=10, bf_bit=22, bsgs_bit=30, rho_bit=30)</dt><dd><tt>generates&nbsp;graphs&nbsp;testing&nbsp;all&nbsp;algorithms&nbsp;to&nbsp;show&nbsp;general&nbsp;trends<br>
 uses&nbsp;a&nbsp;thread&nbsp;for&nbsp;each&nbsp;algorith,&nbsp;to&nbsp;ease&nbsp;congestion</tt></dd></dl>
  <dl><dt><a name="-updateGraph"><strong>updateGraph</strong></a>()</dt><dd><tt>redraws&nbsp;the&nbsp;plot&nbsp;to&nbsp;take&nbsp;account&nbsp;of&nbsp;incoming&nbsp;data<br>
 adapted&nbsp;to&nbsp;enable&nbsp;it&nbsp;to&nbsp;work&nbsp;with&nbsp;jupyter&nbsp;notebooks</tt></dd></dl>
@@ -60,7 +61,7 @@ adapted&nbsp;to&nbsp;enable&nbsp;it&nbsp;to&nbsp;work&nbsp;with&nbsp;jupyter&nbs
 <font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
     
 <tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><strong>resCount</strong> = [{}, {}]<br>
-<strong>resTime</strong> = [{}, {}]<br>
+<td width="100%"><strong>resCount</strong> = [{}, {}, {}]<br>
+<strong>resTime</strong> = [{}, {}, {}]<br>
 <strong>running</strong> = True</td></tr></table>
 </body></html>

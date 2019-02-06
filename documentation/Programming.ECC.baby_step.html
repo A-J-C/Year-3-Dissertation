@@ -13,8 +13,8 @@
 #&nbsp;&nbsp;&nbsp;&nbsp;Author:&nbsp;Alexander&nbsp;Craig<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Project:&nbsp;An&nbsp;Analysis&nbsp;of&nbsp;the&nbsp;Security&nbsp;of&nbsp;RSA&nbsp;&amp;&nbsp;Elliptic&nbsp;Curve&nbsp;Cryptography<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Supervisor:&nbsp;Maximilien&nbsp;Gadouleau<br>
-#&nbsp;&nbsp;&nbsp;&nbsp;Version:&nbsp;1.0<br>
-#&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;03/02/18<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Version:&nbsp;1.1<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;06/02/18<br>
 #<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Functionality:&nbsp;uses&nbsp;the&nbsp;babystep-giant-step&nbsp;method&nbsp;to&nbsp;caclualte<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;private&nbsp;ECC&nbsp;key&nbsp;from&nbsp;a&nbsp;given&nbsp;public&nbsp;key&nbsp;set<br>
@@ -32,12 +32,11 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="utils.generate_prime.html">utils.generate_prime</a><br>
-<a href="utils.helper.html">utils.helper</a><br>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="utils.helper.html">utils.helper</a><br>
 </td><td width="25%" valign=top><a href="math.html">math</a><br>
-<a href="secrets.html">secrets</a><br>
 </td><td width="25%" valign=top><a href="sys.html">sys</a><br>
-</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+</td><td width="25%" valign=top><a href="time.html">time</a><br>
+</td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ee77aa">
 <td colspan=3 valign=bottom>&nbsp;<br>
@@ -71,10 +70,12 @@ inherits&nbsp;from&nbsp;the&nbsp;default&nbsp;solver&nbsp;Class<br>&nbsp;</tt></
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="BGSolver-__init__"><strong>__init__</strong></a>(self, C=None, Q=None, G=None, v=True)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
-
 <dl><dt><a name="BGSolver-solve"><strong>solve</strong></a>(self)</dt><dd><tt>baby-step&nbsp;giant-step&nbsp;uses&nbsp;a&nbsp;hash&nbsp;table&nbsp;to&nbsp;speed&nbsp;up<br>
 finding&nbsp;a&nbsp;solution</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="ECC.solver.html#Solver">ECC.solver.Solver</a>:<br>
+<dl><dt><a name="BGSolver-__init__"><strong>__init__</strong></a>(self, C=None, Q=None, G=None, v=True)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
 
 <hr>
 Methods inherited from <a href="ECC.generate_ECC.html#KeyGen">ECC.generate_ECC.KeyGen</a>:<br>
