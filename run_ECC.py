@@ -11,7 +11,7 @@
 #
 #    Instructions: used to run all other files to be run from the command line:
 #
-#    CLI: python3 run_ECC.py [bitLength] [bruteForce] [babyStep]
+#    CLI: python3 run_ECC.py [bitLength] [bruteForce] [babyStep] [rho]
 #
 
 ############ IMPORTS #########
@@ -55,7 +55,7 @@ def runSolver(keys, solver, name, verbose):
 
 ############ MASTER PROGRAM #########
 
-def run(k = 10, brute = True, babyStep = True, verbose = True):
+def run(k = 10, brute = True, babyStep = True, rho=True, verbose = True):
     """ creates a k-bit ECC key, cracks it with several algorithms, and generates
         statistics to compare their performance """
 
@@ -88,7 +88,13 @@ def run(k = 10, brute = True, babyStep = True, verbose = True):
         bg = baby_step.BGSolver(keys.curve, keys.Q, keys.G, verbose)            # create new instance with public key info
         bg_res = runSolver(keys, bg, "BABYSTEP_GIANTSTEP", verbose)             # check solver
 
-    return bf_res, bsgs_res
+    ############ POLLARD'S RHO ATTACK #########
+    rho_res = {}
+    if rho:
+        rhoS = pollard_rho.PRSolver(keys.curve, keys.Q, keys.G, verbose)        # create new instance with public key info
+        rho_res = runSolver(keys, rhoS, "POLLARD'S RHO", verbose)               # check solver
+
+    return bf_res, bsgs_res, rho_res
 
 
 ############ COMMAND LINE INTERFACE #########
@@ -97,6 +103,8 @@ if __name__ == '__main__':
 
     if len(sys.argv) > 1 and sys.argv[1] == "test":
         tests(int(sys.argv[2]), int(sys.argv[3]), sys.argv[4], sys.argv[5])
+    elif len(sys.argv) == 6:
+        run(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5]))
     elif len(sys.argv) == 5:
         run(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]))
     elif len(sys.argv) == 4:
