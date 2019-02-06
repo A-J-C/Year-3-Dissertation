@@ -19,6 +19,7 @@
 
 import sys
 import math
+import time
 
 # needed for pydocs to correctly find everything
 sys.path.append('Programming/')
@@ -35,7 +36,7 @@ from RSA.solver import Solver
 class BFSolver(Solver):
     """ inherits from the default solver Class """
 
-    def __init__(self, n = 0, e = 0, v = True):
+    def __init__(self, n = 0, e = 0, v = False):
         super(BFSolver, self).__init__(n, e, v)
 
     def solve(self):
@@ -47,6 +48,8 @@ class BFSolver(Solver):
             return False                                            # unsuccessful
 
         ############ FIND FACTOR #########
+        self.start = time.time()                                    # start timer
+
         candidate = int(math.floor(math.sqrt(self.n)))              # get square root
 
         # ensure odd

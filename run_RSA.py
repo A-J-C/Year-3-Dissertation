@@ -34,11 +34,7 @@ def runSolver(keys, solver, name, verbose):
     if verbose:
         print("="*10, name, "="*10)
 
-    start = time.time()
-
     solver.solve()                                                              # factor n
-
-    end = time.time() - start
 
     if verbose:
         print("Time: %.2f s" % (end))                                           # output statistics
@@ -50,7 +46,7 @@ def runSolver(keys, solver, name, verbose):
             print("Fail!")
 
     return {"res": (solver.d == keys.d),                                        # return result as dict
-            "time": end,
+            "time": solver.time,
             "count": solver.count}
 
 
@@ -111,6 +107,14 @@ def tests(k = 10, iter = 10000, algo = "bf", csvFile = "res.csv"):
                 "," + str(r["count"]) + ",")
             file.write(out + "\n")
             file.flush()
+
+
+def testGraphs():
+    """ generates graphs testing all algorithms to show general trends
+        uses a thread for each algorith, to ease congestion """
+
+    minBit = 10                 # min bit size for all algorithms
+    maxBit = [20, 40]           # max bit size for algorithms as a list
 
 
 ############ COMMAND LINE INTERFACE #########

@@ -19,6 +19,7 @@
 
 import sys
 import secrets
+import time
 
 # needed for pydocs to correctly find everything
 sys.path.append('Programming/')
@@ -55,6 +56,10 @@ class RhoSolver(Solver):
             print("Can't solve for n = 0")
             return False                                            # unsuccessful
 
+        self.start = time.time()                                    # set timer
+
+        self.count = 0                                              # reset
+        
         x = y = 2
         d = c = 1
 

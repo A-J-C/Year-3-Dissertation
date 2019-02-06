@@ -98,6 +98,7 @@ class KeyGen:
         self.q = generate_prime.getPrime(bit, self.verbose)
 
         if self.verbose:
+            print()
             print("p:", self.p)
             print("q:", self.q)
             print()                                                 # makes output look nicer

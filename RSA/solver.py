@@ -16,6 +16,8 @@
 
 ############ IMPORTS #########
 
+import time
+
 # needed for pydocs to correctly find everything
 import sys
 sys.path.append('Programming/')
@@ -34,12 +36,15 @@ class Solver(KeyGen):
         it itslef extends the key generation class to allow it to
         utilise several functions """
 
-    def __init__(self, n = 0, e = 0, verbose = True):
+    def __init__(self, n = 0, e = 0, verbose = False):
         super(Solver, self).__init__()              # initalises all variables
         self.n = n                                  # public key
         self.e = e                                  # public exponent
         self.verbose = verbose                      # defines additional output
         self.count = 0                              # counts number of checks
+        self.start = 0                              # for timing
+        self.time = 0
+
 
     def findPrivateKey(self):
         """ generates the correct private key, once p and q have been
@@ -57,9 +62,12 @@ class Solver(KeyGen):
         # generate private key
         self.generatePrivateKey()
 
+        self.time = time.time() - self.start        # set time taken
+
         # output more stats
         if self.verbose:
             print("Numbers checked:", self.count)   # print total count
+            print("Time taken: %.3f s" % (self.time))     # print time taken
 
         # sanity check
         if self.d == 0:
