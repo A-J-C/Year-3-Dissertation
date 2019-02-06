@@ -22,12 +22,11 @@ import sys
 sys.path.append('Programming/')
 
 import math
-import numpy as np
 import secrets
 import threading
 import matplotlib.pyplot as plt                                                 # for drawing graphs
-from scipy.optimize import curve_fit                                            # for curve
 from RSA import *
+from utils.plots import *
 
 
 ############ GLOBAL VARIABLES #########
@@ -39,34 +38,32 @@ running = True                                                                  
 
 ############ FUNCTIONS #########
 
-def curve_func(x, a, b, c):
-    """ trying to draw this curve to fit data """
+def updateGraph():
+    """ redraws the plot to take account of incoming data
+        adapted to enable it to work with jupyter notebooks """
 
-    return a * np.exp(b * x) + c
+    outFig = plt.figure(figsize = (8, 8))                                       # define output figure
+    tPlt = outFig.add_subplot(211)                                              # add sub plot to figure
+    cPlt = outFig.add_subplot(212)                                              # add sub plot to figure
 
+    outFig.show()                                                               # show figure
+    outFig.canvas.draw()                                                        # first render
 
-def dataToPlot(data, plot):
-    """ given a dictionary of data and a plt adds the data and a best fit line """
+    while running:
+        tPlt.clear()                                                            # clear plot
+        cPlt.clear()
 
-    for resDic in data:
-        if resDic != {}:                                                        # check for empty
-            keys = sorted(list(resDic.keys()))                                  # get sorted list of keys
-            vals = [resDic[key][0] for key in keys]                             # extract Y axis
+        dataToPlot(resTime, tPlt)                                               # plot data
+        dataToPlot(resCount, cPlt)
 
-            plot.scatter(keys, vals)                                            # draw points
+        tPlt.set_xlabel("Key-Size (bits)")
+        cPlt.set_xlabel("Key-Size (bits)")
+        tPlt.set_ylabel("Time (s)")
+        cPlt.set_ylabel("Numbers Checked")
 
-            try:
-                xFit = np.linspace(keys[0], keys[-1], 100)                      # these are our x points
-                opt = curve_fit(curve_func, keys, vals,                         # get curve
-                                     (4e-06, 1.7e-01, -4.6e-05))[0]             # good guess
-                yFit = curve_func(xFit, *opt)                                   # these are y points
-
-                plot.plot(xFit, yFit)                                           # plot our expected curve
-
-            except Exception:
-                pass
-
-    return True                                                                 # return finished
+        outFig.tight_layout()                                                   # looks nicer
+        outFig.canvas.draw()                                                    # re draw
+        plt.pause(0.001)                                                        # pause
 
 
 def getResults(solver, ind, minBit, maxBit):
@@ -98,42 +95,20 @@ def getResults(solver, ind, minBit, maxBit):
                 newCount = ((oldCount * oldC) + solver.count) / newC
                 resCount[ind][k] = [newCount, newC]                             # without storing all variables
 
-
-def updateGraph():
-    """ redraws the plot to take account of incoming data
-        adapted to enable it to work with jupyter notebooks """
-
-    outFig = plt.figure(figsize = (8, 8))                                       # define output figure
-    tPlt = outFig.add_subplot(211)                                              # add sub plot to figure
-    cPlt = outFig.add_subplot(212)                                              # add sub plot to figure
-
-    outFig.show()                                                               # show figure
-    outFig.canvas.draw()                                                        # first render
-
-    while running:
-        tPlt.clear()                                                            # clear plot
-        cPlt.clear()
-
-        dataToPlot(resTime, tPlt)                                               # plot data
-        dataToPlot(resCount, cPlt)
-
-        tPlt.set_xlabel("Key-Size (bits)")
-        cPlt.set_xlabel("Key-Size (bits)")
-        tPlt.set_ylabel("Time (s)")
-        cPlt.set_ylabel("Numbers Checked")
-
-        outFig.tight_layout()                                                   # looks nicer
-        outFig.canvas.draw()                                                    # re draw
-        plt.pause(0.001)                                                        # pause
+def stop():
+    global running
+    input("Press Enter to stop.")                                               # wait for input
+    running = False                                                             # stop running
 
 
 def testGraphs(minBit = 10, bf_bit = 44, rho_bit = 54):
     """ generates graphs testing all algorithms to show general trends
         uses a thread for each algorith, to ease congestion """
+        
     global running                                                              # to stop program
 
-    bf = brute_force.BFSolver(v = False)
-    rho = pollard_rho.RhoSolver(v = False)
+    bf = brute_force.BFSolver(verbose = False)
+    rho = pollard_rho.RhoSolver(verbose = False)
 
     threading.Thread(target = getResults,                                       # launch Rho thread
                      args=(bf, 0, minBit, bf_bit)).start()
@@ -141,10 +116,9 @@ def testGraphs(minBit = 10, bf_bit = 44, rho_bit = 54):
     threading.Thread(target = getResults,                                       # launch Rho thread
                      args=(rho, 1, minBit, rho_bit)).start()
 
-    threading.Thread(target = updateGraph).start()                              # start drawing graph
+    threading.Thread(target = stop).start()                                     # allows us to gracefully stop
 
-    input("Press Enter to stop.")                                               # wait for input
-    running = False                                                             # stop running
+    updateGraph()                                                               # has to be run in main thread
 
 
 ############ COMMAND LINE INTERFACE #########

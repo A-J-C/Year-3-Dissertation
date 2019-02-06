@@ -12,6 +12,8 @@
 #                  use the functions provided as needed
 #
 
+############ MATHMATICAL FUNCTIONS #########
+
 def gcd(p, q):
     """ return gcd of p and q using Euclid's algorithm """
     while q != 0:

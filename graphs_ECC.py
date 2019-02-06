@@ -12,7 +12,7 @@
 #
 #    Instructions: used to run all other files to be run from the command line:
 #
-#    CLI: python3 graphs_ECC.py [minBit] [maxBitBruteForce] [maxBitPollard'sRho]
+#    CLI: python3 graphs_ECC.py [minBit] [maxBitBruteForce] [maxBitBabyStep] [maxBitPollard'sRho]
 #
 
 ############ IMPORTS #########
@@ -22,82 +22,21 @@ import sys
 sys.path.append('Programming/')
 
 import math
-import numpy as np
 import secrets
 import threading
 import matplotlib.pyplot as plt                                                 # for drawing graphs
-from scipy.optimize import curve_fit                                            # for curve
-from RSA import *
+from ECC import *
+from utils.plots import *
 
 
 ############ GLOBAL VARIABLES #########
 
-resCount = [{}, {}]                                                             # stores results to graph as dictionaries
-resTime = [{}, {}]                                                              # stores results to graph as dictionaries
+resCount = [{}, {}, {}]                                                         # stores results to graph as dictionaries
+resTime = [{}, {}, {}]                                                          # stores results to graph as dictionaries
 running = True                                                                  # to stop threads
 
 
 ############ FUNCTIONS #########
-
-def curve_func(x, a, b, c):
-    """ trying to draw this curve to fit data """
-
-    return a * np.exp(b * x) + c
-
-
-def dataToPlot(data, plot):
-    """ given a dictionary of data and a plt adds the data and a best fit line """
-
-    for resDic in data:
-        if resDic != {}:                                                        # check for empty
-            keys = sorted(list(resDic.keys()))                                  # get sorted list of keys
-            vals = [resDic[key][0] for key in keys]                             # extract Y axis
-
-            plot.scatter(keys, vals)                                            # draw points
-
-            try:
-                xFit = np.linspace(keys[0], keys[-1], 100)                      # these are our x points
-                opt = curve_fit(curve_func, keys, vals,                         # get curve
-                                     (4e-06, 1.7e-01, -4.6e-05))[0]             # good guess
-                yFit = curve_func(xFit, *opt)                                   # these are y points
-
-                plot.plot(xFit, yFit)                                           # plot our expected curve
-
-            except Exception:
-                pass
-
-    return True                                                                 # return finished
-
-
-def getResults(solver, ind, minBit, maxBit):
-    """ produces a graph, given a solver, result index and bit range """
-
-    while running:
-        k = secrets.randbelow(maxBit - minBit) + minBit                         # get in range
-        keys = generate_RSA.KeyGen(k)                                           # initialise keys
-        keys.generateKeys()                                                     # generate keys
-
-        solver.setN(keys.n)                                                     # setup solver
-        solver.setE(keys.e)
-
-        solver.solve()                                                          # solve problem
-
-        k = int(math.ceil(math.log(keys.n, 2)))                                 # get accurate bit length
-
-        if solver.d == keys.d:                                                  # if we got it right
-            if k not in resTime[ind]:                                           # if we've not yet had a result for k
-                resTime[ind][k] = [solver.time, 1]                              # then set
-                resCount[ind][k] = [solver.count, 1]
-            else:
-                oldT, oldC = resTime[ind][k]                                    # keeps a running average
-                newC = oldC + 1                                                 # increment count
-                newT = ((oldT * oldC) + solver.time) / newC                     # get new averagae
-                resTime[ind][k] = [newT, newC]                                  # without storing all variables
-
-                oldCount, oldC = resCount[ind][k]                               # keeps a running average
-                newCount = ((oldCount * oldC) + solver.count) / newC
-                resCount[ind][k] = [newCount, newC]                             # without storing all variables
-
 
 def updateGraph():
     """ redraws the plot to take account of incoming data
@@ -127,31 +66,74 @@ def updateGraph():
         plt.pause(0.001)                                                        # pause
 
 
-def testGraphs(minBit = 10, bf_bit = 44, rho_bit = 54):
+def getResults(solver, ind, minBit, maxBit):
+    """ produces a graph, given a solver, result index and bit range """
+
+    while running:
+        k = secrets.randbelow(maxBit - minBit) + minBit                         # get in range
+        keys = generate_ECC.KeyGen(k, False)                                    # initialise keys
+        keys.generateCurve()                                                    # get curve paramaters
+        keys.generateKeys()                                                     # generate keys
+
+        solver.setCurve(keys.curve)                                             # setup solver
+        solver.setQ(keys.Q)
+        solver.setG(keys.G)
+
+        solver.solve()                                                          # solve problem
+
+        k = int(math.ceil(math.log(keys.p, 2)))                                 # get accurate bit length
+
+        if solver.k == keys.k:                                                  # if we got it right
+            if k not in resTime[ind]:                                           # if we've not yet had a result for k
+                resTime[ind][k] = [solver.time, 1]                              # then set
+                resCount[ind][k] = [solver.count, 1]
+            else:
+                oldT, oldC = resTime[ind][k]                                    # keeps a running average
+                newC = oldC + 1                                                 # increment count
+                newT = ((oldT * oldC) + solver.time) / newC                     # get new averagae
+                resTime[ind][k] = [newT, newC]                                  # without storing all variables
+
+                oldCount, oldC = resCount[ind][k]                               # keeps a running average
+                newCount = ((oldCount * oldC) + solver.count) / newC
+                resCount[ind][k] = [newCount, newC]                             # without storing all variables
+
+def stop():
+    global running
+    input("Press Enter to stop.")                                               # wait for input
+    running = False                                                             # stop running
+
+
+def testGraphs(minBit = 10, bf_bit = 22, bsgs_bit = 30, rho_bit = 30):
     """ generates graphs testing all algorithms to show general trends
         uses a thread for each algorith, to ease congestion """
+
     global running                                                              # to stop program
 
-    bf = brute_force.BFSolver(v = False)
-    rho = pollard_rho.RhoSolver(v = False)
+    bf = brute_force.BFSolver(v = False)                                        # define solvers
+    bsgs = baby_step.BGSolver(v = False)
+    rho = pollard_rho.PRSolver(v = False)
 
     threading.Thread(target = getResults,                                       # launch Rho thread
                      args=(bf, 0, minBit, bf_bit)).start()
 
     threading.Thread(target = getResults,                                       # launch Rho thread
-                     args=(rho, 1, minBit, rho_bit)).start()
+                     args=(bsgs, 1, minBit, bsgs_bit)).start()
 
-    threading.Thread(target = updateGraph).start()                              # start drawing graph
+    threading.Thread(target = getResults,                                       # launch Rho thread
+                     args=(rho, 2, minBit, rho_bit)).start()
 
-    input("Press Enter to stop.")                                               # wait for input
-    running = False                                                             # stop running
+    threading.Thread(target = stop).start()                                     # allows us to gracefully stop
+
+    updateGraph()                                                               # has to be run in main thread
 
 
 ############ COMMAND LINE INTERFACE #########
 
 if __name__ == '__main__':
 
-    if len(sys.argv) == 4:
+    if len(sys.argv) == 5:
+        testGraphs(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]))
+    elif len(sys.argv) == 4:
         testGraphs(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
     elif len(sys.argv) == 3:
         testGraphs(int(sys.argv[1]), int(sys.argv[2]))

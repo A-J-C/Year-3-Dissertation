@@ -132,7 +132,8 @@ class KeyGen:
 
         self.Q = self.G * self.k                                    # Q = kP
 
-        self.printKeys()
+        if self.verbose:
+            self.printKeys()
 
         return True
 
