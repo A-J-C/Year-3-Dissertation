@@ -3,8 +3,8 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 1.0
-#    Date: 03/02/18
+#    Version: 1.2
+#    Date: 06/02/18
 #
 #    Functionality: uses a brute force attack to discover a private ECC key from
 #                   a given public key set

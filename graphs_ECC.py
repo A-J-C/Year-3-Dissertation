@@ -1,18 +1,18 @@
 #
-#    File: graphs_RSA.py
+#    File: graphs_ECC.py
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
 #    Version: 1.0
 #    Date: 06/02/18
 #
-#    Functionality: utilises other programs to generate and subsequently break RSA
+#    Functionality: utilises other programs to generate and subsequently break ECC
 #                   keys using a variety of algorithms, generating a few graphs
 #                   to show general trends as we go
 #
 #    Instructions: used to run all other files to be run from the command line:
 #
-#    CLI: python3 graphs_RSA.py [minBit] [maxBitBruteForce] [maxBitPollard'sRho]
+#    CLI: python3 graphs_ECC.py [minBit] [maxBitBruteForce] [maxBitPollard'sRho]
 #
 
 ############ IMPORTS #########

@@ -3,8 +3,8 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 1.2
-#    Date: 27/01/18
+#    Version: 2.0
+#    Date: 06/02/18
 #
 #    Functionality: utilises other programs to generate and subsequently break RSA
 #                   keys using a variety of algorithms, while collecting diagnostics

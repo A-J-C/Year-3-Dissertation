@@ -3,8 +3,8 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 1.1
-#    Date: 27/01/18
+#    Version: 1.2
+#    Date: 06/02/18
 #
 #    Functionality: a super class for all algorithms to inherit from, providing a
 #                   consistent interface, and eliminating redundant functions
