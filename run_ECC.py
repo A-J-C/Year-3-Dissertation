@@ -33,14 +33,7 @@ def runSolver(keys, solver, name, verbose):
     if verbose:
         print("="*10, name, "="*10)
 
-    start = time.time()
-
     solver.solve()                                                              # Elliptic Curve discrete log problem
-
-    end = time.time() - start
-
-    if verbose:
-        print("Time: %.2f s" % (end))                                           # output statistics
 
     if verbose:
         if solver.k == keys.k:                                                  # check for correctness
@@ -49,7 +42,7 @@ def runSolver(keys, solver, name, verbose):
             print("Fail!")
 
     return {"res": (solver.k == keys.k),                                        # return result as dict
-            "time": end,
+            "time": solver.time,
             "count": solver.count}
 
 
@@ -73,7 +66,7 @@ def run(k = 10, brute = True, babyStep = True, rho=True, verbose = True):
 
     if not sanity:
         if verbose:
-            print ("Please fix input and try again")
+            print("Please fix input and try again")
         return False
 
     ############ BRUTE FORCE ATTACK #########

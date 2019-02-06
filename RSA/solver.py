@@ -37,12 +37,12 @@ class Solver(KeyGen):
         utilise several functions """
 
     def __init__(self, n = 0, e = 0, verbose = False):
-        super(Solver, self).__init__()              # initalises all variables
-        self.n = n                                  # public key
-        self.e = e                                  # public exponent
-        self.verbose = verbose                      # defines additional output
-        self.count = 0                              # counts number of checks
-        self.start = 0                              # for timing
+        super(Solver, self).__init__()                      # initalises all variables
+        self.n = n                                          # public key
+        self.e = e                                          # public exponent
+        self.verbose = verbose                              # defines additional output
+        self.count = 0                                      # counts number of checks
+        self.start = 0                                      # for timing
         self.time = 0
 
 
@@ -54,7 +54,7 @@ class Solver(KeyGen):
         # sanity check
         if self.n == 0 or self.e == 0 or self.p == 0 or self.q == 0:
             print ("Please ensure all varaibles are correctly set")
-            return False                            # unsuccessful
+            return False                                    # unsuccessful
 
         # calculate totient
         self.phi = (self.p - 1) * (self.q - 1)
@@ -62,16 +62,16 @@ class Solver(KeyGen):
         # generate private key
         self.generatePrivateKey()
 
-        self.time = time.time() - self.start        # set time taken
+        self.time = time.time() - self.start                # set time taken
 
         # output more stats
         if self.verbose:
-            print("Numbers checked:", self.count)   # print total count
-            print("Time taken: %.3f s" % (self.time))     # print time taken
+            print("Numbers checked:", self.count)           # print total count
+            print("Time taken: %.3f s" % (self.time))       # print time taken
 
         # sanity check
         if self.d == 0:
             print("Failed to calculate private key")
-            return False                            # unsuccessful
+            return False                                    # unsuccessful
 
-        return True                                 # successful
+        return True                                         # successful

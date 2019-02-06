@@ -24,7 +24,7 @@
 
 import secrets
 import math
-#from cypari import pari
+from cypari import pari
 
 # needed for pydocs to correctly find everything
 import sys

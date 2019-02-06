@@ -68,7 +68,8 @@ class PRSolver(Solver):
 
 
         self.count = 1                                              # initial count
-
+        self.start = time.time()
+        
         order = self.curve.order(self.G)                            # get order of generator
 
         ############ POLLARD'S RHO + FLOYD'S EXTENSION ############
@@ -107,8 +108,13 @@ class PRSolver(Solver):
                 else:                                                   # we have found k
                     self.k = ((aY - aX) * inv) % order                  # so set it
 
+        self.time = time.time() - self.start
+
         if self.verbose:
             print("k:", self.k)
+            print("Time taken: %.3f s" % (self.time))                   # print time taken
+
+        self.time = time.time() - self.start                            # time function
 
         return True
 

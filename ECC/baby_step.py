@@ -50,7 +50,8 @@ class BGSolver(Solver):
 
         ############ FIND MULTIPLIER #########
         self.count = 1                                              # initial count
-
+        self.start = time.time()
+        
         order = self.curve.order(self.G)                            # get order of base point
         sqrtO = int(math.ceil(math.sqrt(order)))                    # root G's order
 
@@ -79,8 +80,11 @@ class BGSolver(Solver):
             print ("Point not found")
             return 0
 
+        self.time = time.time() - self.start
+
         if self.verbose:
             print("k:", self.k)
+            print("Time taken: %.3f s" % (self.time))               # print time taken
 
         return True
 

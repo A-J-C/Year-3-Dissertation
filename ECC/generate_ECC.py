@@ -104,7 +104,7 @@ class KeyGen:
         C, G = None, None
         checks = 0
 
-        while order < p/4:                                          # loop till order big enough
+        while order < p/2:                                          # loop till order big enough
             checks += 1
             C = getRandCurve(self.n, self.verbose)                  # get random curve of correct size
 

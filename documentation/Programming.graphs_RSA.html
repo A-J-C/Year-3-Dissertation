@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module Programming.graphs_RSA</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="Programming.html"><font color="#ffffff">Programming</font></a>.graphs_RSA</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Calexj%5Cgoogle%20drive%5Cdocuments%5Cuniversity%5Cyear%203%5Cindividual%20project%5Cprogramming%5Cgraphs_rsa.py">c:\users\alexj\google drive\documents\university\year 3\individual project\programming\graphs_rsa.py</a></font></td></tr></table>
+    <p><tt>#&nbsp;&nbsp;&nbsp;&nbsp;File:&nbsp;graphs_RSA.py<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Author:&nbsp;Alexander&nbsp;Craig<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Project:&nbsp;An&nbsp;Analysis&nbsp;of&nbsp;the&nbsp;Security&nbsp;of&nbsp;RSA&nbsp;&amp;&nbsp;Elliptic&nbsp;Curve&nbsp;Cryptography<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Supervisor:&nbsp;Maximilien&nbsp;Gadouleau<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Version:&nbsp;1.2<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;27/01/18<br>
+#<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Functionality:&nbsp;utilises&nbsp;other&nbsp;programs&nbsp;to&nbsp;generate&nbsp;and&nbsp;subsequently&nbsp;break&nbsp;RSA<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keys&nbsp;using&nbsp;a&nbsp;variety&nbsp;of&nbsp;algorithms,&nbsp;generating&nbsp;a&nbsp;few&nbsp;graphs<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;show&nbsp;general&nbsp;trends&nbsp;as&nbsp;we&nbsp;go<br>
+#<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Instructions:&nbsp;used&nbsp;to&nbsp;run&nbsp;all&nbsp;other&nbsp;files&nbsp;to&nbsp;be&nbsp;run&nbsp;from&nbsp;the&nbsp;command&nbsp;line:<br>
+#<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;CLI:&nbsp;python3&nbsp;graphs_RSA.py&nbsp;[minBit]&nbsp;[maxBitBruteForce]&nbsp;[maxBitPollard'sRho]<br>
+#</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="RSA.brute_force.html">RSA.brute_force</a><br>
+<a href="RSA.generate_RSA.html">RSA.generate_RSA</a><br>
+<a href="math.html">math</a><br>
+</td><td width="25%" valign=top><a href="numpy.html">numpy</a><br>
+<a href="matplotlib.pyplot.html">matplotlib.pyplot</a><br>
+<a href="RSA.pollard_rho.html">RSA.pollard_rho</a><br>
+</td><td width="25%" valign=top><a href="secrets.html">secrets</a><br>
+<a href="sys.html">sys</a><br>
+<a href="threading.html">threading</a><br>
+</td><td width="25%" valign=top><a href="time.html">time</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-curve_func"><strong>curve_func</strong></a>(x, a, b, c)</dt><dd><tt>trying&nbsp;to&nbsp;draw&nbsp;this&nbsp;curve&nbsp;to&nbsp;fit&nbsp;data</tt></dd></dl>
+ <dl><dt><a name="-dataToPlot"><strong>dataToPlot</strong></a>(data, plot)</dt><dd><tt>given&nbsp;a&nbsp;dictionary&nbsp;of&nbsp;data&nbsp;and&nbsp;a&nbsp;plt&nbsp;adds&nbsp;the&nbsp;data&nbsp;and&nbsp;a&nbsp;best&nbsp;fit&nbsp;line</tt></dd></dl>
+ <dl><dt><a name="-getResults"><strong>getResults</strong></a>(solver, ind, minBit, maxBit)</dt><dd><tt>produces&nbsp;a&nbsp;graph,&nbsp;given&nbsp;a&nbsp;solver,&nbsp;result&nbsp;index&nbsp;and&nbsp;bit&nbsp;range</tt></dd></dl>
+ <dl><dt><a name="-testGraphs"><strong>testGraphs</strong></a>(minBit=10, bf_bit=44, rho_bit=54)</dt><dd><tt>generates&nbsp;graphs&nbsp;testing&nbsp;all&nbsp;algorithms&nbsp;to&nbsp;show&nbsp;general&nbsp;trends<br>
+uses&nbsp;a&nbsp;thread&nbsp;for&nbsp;each&nbsp;algorith,&nbsp;to&nbsp;ease&nbsp;congestion</tt></dd></dl>
+ <dl><dt><a name="-updateGraph"><strong>updateGraph</strong></a>()</dt><dd><tt>redraws&nbsp;the&nbsp;plot&nbsp;to&nbsp;take&nbsp;account&nbsp;of&nbsp;incoming&nbsp;data<br>
+adapted&nbsp;to&nbsp;enable&nbsp;it&nbsp;to&nbsp;work&nbsp;with&nbsp;jupyter&nbsp;notebooks</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>resCount</strong> = [{}, {}]<br>
+<strong>resTime</strong> = [{}, {}]<br>
+<strong>running</strong> = True</td></tr></table>
+</body></html>

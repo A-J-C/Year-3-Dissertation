@@ -18,6 +18,7 @@
 ############ IMPORTS #########
 
 import sys
+import time
 import math
 
 # needed for pydocs to correctly find everything
@@ -48,6 +49,7 @@ class BFSolver(Solver):
             return False                                            # unsuccessful
 
         ############ FIND MULTIPLIER #########
+        self.start = time.time()                                    # start timer
         self.count = 1                                              # initial count
         P = self.G                                                  # copy point
 
@@ -63,9 +65,11 @@ class BFSolver(Solver):
 
         # set k once candidate found
         self.k = self.count
+        self.time = time.time() - self.start                        # time function
 
         if self.verbose:
             print("k:", self.k)
+            print("Time taken: %.3f s" % (self.time))               # print time taken
 
         return True
 

@@ -40,3 +40,6 @@ class Solver(KeyGen):
         self.setQ(Q)                                        # set public point
         self.setG(G)                                        # set base point
         self.count = 0                                      # counts number of checks
+        self.start = 0                                      # for timing
+        self.time = 0
+        
