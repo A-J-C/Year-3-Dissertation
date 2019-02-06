@@ -22,16 +22,16 @@ import sys
 sys.path.append('Programming/')
 
 import math
+import numpy as np
 import secrets
-import time
+import threading
 import matplotlib.pyplot as plt                                                 # for drawing graphs
 from scipy.optimize import curve_fit                                            # for curve
-import numpy as np
-import threading
-
 from RSA import *
 
+
 ############ GLOBAL VARIABLES #########
+
 resCount = [{}, {}]                                                             # stores results to graph as dictionaries
 resTime = [{}, {}]                                                              # stores results to graph as dictionaries
 running = True                                                                  # to stop threads
@@ -39,8 +39,9 @@ running = True                                                                  
 
 ############ FUNCTIONS #########
 
-def curve_func(x,a,b,c):
+def curve_func(x, a, b, c):
     """ trying to draw this curve to fit data """
+
     return a * np.exp(b * x) + c
 
 
@@ -56,11 +57,12 @@ def dataToPlot(data, plot):
 
             try:
                 xFit = np.linspace(keys[0], keys[-1], 100)                      # these are our x points
-                opt, cov = curve_fit(curve_func, keys, vals,                    # get curve
-                                     (4e-06, 1.7e-01, -4.6e-05))                # good guess
+                opt = curve_fit(curve_func, keys, vals,                         # get curve
+                                     (4e-06, 1.7e-01, -4.6e-05))[0]             # good guess
                 yFit = curve_func(xFit, *opt)                                   # these are y points
 
                 plot.plot(xFit, yFit)                                           # plot our expected curve
+
             except Exception:
                 pass
 
@@ -134,17 +136,15 @@ def testGraphs(minBit = 10, bf_bit = 44, rho_bit = 54):
     rho = pollard_rho.RhoSolver(v = False)
 
     threading.Thread(target = getResults,                                       # launch Rho thread
-        args=(bf, 0, minBit, bf_bit)).start()
+                     args=(bf, 0, minBit, bf_bit)).start()
 
     threading.Thread(target = getResults,                                       # launch Rho thread
-        args=(rho, 1, minBit, rho_bit)).start()
+                     args=(rho, 1, minBit, rho_bit)).start()
 
     threading.Thread(target = updateGraph).start()                              # start drawing graph
 
-    x = input("Press Enter to stop.")                                           # wait for input
+    input("Press Enter to stop.")                                               # wait for input
     running = False                                                             # stop running
-
-    return                                                                      # return nicely after input
 
 
 ############ COMMAND LINE INTERFACE #########

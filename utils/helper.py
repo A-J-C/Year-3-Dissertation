@@ -20,25 +20,16 @@ def gcd(p, q):
     return p
 
 
-def extgcd(p, q):
-    """ Euclid's Extended aglorithm """
-    if p == 0:
-        return (q, 0, 1)
-    else:
-        g, y, x = egcd(b % a, a)
-        return (g, x - (b // a) * y, y)
-
-
 def modInverse(p, q) :
     """ return modular multiplicative inverse using Euclid's Extended aglorithm """
     qOrig, y, x = q, 0, 1
 
     # if q is 1 no point in algo
-    if (q == 1) :
+    if q == 1:
         return 0
 
     # loop till p is less than 1
-    while (p > 1) :
+    while p > 1:
         # x and y track quotients
         x, y = y, x - (p // q) * y
         p, q = q, p % q

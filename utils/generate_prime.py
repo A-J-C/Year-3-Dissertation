@@ -17,16 +17,13 @@
 #    CLI: for testing can be used from command line -
 #       python3 generate_prime.py [bitLength] [verbose mode] [even more output]
 #
-#    Notes: makes use of a python wrapper for the maths language PARI/GP
-#           https://pari.math.u-bordeaux.fr/
-#           For primes > 52 as 
 
 
 ############ IMPORTS #########
 
-import sys                                      # handles system CLI interaction
-import secrets                                  # cryptographically strong random numbers https://docs.python.org/3/library/secrets.html
 import math                                     # handles artihmetic operations
+import secrets                                  # cryptographically strong random numbers https://docs.python.org/3/library/secrets.html
+import sys                                      # handles system CLI interaction
 import time                                     # provides a timing functionality
 
 
@@ -101,6 +98,7 @@ def powerRemainder(w, d, n):
 
     return r                                    # return answer
 
+
 def millerRabin(n, r):
     """ runs r rounds of miller rabin to check if n is a probable prime """
 
@@ -112,7 +110,7 @@ def millerRabin(n, r):
     d = n - 1
     i = 0
 
-    while not (d & 1):
+    while not d & 1:
         d >>= 1
         i += 1
 
@@ -126,14 +124,14 @@ def millerRabin(n, r):
         z = powerRemainder(w, d, n)
 
         # if z is 1 or n -1 then w is not a witness for n being a composite number
-        if z != 1 and z != n - 1:
+        if z not in (1, n - 1):
 
             # check no j s.t. (w^(2^j)) ^ d = -1 (mod n)
             for j in range(i):
 
                 #  get next z
                 z = powerRemainder(w, 2 ** j * d, n)
-            
+
                 if z == 1:                      # n is definitely composite
                     return False                # return False
                 elif z == n -1 :                # n is prime or the witness is a strong liar
@@ -176,10 +174,9 @@ def isPrime(n, primes):
     """ given a number n checks if it is a pseudo-prime """
 
     k = math.log(n, 2)                          # number of bits in n
-    primeList = getListOfPrimes(k)              # get primes
     r = getRounds(k)
 
-    return checks(n, primeList, r)             # run checks
+    return checks(n, primes, r)                 # run checks
 
 
 def getPrime(k = 50, verbose = True, extraOutput = False):
@@ -195,7 +192,7 @@ def getPrime(k = 50, verbose = True, extraOutput = False):
 
     if extraOutput:                             # if we are in verose mode
         print("="*50,
-          "\nGenerating ", k, "bit prime... ")
+              "\nGenerating ", k, "bit prime... ")
 
     ############ GET ROUNDS OF Miller-Rabin #########
     r = getRounds(k)

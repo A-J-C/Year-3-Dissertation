@@ -17,17 +17,16 @@
 
 ############ IMPORTS #########
 
-import sys
-import secrets
-import time
-
 # needed for pydocs to correctly find everything
+import sys
 sys.path.append('Programming/')
 
 # allows me to run this file directly, i.e. not wrapped up in the package
 if not __package__:
     sys.path.append('../')
 
+import secrets
+import time
 from RSA.solver import Solver
 from utils import helper
 
@@ -44,9 +43,6 @@ def g(x, n, c):
 class RhoSolver(Solver):
     """ inherits from the default solver Class """
 
-    def __init__(self, n = 0, e = 0, v = True):
-        super(RhoSolver, self).__init__(n, e, v)
-
     def solve(self):
         """ uses pollardsRho for prime factorisation relies on birthday paradox,
             picking enough numbers should result in a collision """
@@ -57,9 +53,8 @@ class RhoSolver(Solver):
             return False                                            # unsuccessful
 
         self.start = time.time()                                    # set timer
-
         self.count = 0                                              # reset
-        
+
         x = y = 2
         d = c = 1
 

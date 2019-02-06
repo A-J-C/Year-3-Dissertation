@@ -17,8 +17,8 @@
 
 ############ IMPORTS #########
 
-import sys
 import math
+import sys
 import time
 
 # needed for pydocs to correctly find everything
@@ -35,9 +35,6 @@ from RSA.solver import Solver
 
 class BFSolver(Solver):
     """ inherits from the default solver Class """
-
-    def __init__(self, n = 0, e = 0, v = False):
-        super(BFSolver, self).__init__(n, e, v)
 
     def solve(self):
         """ brute force by checking all odd numbers below sqrt(n) """

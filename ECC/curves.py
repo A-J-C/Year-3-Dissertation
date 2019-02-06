@@ -22,10 +22,6 @@
 
 ############ IMPORTS #########
 
-import secrets
-import math
-from cypari import pari
-
 # needed for pydocs to correctly find everything
 import sys
 sys.path.append('Programming/')
@@ -34,7 +30,7 @@ sys.path.append('Programming/')
 if not __package__:
     sys.path.append('../')
 
-from utils import generate_prime
+from cypari import pari
 from utils import helper
 
 
@@ -75,13 +71,13 @@ class Point:
     def __eq__(self, point):
         """ given a second point returns if equal or not """
 
-        if point == None:
+        if point is None:
             return False
         elif self.inf or point.inf:                                     # if one of the points is infinity
             return self.inf == point.inf                                # return if both are infinity
         else:
             return (self.x == point.x and                               # else check points are equal
-                self.y == point.y)
+                    self.y == point.y)
 
 
     def __add__(self, point):
@@ -106,7 +102,7 @@ class Point:
         if point.x == self.x:
             if point.y == self.y:                                       # point doubling case
                 grad = ((3 * self.x * self.x + self.curve.a)            # 3x^2 + a
-                    * helper.modInverse(2 * self.y, self.curve.fp))
+                        * helper.modInverse(2 * self.y, self.curve.fp))
             else:                                                       # self.y == - point.y
                 return self.curve.pointAtInf()                          # return point at infinity
         else:                                                           # standard case
@@ -180,6 +176,7 @@ class Curve:
         self.ord = 0                                                    # order of G over curve
         self.verbose = verbose                                          # additional output
         self.E = None                                                   # pari version of curve
+        self.discriminant = 0                                           # discriminant of curve
         self.initPari()                                                 # initialise pari curve
 
 
@@ -206,7 +203,7 @@ class Curve:
 
     def __eq__(self, curve):
         """ defines curve equality """
-        if curve == None:
+        if curve is None:
             return False
         else:
             return (self.a == curve.a and
@@ -245,7 +242,7 @@ class Curve:
             return False
 
         # infinity point is on curve
-        if point.inf == True:
+        if point.inf:
             return True
 
         # check it satisfies equation
@@ -260,7 +257,7 @@ class Curve:
 
         # check point is on curve first
         # and pari curve exists
-        if not self.onCurve(point) or self.E == None:
+        if not self.onCurve(point) or self.E is None:
             return 0
 
         P = "[" + str(point.x) + "," + str(point.y) + "]"               # string representation of point
@@ -275,7 +272,7 @@ class Curve:
         """ returns a generator point using Pari """
 
         # if exists return it
-        if self.G != None:
+        if self.G is not None:
             return self.G
 
         # else generate it

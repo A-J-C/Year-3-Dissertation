@@ -21,8 +21,6 @@
 import sys
 sys.path.append('Programming/')
 
-import math
-import time
 from RSA import *
 
 
@@ -35,9 +33,6 @@ def runSolver(keys, solver, name, verbose):
         print("="*10, name, "="*10)
 
     solver.solve()                                                              # factor n
-
-    if verbose:
-        print("Time: %.2f s" % (end))                                           # output statistics
 
     if verbose:
         if solver.d == keys.d:                                                  # check for correctness
@@ -55,9 +50,6 @@ def runSolver(keys, solver, name, verbose):
 def run(k = 10, brute = True, pRho = True, verbose = True):
     """ creates a k-bit RSA key, cracks it with several algorithms, and generates
         statistics to compare their performance """
-
-    ############ TIMING #########
-    start = time.time()
 
     ############ KEY GENERATION #########
     if verbose:
@@ -98,23 +90,15 @@ def tests(k = 10, iter = 10000, algo = "bf", csvFile = "res.csv"):
         bf = (algo == "bf")
         rho = (algo == "rho")
 
-        for j in range(iter):
+        for _ in range(iter):
             res = run(k, bf, rho, True)
             out = str(k) + ","
             r = res[0] if algo == "bf" else res[1]
 
             out += (str(r["res"]) + "," + str(r["time"]) +
-                "," + str(r["count"]) + ",")
+                    "," + str(r["count"]) + ",")
             file.write(out + "\n")
             file.flush()
-
-
-def testGraphs():
-    """ generates graphs testing all algorithms to show general trends
-        uses a thread for each algorith, to ease congestion """
-
-    minBit = 10                 # min bit size for all algorithms
-    maxBit = [20, 40]           # max bit size for algorithms as a list
 
 
 ############ COMMAND LINE INTERFACE #########

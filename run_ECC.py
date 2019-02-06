@@ -20,8 +20,6 @@
 import sys
 sys.path.append('Programming/')
 
-import math
-import time
 from ECC import *
 
 
@@ -52,9 +50,6 @@ def run(k = 10, brute = True, babyStep = True, rho=True, verbose = True):
     """ creates a k-bit ECC key, cracks it with several algorithms, and generates
         statistics to compare their performance """
 
-    ############ TIMING #########
-    start = time.time()
-
     ############ KEY GENERATION #########
     if verbose:
         print("\n" + "="*10, "GENERATING", "="*10)
@@ -79,7 +74,7 @@ def run(k = 10, brute = True, babyStep = True, rho=True, verbose = True):
     bsgs_res = {}
     if babyStep:
         bg = baby_step.BGSolver(keys.curve, keys.Q, keys.G, verbose)            # create new instance with public key info
-        bg_res = runSolver(keys, bg, "BABYSTEP_GIANTSTEP", verbose)             # check solver
+        bsgs_res = runSolver(keys, bg, "BABYSTEP_GIANTSTEP", verbose)           # check solver
 
     ############ POLLARD'S RHO ATTACK #########
     rho_res = {}
@@ -88,6 +83,31 @@ def run(k = 10, brute = True, babyStep = True, rho=True, verbose = True):
         rho_res = runSolver(keys, rhoS, "POLLARD'S RHO", verbose)               # check solver
 
     return bf_res, bsgs_res, rho_res
+
+
+def tests(k = 10, iter = 10000, algo = "bf", csvFile = "res.csv"):
+    """ run tests to generate statistics """
+
+    with open(csvFile, "w+") as file:
+        out = "keySize,"
+        out += algo + "_success," + algo + "_time," + algo + "_count,"
+        file.write(out + "\n")
+
+        bf = (algo == "bf")
+        bsgs = (algo == "bsgs")
+        rho = (algo == "rho")
+
+        algorithms = ["bf", "bsbgs", "rho"]
+
+        for _ in range(iter):
+            res = run(k, bf, bsgs, rho, True)
+            out = str(k) + ","
+            r = res[algorithms.index(algo)]
+
+            out += (str(r["res"]) + "," + str(r["time"]) +
+                    "," + str(r["count"]) + ",")
+            file.write(out + "\n")
+            file.flush()
 
 
 ############ COMMAND LINE INTERFACE #########

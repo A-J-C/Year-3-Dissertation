@@ -16,8 +16,6 @@
 
 ############ IMPORTS #########
 
-import time
-
 # needed for pydocs to correctly find everything
 import sys
 sys.path.append('Programming/')
@@ -26,6 +24,7 @@ sys.path.append('Programming/')
 if not __package__:
     sys.path.append('../')
 
+import time
 from RSA.generate_RSA import KeyGen
 
 

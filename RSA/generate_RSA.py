@@ -18,17 +18,16 @@
 
 ############ IMPORTS #########
 
-import sys
-import secrets
-import math
-
 # needed for pydocs to correctly find everything
+import sys
 sys.path.append('Programming/')
 
 # allows me to run this file directly, i.e. not wrapped up in the package
 if not __package__:
     sys.path.append('../')
 
+import math
+import secrets
 from utils import generate_prime
 from utils import helper
 
@@ -124,7 +123,7 @@ class KeyGen:
         self.e = secrets.randbelow(self.phi)
 
         # keep generating until we are sure it is coprime
-        while (helper.gcd(self.e, self.phi) != 1):
+        while helper.gcd(self.e, self.phi) != 1:
             self.e = secrets.randbelow(self.phi)
 
         if self.verbose:

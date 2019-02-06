@@ -17,17 +17,15 @@
 
 ############ IMPORTS #########
 
-import sys
-import time
-import math
-
 # needed for pydocs to correctly find everything
+import sys
 sys.path.append('Programming/')
 
 # allows me to run this file directly, i.e. not wrapped up in the package
 if not __package__:
     sys.path.append('../')
 
+import time
 from ECC.solver import Solver
 
 
@@ -36,15 +34,12 @@ from ECC.solver import Solver
 class BFSolver(Solver):
     """ inherits from the default solver Class """
 
-    def __init__(self, C = None, Q = None, G = None, v = True):
-        super(BFSolver, self).__init__(C, Q, G, v)
-
     def solve(self):
         """ brute force by adding base point to itself until
             inf point is reached """
 
         # sanity check
-        if self.G == None or self.curve == None or self.Q == None:
+        if self.G is None or self.curve is None or self.Q is None:
             print("Can't solve not all parameters are set")
             return False                                            # unsuccessful
 

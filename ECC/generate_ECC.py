@@ -17,17 +17,16 @@
 
 ############ IMPORTS #########
 
-import sys
-import secrets
-import math
-
 # needed for pydocs to correctly find everything
+import sys
 sys.path.append('Programming/')
 
 # allows me to run this file directly, i.e. not wrapped up in the package
 if not __package__:
     sys.path.append('../')
 
+import math
+import secrets
 from ECC import curves
 from utils import generate_prime
 
@@ -126,7 +125,7 @@ class KeyGen:
     def generateKeys(self):
         """ generates a publickey, private key pair from the curve """
 
-        if self.curve == None or self.curve.ord == 0:
+        if self.curve is None or self.curve.ord == 0:
             return False                                            # curve not set up correctly
 
         self.k = secrets.randbelow(self.curve.ord)                  # get random number below order
@@ -143,10 +142,10 @@ class KeyGen:
         """ prints out current value of keys """
 
         print(("Public-Key: {\n" +
-              "    Curve: %s\n" +
-              "    Base-Point: %s\n" +
-              "    Public-Point: %s\n" +
-              "}") % (self.curve, self.G, self.Q))
+               "    Curve: %s\n" +
+               "    Base-Point: %s\n" +
+               "    Public-Point: %s\n" +
+               "}") % (self.curve, self.G, self.Q))
         print("Private-Key:", self.k)
         print("n is %d bits" % math.ceil(math.log(self.p, 2)))
         print()

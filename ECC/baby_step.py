@@ -18,40 +18,37 @@
 
 ############ IMPORTS #########
 
-import sys
-import math
-
 # needed for pydocs to correctly find everything
+import sys
 sys.path.append('Programming/')
 
 # allows me to run this file directly, i.e. not wrapped up in the package
 if not __package__:
     sys.path.append('../')
 
-from ECC.solver import Solver
+import math
+import time
 from ECC.curves import *
+from ECC.solver import Solver
 
 ############ MAIN CODE #########
 
 class BGSolver(Solver):
     """ inherits from the default solver Class """
 
-    def __init__(self, C = None, Q = None, G = None, v = True):
-        super(BGSolver, self).__init__(C, Q, G, v)
-
     def solve(self):
         """ baby-step giant-step uses a hash table to speed up
             finding a solution """
 
         # sanity check
-        if self.G == None or self.curve == None or self.Q == None:
+        if self.G is None or self.curve is None or self.Q is None:
             print("Can't solve not all parameters are set")
             return False                                            # unsuccessful
 
         ############ FIND MULTIPLIER #########
         self.count = 1                                              # initial count
         self.start = time.time()
-        
+
         order = self.curve.order(self.G)                            # get order of base point
         sqrtO = int(math.ceil(math.sqrt(order)))                    # root G's order
 
