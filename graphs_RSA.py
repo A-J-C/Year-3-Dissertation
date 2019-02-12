@@ -21,6 +21,7 @@
 import sys
 sys.path.append('Programming/')
 
+import argparse
 import math
 import secrets
 import threading
@@ -31,8 +32,8 @@ from utils.plots import *
 
 ############ GLOBAL VARIABLES #########
 
-resCount = [{}, {}]                                                             # stores results to graph as dictionaries
-resTime = [{}, {}]                                                              # stores results to graph as dictionaries
+resCount = [{}, {}, {}]                                                         # stores results to graph as dictionaries
+resTime = [{}, {}, {}]                                                          # stores results to graph as dictionaries
 running = True                                                                  # to stop threads
 
 
@@ -101,20 +102,24 @@ def stop():
     running = False                                                             # stop running
 
 
-def testGraphs(minBit = 10, bf_bit = 44, rho_bit = 54):
+def testGraphs(minBit = 10, bf_bit = 44, ff_bit = 50, rho_bit = 54):
     """ generates graphs testing all algorithms to show general trends
         uses a thread for each algorith, to ease congestion """
-        
+
     global running                                                              # to stop program
 
     bf = brute_force.BFSolver(verbose = False)
     rho = pollard_rho.RhoSolver(verbose = False)
+    ferm = fermats.FFSolver(verbose = False)
 
     threading.Thread(target = getResults,                                       # launch Rho thread
                      args=(bf, 0, minBit, bf_bit)).start()
 
+    threading.Thread(target = getResults,                                       # launch fermat thread
+                     args=(ferm, 1, minBit, ff_bit)).start()
+
     threading.Thread(target = getResults,                                       # launch Rho thread
-                     args=(rho, 1, minBit, rho_bit)).start()
+                     args=(rho, 2, minBit, rho_bit)).start()
 
     threading.Thread(target = stop).start()                                     # allows us to gracefully stop
 
@@ -125,11 +130,12 @@ def testGraphs(minBit = 10, bf_bit = 44, rho_bit = 54):
 
 if __name__ == '__main__':
 
-    if len(sys.argv) == 4:
-        testGraphs(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
-    elif len(sys.argv) == 3:
-        testGraphs(int(sys.argv[1]), int(sys.argv[2]))
-    elif len(sys.argv) == 2:
-        testGraphs(int(sys.argv[1]))
-    else:
-        testGraphs()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-m", "--minbit", help="minimum bit size to test from", type=int, default=10)
+    parser.add_argument("-bf", "--bruteforce", help="maximum bit size for brute force", type=int, default=44)
+    parser.add_argument("-ff", "--fermat", help="maximum bit size for fermat's method", type=int, default=48)
+    parser.add_argument("-pr", "--pollard_rho", help="maximum bit size for Pollard's Rho", type=int, default=54)
+
+    args = parser.parse_args()
+
+    testGraphs(args.minbit, args.bruteforce, args.fermat, args.pollard_rho)
