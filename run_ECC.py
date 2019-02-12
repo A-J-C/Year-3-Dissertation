@@ -20,6 +20,7 @@
 import sys
 sys.path.append('Programming/')
 
+import argparse
 from ECC import *
 
 
@@ -114,17 +115,20 @@ def tests(k = 10, iter = 10000, algo = "bf", csvFile = "res.csv"):
 
 if __name__ == '__main__':
 
-    if len(sys.argv) > 1 and sys.argv[1] == "test":
-        tests(int(sys.argv[2]), int(sys.argv[3]), sys.argv[4], sys.argv[5])
-    elif len(sys.argv) == 6:
-        run(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]), int(sys.argv[5]))
-    elif len(sys.argv) == 5:
-        run(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]), int(sys.argv[4]))
-    elif len(sys.argv) == 4:
-        run(int(sys.argv[1]), int(sys.argv[2]), int(sys.argv[3]))
-    elif len(sys.argv) == 3:
-        run(int(sys.argv[1]), int(sys.argv[2]))
-    elif len(sys.argv) == 2:
-        run(int(sys.argv[1]))
-    else:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-v", "--verbose", help="turns output off", action="store_true")
+    parser.add_argument("-k", "--bitsize", help="bitlength of public key", action="store", type=int, default=10)
+    parser.add_argument("-bf", "--bruteforce", help="turns bruteforce decryption on", action="store_true")
+    parser.add_argument("-bs", "--baby_step", help="turns baby_step-giant_step decryption on", action="store_true")
+    parser.add_argument("-pr", "--pollard_rho", help="turns pollard_rho decryption on", action="store_true")
+    parser.add_argument("-a", "--all", help="turns all on", action="store_true")
+
+    args = parser.parse_args()
+
+    if len(sys.argv) == 1:
+        # default run
         run()
+    elif args.all:
+        run(args.bitsize, True, True, True, not args.verbose)
+    else:
+        run(args.bitsize, args.bruteforce, args.baby_step, args.pollard_rho, not args.verbose)
