@@ -31,16 +31,18 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="RSA.brute_force.html">RSA.brute_force</a><br>
-<a href="RSA.generate_RSA.html">RSA.generate_RSA</a><br>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="argparse.html">argparse</a><br>
+<a href="RSA.brute_force.html">RSA.brute_force</a><br>
+<a href="RSA.fermats.html">RSA.fermats</a><br>
+</td><td width="25%" valign=top><a href="RSA.generate_RSA.html">RSA.generate_RSA</a><br>
 <a href="math.html">math</a><br>
-</td><td width="25%" valign=top><a href="numpy.html">numpy</a><br>
-<a href="matplotlib.pyplot.html">matplotlib.pyplot</a><br>
+<a href="numpy.html">numpy</a><br>
+</td><td width="25%" valign=top><a href="matplotlib.pyplot.html">matplotlib.pyplot</a><br>
 <a href="RSA.pollard_rho.html">RSA.pollard_rho</a><br>
-</td><td width="25%" valign=top><a href="secrets.html">secrets</a><br>
-<a href="sys.html">sys</a><br>
+<a href="secrets.html">secrets</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
 <a href="threading.html">threading</a><br>
-</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+</td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#eeaa77">
 <td colspan=3 valign=bottom>&nbsp;<br>
@@ -49,7 +51,7 @@
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><dl><dt><a name="-getResults"><strong>getResults</strong></a>(solver, ind, minBit, maxBit)</dt><dd><tt>produces&nbsp;a&nbsp;graph,&nbsp;given&nbsp;a&nbsp;solver,&nbsp;result&nbsp;index&nbsp;and&nbsp;bit&nbsp;range</tt></dd></dl>
  <dl><dt><a name="-stop"><strong>stop</strong></a>()</dt></dl>
- <dl><dt><a name="-testGraphs"><strong>testGraphs</strong></a>(minBit=10, bf_bit=44, rho_bit=54)</dt><dd><tt>generates&nbsp;graphs&nbsp;testing&nbsp;all&nbsp;algorithms&nbsp;to&nbsp;show&nbsp;general&nbsp;trends<br>
+ <dl><dt><a name="-testGraphs"><strong>testGraphs</strong></a>(minBit=10, bf_bit=44, ff_bit=50, rho_bit=54)</dt><dd><tt>generates&nbsp;graphs&nbsp;testing&nbsp;all&nbsp;algorithms&nbsp;to&nbsp;show&nbsp;general&nbsp;trends<br>
 uses&nbsp;a&nbsp;thread&nbsp;for&nbsp;each&nbsp;algorith,&nbsp;to&nbsp;ease&nbsp;congestion</tt></dd></dl>
  <dl><dt><a name="-updateGraph"><strong>updateGraph</strong></a>()</dt><dd><tt>redraws&nbsp;the&nbsp;plot&nbsp;to&nbsp;take&nbsp;account&nbsp;of&nbsp;incoming&nbsp;data<br>
 adapted&nbsp;to&nbsp;enable&nbsp;it&nbsp;to&nbsp;work&nbsp;with&nbsp;jupyter&nbsp;notebooks</tt></dd></dl>
@@ -60,7 +62,7 @@ adapted&nbsp;to&nbsp;enable&nbsp;it&nbsp;to&nbsp;work&nbsp;with&nbsp;jupyter&nbs
 <font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
     
 <tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><strong>resCount</strong> = [{}, {}]<br>
-<strong>resTime</strong> = [{}, {}]<br>
+<td width="100%"><strong>resCount</strong> = [{}, {}, {}]<br>
+<strong>resTime</strong> = [{}, {}, {}]<br>
 <strong>running</strong> = True</td></tr></table>
 </body></html>
