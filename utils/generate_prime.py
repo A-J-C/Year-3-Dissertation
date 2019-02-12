@@ -100,7 +100,8 @@ def powerRemainder(w, d, n):
 
 
 def millerRabin(n, r):
-    """ runs r rounds of miller rabin to check if n is a probable prime """
+    """ runs r rounds of miller rabin to check if n is a probable prime
+        following NIST-FIPS-186-4 """
 
     if n < 2:                                   # 0, 1 and negative numbers are considered not prime
         return False
@@ -143,8 +144,22 @@ def millerRabin(n, r):
     return True                                 # if no witness can be found for n being composite, it is a probable prime
 
 
+def perfectSquare(n):
+    """ tests whether n is a perfect square
+        following NIST-FIPS-186-4 """
+    pass
+
+
+def jacobiSym(n):
+    """ computes the Jacobi symbol of a/n
+        following NIST-FIPS-186-4 """
+    pass
+
+
 def lucasTest(n):
-    """ performs single Lucas Test to check n for primality """
+    """ performs Lucas Test to check n for primality
+        following NIST-FIPS-186-4 """
+
     return True
 
 

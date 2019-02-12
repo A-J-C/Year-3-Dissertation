@@ -108,8 +108,7 @@ class PRSolver(Solver):
         if self.verbose:
             print("k:", self.k)
             print("Time taken: %.3f s" % (self.time))                   # print time taken
-
-        self.time = time.time() - self.start                            # time function
+            print("Numbers checked:", self.count)                       # print total count
 
         return True
 

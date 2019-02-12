@@ -82,6 +82,7 @@ class BGSolver(Solver):
         if self.verbose:
             print("k:", self.k)
             print("Time taken: %.3f s" % (self.time))               # print time taken
+            print("Numbers checked:", self.count)                   # print total count
 
         return True
 
