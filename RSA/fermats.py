@@ -77,7 +77,7 @@ class FFSolver(Solver):
 ############ COMMAND LINE INTERFACE #########
 
 if __name__ == '__main__':
-    solver = BFSolver()
+    solver = FFSolver()
 
     if len(sys.argv) >= 3:
         solver.setN(int(sys.argv[1]))
