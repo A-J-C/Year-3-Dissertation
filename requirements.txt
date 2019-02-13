@@ -1,0 +1,5 @@
+matplotlib>=3.0.2
+numpy>=1.16.0
+scipy>=1.1.0
+cypari>=2.3.0
+jupyter>=1.0.0
