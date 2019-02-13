@@ -21,8 +21,13 @@
 
 ############ IMPORTS #########
 
+# to make it backwards compatable with Python < 3.6
+try:
+    import secrets                              # cryptographically strong random numbers https://docs.python.org/3/library/secrets.htm
+except ImportError:
+    from utils import secrets
+
 import math                                     # handles artihmetic operations
-import secrets                                  # cryptographically strong random numbers https://docs.python.org/3/library/secrets.html
 import sys                                      # handles system CLI interaction
 import time                                     # provides a timing functionality
 
