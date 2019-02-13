@@ -110,6 +110,8 @@ def testGraphs(minBit = 10, bf_bit = 22, bsgs_bit = 30, rho_bit = 30):
 
     global running                                                              # to stop program
 
+    running = True
+    
     bf = brute_force.BFSolver(v = False)                                        # define solvers
     bsgs = baby_step.BGSolver(v = False)
     rho = pollard_rho.PRSolver(v = False)

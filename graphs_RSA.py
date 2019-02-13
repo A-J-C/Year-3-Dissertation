@@ -108,6 +108,8 @@ def testGraphs(minBit = 10, bf_bit = 44, ff_bit = 50, rho_bit = 54):
 
     global running                                                              # to stop program
 
+    running = True
+    
     bf = brute_force.BFSolver(verbose = False)
     rho = pollard_rho.RhoSolver(verbose = False)
     ferm = fermats.FFSolver(verbose = False)
