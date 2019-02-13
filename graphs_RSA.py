@@ -21,9 +21,14 @@
 import sys
 sys.path.append('Programming/')
 
+# to make it backwards compatable with Python < 3.6
+try:
+    import secrets
+except ImportError:
+    from utils import secrets
+
 import argparse
 import math
-import secrets
 import threading
 import matplotlib.pyplot as plt                                                 # for drawing graphs
 from RSA import *

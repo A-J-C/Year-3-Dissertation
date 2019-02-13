@@ -28,7 +28,12 @@ sys.path.append('Programming/')
 if not __package__:
     sys.path.append('../')
 
-import secrets
+# to make it backwards compatable with Python < 3.6
+try:
+    import secrets
+except ImportError:
+    from utils import secrets
+    
 import time
 from ECC.curves import *
 from ECC.solver import Solver

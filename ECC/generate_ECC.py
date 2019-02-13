@@ -25,8 +25,13 @@ sys.path.append('Programming/')
 if not __package__:
     sys.path.append('../')
 
+# to make it backwards compatable with Python < 3.6
+try:
+    import secrets
+except ImportError:
+    from utils import secrets
+
 import math
-import secrets
 from ECC import curves
 from utils import generate_prime
 
