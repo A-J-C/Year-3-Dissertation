@@ -12,7 +12,7 @@
 #
 #    Instructions: used to run all other files to be run from the command line:
 #
-#    CLI: python3 graphs_RSA.py [minBit] [maxBitBruteForce] [maxBitPollard'sRho]
+#    CLI: python3 graphs_RSA.py -h (to see possible flags)
 #
 
 ############ IMPORTS #########
@@ -64,8 +64,8 @@ def updateGraph():
 
         tPlt.set_xlabel("Key-Size (bits)")
         cPlt.set_xlabel("Key-Size (bits)")
-        tPlt.set_ylabel("Time (s)")
-        cPlt.set_ylabel("Numbers Checked")
+        tPlt.set_ylabel("log(Time (s))")
+        cPlt.set_ylabel("log(Numbers Checked)")
 
         outFig.tight_layout()                                                   # looks nicer
         outFig.canvas.draw()                                                    # re draw
@@ -138,10 +138,10 @@ def testGraphs(minBit = 10, bf_bit = 44, ff_bit = 50, rho_bit = 54):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-m", "--minbit", help="minimum bit size to test from", type=int, default=10)
+    parser.add_argument("-m", "--minbit", help="minimum bit size to test from", type=int, default=20)
     parser.add_argument("-bf", "--bruteforce", help="maximum bit size for brute force", type=int, default=44)
-    parser.add_argument("-ff", "--fermat", help="maximum bit size for fermat's method", type=int, default=48)
-    parser.add_argument("-pr", "--pollard_rho", help="maximum bit size for Pollard's Rho", type=int, default=54)
+    parser.add_argument("-ff", "--fermat", help="maximum bit size for fermat's method", type=int, default=44)
+    parser.add_argument("-pr", "--pollard_rho", help="maximum bit size for Pollard's Rho", type=int, default=44)
 
     args = parser.parse_args()
 

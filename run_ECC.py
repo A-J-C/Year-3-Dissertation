@@ -11,7 +11,7 @@
 #
 #    Instructions: used to run all other files to be run from the command line:
 #
-#    CLI: python3 run_ECC.py [bitLength] [bruteForce] [babyStep] [rho]
+#    CLI: python3 run_ECC.py -h (to see possible flags)
 #
 
 ############ IMPORTS #########

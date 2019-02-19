@@ -12,7 +12,7 @@
 #
 #    Instructions: used to run all other files to be run from the command line:
 #
-#    CLI: python3 run_RSA.py [bitLength] [bruteForce] [fermat] [pollard'sRho]
+#    CLI: python3 run_RSA.py -h (to see possible flags)
 #
 
 ############ IMPORTS #########

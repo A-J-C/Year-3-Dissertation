@@ -12,7 +12,7 @@
 #
 #    Instructions: used to run all other files to be run from the command line:
 #
-#    CLI: python3 graphs_ECC.py [minBit] [maxBitBruteForce] [maxBitBabyStep] [maxBitPollard'sRho]
+#    CLI: python3 graphs_ECC.py  -h (to see possible flags)
 #
 
 ############ IMPORTS #########
@@ -142,9 +142,9 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-m", "--minbit", help="minimum bit size to test from", type=int, default=10)
-    parser.add_argument("-bf", "--bruteforce", help="maximum bit size for brute force", type=int, default=22)
-    parser.add_argument("-bs", "--baby_step", help="maximum bit size for babystep-giantstep", type=int, default=30)
-    parser.add_argument("-pr", "--pollard_rho", help="maximum bit size for Pollard's Rho", type=int, default=30)
+    parser.add_argument("-bf", "--bruteforce", help="maximum bit size for brute force", type=int, default=20)
+    parser.add_argument("-bs", "--baby_step", help="maximum bit size for babystep-giantstep", type=int, default=20)
+    parser.add_argument("-pr", "--pollard_rho", help="maximum bit size for Pollard's Rho", type=int, default=20)
 
     args = parser.parse_args()
 

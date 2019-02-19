@@ -14,8 +14,9 @@
 
 ############ IMPORTS #########
 import numpy as np
+import math
 import matplotlib.pyplot as plt                                                 # for drawing graphs
-from scipy.optimize import curve_fit                                            # for curve
+
 
 
 ############ GRAPHICAL FUNCTIONS #########
@@ -33,16 +34,14 @@ def dataToPlot(data, plot):
         if resDic != {}:                                                        # check for empty
             keys = sorted(list(resDic.keys()))                                  # get sorted list of keys
             vals = [resDic[key][0] for key in keys]                             # extract Y axis
+            vals = [math.log(v,2) if v != 0 else 0 for v in vals]               # log it
 
             plot.scatter(keys, vals)                                            # draw points
 
             try:
                 xFit = np.linspace(keys[0], keys[-1], 100)                      # these are our x points
-                opt = curve_fit(curve_func, keys, vals,                         # get curve
-                                     (4e-06, 1.7e-01, -4.6e-05))[0]             # good guess
-                yFit = curve_func(xFit, *opt)                                   # these are y points
-
-                plot.plot(xFit, yFit)                                           # plot our expected curve
+                p = np.poly1d(np.polyfit(keys, vals, 1))
+                plot.plot(xFit, p(xFit))                                        # plot our expected line
 
             except Exception:
                 pass
