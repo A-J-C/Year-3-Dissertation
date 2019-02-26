@@ -59,7 +59,7 @@ def getRounds(k):
         return 3
 
 
-def getListOfPrimes(k, n = 1000000):
+def getListOfPrimes(k = 40, n = 1000000):
     """ uses modified sieve of eratosthenes to get all primes
         smaller than n or a function of k, whichever is lowest """
 

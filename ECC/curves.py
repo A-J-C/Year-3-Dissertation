@@ -212,10 +212,17 @@ class Curve:
 
 
     def valid(self):
-        """ checks the graph is valid over the real numbers """
+        """ checks the graph is valid over the real numbers
+            and has actual points on it """
 
         # delta =-16 * (4a^3 + 27b^2)
         self.discriminant = -16 * (4*self.a*self.a*self.a + 27 * self.b*self.b)
+
+        try:
+            orderOfCurve = pari(self.E).ellcard()                       # try to get order
+        except:
+            return False                                                # if there's an exception the curve has no integer points
+
         return self.discriminant != 0
 
 

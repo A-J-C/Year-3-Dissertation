@@ -12,7 +12,7 @@
 #    Instructions: intended use is to import this file and use the Class as defined
 #
 #    CLI: for testing can be used from command line -
-#           python3 baby_step.py curve_a curve_b curve_fp G_x G_y Q_x Q_y [verbose]
+#           python3 burte_force.py curve_a curve_b curve_fp G_x G_y Q_x Q_y [verbose]
 #
 
 ############ IMPORTS #########
@@ -66,7 +66,7 @@ class BFSolver(Solver):
             print("k:", self.k)
             print("Time taken: %.3f s" % (self.time))               # print time taken
             print("Numbers checked:", self.count)                   # print total count
-            
+
         return True
 
 
