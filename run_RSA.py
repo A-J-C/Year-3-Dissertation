@@ -3,8 +3,8 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 2.0
-#    Date: 06/02/18
+#    Version: 2.1
+#    Date: 26/02/18
 #
 #    Functionality: utilises other programs to generate and subsequently break RSA
 #                   keys using a variety of algorithms, while collecting diagnostics
@@ -48,7 +48,7 @@ def runSolver(keys, solver, name, verbose):
 
 ############ MASTER PROGRAM #########
 
-def run(k = 10, brute = True, ferm = True, pRho = True, verbose = True):
+def run(k = 10, brute = True, ferm = True, pRho = True, knj = True, verbose = True):
     """ creates a k-bit RSA key, cracks it with several algorithms, and generates
         statistics to compare their performance """
 
@@ -83,7 +83,13 @@ def run(k = 10, brute = True, ferm = True, pRho = True, verbose = True):
         rho = pollard_rho.RhoSolver(keys.n, keys.e, verbose)                    # create new instance with public key info
         rho_res = runSolver(keys, rho, "POLLARD'S RHO", verbose)                # check solver
 
-    return bf_res, fer_res, rho_res
+    ############ KNJ FACTORISATION #########
+    knj_res = {}
+    if knj:
+        knjSol = knj_factorisation.KNJSolver(keys.n, keys.e, verbose)           # create new instance with public key info
+        knj_res = runSolver(keys, knjSol, "KNJ FACTORISATION", verbose)         # check solver
+
+    return bf_res, fer_res, rho_res, knj_res
 
 
 def tests(k = 10, iter = 10000, algo = "bf", csvFile = "res.csv"):
@@ -118,6 +124,7 @@ if __name__ == '__main__':
     parser.add_argument("-bf", "--bruteforce", help="turns bruteforce decryption on", action="store_true")
     parser.add_argument("-ff", "--fermats", help="turns fermats decryption on", action="store_true")
     parser.add_argument("-pr", "--pollard_rho", help="turns pollard_rho decryption on", action="store_true")
+    parser.add_argument("-knj", "--KNJ_factorisation", help="turns KNJ_factorisation decryption on", action="store_true")
     parser.add_argument("-a", "--all", help="turns all on", action="store_true")
 
     args = parser.parse_args()
@@ -126,6 +133,6 @@ if __name__ == '__main__':
         # default run
         run()
     elif args.all:
-        run(args.bitsize, True, True, True, not args.verbose)
+        run(args.bitsize, True, True, True, True, not args.verbose)
     else:
-        run(args.bitsize, args.bruteforce, args.fermats, args.pollard_rho, not args.verbose)
+        run(args.bitsize, args.bruteforce, args.fermats, args.pollard_rho, args.KNJ_factorisation, not args.verbose)

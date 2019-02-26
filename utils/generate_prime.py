@@ -59,6 +59,25 @@ def getRounds(k):
         return 3
 
 
+def getKBitPrimes(k = 2 ** 10, n = 2 ** 20):
+    """ uses modified sieve of eratosthenes to get all primes
+        smaller than n or k, whichever is lowest """
+
+    lim = min(k + 1, n + 1)                     # we don't want to generate any primes larger than n
+
+    numList = [True] * lim                      # initialise boolean list
+    primes = []                                 # initialise list of primes
+
+    for i in range(2, lim):                     # loop through list from index 2
+        if numList[i]:                          # if it is True
+            primes.append(i)                    # must be prime
+
+            for j in range(i*i, lim, i):        # loop through multiples
+                numList[j] = False              # setting them to false
+
+    return primes                               # return ptimes
+
+
 def getListOfPrimes(k = 40, n = 1000000):
     """ uses modified sieve of eratosthenes to get all primes
         smaller than n or a function of k, whichever is lowest """

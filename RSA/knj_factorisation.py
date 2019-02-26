@@ -1,5 +1,5 @@
 #
-#    File: knj.py
+#    File: knj_factorisation.py
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
@@ -14,7 +14,7 @@
 #    Instructions: intended use is to import this file and use the Class as defined
 #
 #    CLI: for testing can be used from command line -
-#           python3 brute_force.py PK_n PK_e [verbose]
+#           python3 knj_factorisation.py PK_n PK_e [verbose]
 #
 
 ############ IMPORTS #########
@@ -60,10 +60,8 @@ class KNJSolver(Solver):
 
         # if small enough use a sieve to get the numbers we need
         # to search
-        nBits = math.ceil(math.log(self.n, 2))                      # get number of bits needed for n
-
-        if nBits <= 40:                                             # if it's small enough for us to calculate smaller primes for
-            primesList = generate_prime.getListOfPrimes(nBits)      # get list using sieve
+        if candidate <= 2**20:                                      # if it's small enough for us to calculate smaller primes for
+            primesList = generate_prime.getKBitPrimes(candidate)    # get list using sieve
             candidatesList = primesList[::-1]                       # reverse list
 
             # loop through all possible primes
@@ -71,7 +69,7 @@ class KNJSolver(Solver):
                 self.count += 1                                     # increment count
 
                 # check if it is a factor
-                if self.n % prime != 0:
+                if self.n % prime == 0:
                     candidate = prime                               # if it is set it as the candidate
                     break                                           # then break
 

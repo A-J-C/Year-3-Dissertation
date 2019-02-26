@@ -3,5 +3,5 @@ __all__ = [
         "brute_force",
         "pollard_rho",
         "fermats",
-        "knj"
+        "knj_factorisation"
         ]
