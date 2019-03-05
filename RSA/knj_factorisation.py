@@ -19,19 +19,30 @@
 
 ############ IMPORTS #########
 
+import bisect
 import math
+import pickle
 import sys
 import time
 
 # needed for pydocs to correctly find everything
 sys.path.append('Programming/')
+filePath = ""
 
 # allows me to run this file directly, i.e. not wrapped up in the package
 if not __package__:
     sys.path.append('../')
+    filePath = "../"
 
 from RSA.solver import Solver
 from utils import generate_prime
+
+
+############ GLOBAL CONSTANT #########
+
+# we load the first million primes from memory
+with open(filePath + "utils/millionPrimes.pkl", "rb") as f:
+    primes = pickle.load(f)
 
 
 ############ MAIN CODE #########
@@ -58,11 +69,13 @@ class KNJSolver(Solver):
 
         self.count = 1                                              # initial count
 
-        # if small enough use a sieve to get the numbers we need
-        # to search
-        if candidate <= 2**20:                                      # if it's small enough for us to calculate smaller primes for
-            primesList = generate_prime.getKBitPrimes(candidate)    # get list using sieve
-            candidatesList = primesList[::-1]                       # reverse list
+        # if canddiate is small enough then use stored primes
+        if candidate <= primes[-1]:                                 # if it's small enough
+
+            # binary search to find closest element in list
+            # by using inbuilt bisect function
+            closest = bisect.bisect_left(primes, candidate)
+            candidatesList = primes[closest::-1]                    # reverse section of list we are interested in
 
             # loop through all possible primes
             for prime in candidatesList:
