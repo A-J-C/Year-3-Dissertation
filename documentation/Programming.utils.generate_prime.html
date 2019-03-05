@@ -13,8 +13,8 @@
 #&nbsp;&nbsp;&nbsp;&nbsp;Author:&nbsp;Alexander&nbsp;Craig<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Project:&nbsp;An&nbsp;Analysis&nbsp;of&nbsp;the&nbsp;Security&nbsp;of&nbsp;RSA&nbsp;&amp;&nbsp;Elliptic&nbsp;Curve&nbsp;Cryptography<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Supervisor:&nbsp;Maximilien&nbsp;Gadouleau<br>
-#&nbsp;&nbsp;&nbsp;&nbsp;Version:&nbsp;2.0<br>
-#&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;06/02/18<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Version:&nbsp;2.1<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;26/02/18<br>
 #<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Functionality:&nbsp;Provides&nbsp;the&nbsp;functions&nbsp;needed&nbsp;to&nbsp;generatae&nbsp;k-bit&nbsp;primes,<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;doing&nbsp;so&nbsp;using&nbsp;Fermat&nbsp;tests&nbsp;and&nbsp;repeated&nbsp;applications&nbsp;of<br>
@@ -46,7 +46,9 @@
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><dl><dt><a name="-checks"><strong>checks</strong></a>(candidate, primeList, r=10)</dt><dd><tt>given&nbsp;a&nbsp;candidate&nbsp;and&nbsp;list&nbsp;of&nbsp;primes&nbsp;checks&nbsp;for&nbsp;pseudo-primes</tt></dd></dl>
- <dl><dt><a name="-getListOfPrimes"><strong>getListOfPrimes</strong></a>(k, n=1000000)</dt><dd><tt>uses&nbsp;modified&nbsp;sieve&nbsp;of&nbsp;eratosthenes&nbsp;to&nbsp;get&nbsp;all&nbsp;primes<br>
+ <dl><dt><a name="-getKBitPrimes"><strong>getKBitPrimes</strong></a>(k=1024, n=1048576)</dt><dd><tt>uses&nbsp;modified&nbsp;sieve&nbsp;of&nbsp;eratosthenes&nbsp;to&nbsp;get&nbsp;all&nbsp;primes<br>
+smaller&nbsp;than&nbsp;n&nbsp;or&nbsp;k,&nbsp;whichever&nbsp;is&nbsp;lowest</tt></dd></dl>
+ <dl><dt><a name="-getListOfPrimes"><strong>getListOfPrimes</strong></a>(k=40, n=1000000)</dt><dd><tt>uses&nbsp;modified&nbsp;sieve&nbsp;of&nbsp;eratosthenes&nbsp;to&nbsp;get&nbsp;all&nbsp;primes<br>
 smaller&nbsp;than&nbsp;n&nbsp;or&nbsp;a&nbsp;function&nbsp;of&nbsp;k,&nbsp;whichever&nbsp;is&nbsp;lowest</tt></dd></dl>
  <dl><dt><a name="-getOddNumber"><strong>getOddNumber</strong></a>(k)</dt><dd><tt>uses&nbsp;secrets&nbsp;module&nbsp;to&nbsp;generate&nbsp;a&nbsp;random&nbsp;k-bit&nbsp;number&nbsp;then&nbsp;ensures&nbsp;it&nbsp;is&nbsp;odd</tt></dd></dl>
  <dl><dt><a name="-getPrime"><strong>getPrime</strong></a>(k=50, verbose=True, extraOutput=False)</dt><dd><tt>returns&nbsp;a&nbsp;prime&nbsp;number&nbsp;that&nbsp;is&nbsp;k&nbsp;bits&nbsp;long</tt></dd></dl>

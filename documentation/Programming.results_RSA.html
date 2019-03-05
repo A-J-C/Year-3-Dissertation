@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module Programming.results_RSA</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="Programming.html"><font color="#ffffff">Programming</font></a>.results_RSA</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Calexj%5Cgoogle%20drive%5Cdocuments%5Cuniversity%5Cyear%203%5Cindividual%20project%5Cprogramming%5Cresults_rsa.py">c:\users\alexj\google drive\documents\university\year 3\individual project\programming\results_rsa.py</a></font></td></tr></table>
+    <p><tt>#&nbsp;&nbsp;&nbsp;&nbsp;File:&nbsp;results_RSA.py<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Author:&nbsp;Alexander&nbsp;Craig<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Project:&nbsp;An&nbsp;Analysis&nbsp;of&nbsp;the&nbsp;Security&nbsp;of&nbsp;RSA&nbsp;&amp;&nbsp;Elliptic&nbsp;Curve&nbsp;Cryptography<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Supervisor:&nbsp;Maximilien&nbsp;Gadouleau<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Version:&nbsp;1.0<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;06/02/18<br>
+#<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Functionality:&nbsp;gathers&nbsp;results&nbsp;for&nbsp;RSA&nbsp;in&nbsp;given&nbsp;range<br>
+#<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;CLI:&nbsp;python3&nbsp;results_RSA.py&nbsp;-h&nbsp;(to&nbsp;see&nbsp;possible&nbsp;flags)<br>
+#</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="argparse.html">argparse</a><br>
+<a href="RSA.brute_force.html">RSA.brute_force</a><br>
+<a href="RSA.fermats.html">RSA.fermats</a><br>
+</td><td width="25%" valign=top><a href="RSA.generate_RSA.html">RSA.generate_RSA</a><br>
+<a href="RSA.knj_factorisation.html">RSA.knj_factorisation</a><br>
+<a href="math.html">math</a><br>
+</td><td width="25%" valign=top><a href="numpy.html">numpy</a><br>
+<a href="matplotlib.pyplot.html">matplotlib.pyplot</a><br>
+<a href="RSA.pollard_rho.html">RSA.pollard_rho</a><br>
+</td><td width="25%" valign=top><a href="secrets.html">secrets</a><br>
+<a href="sys.html">sys</a><br>
+<a href="threading.html">threading</a><br>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#eeaa77">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl><dt><a name="-getResults"><strong>getResults</strong></a>(solver, minBit, maxBit, saveFile)</dt><dd><tt>produces&nbsp;a&nbsp;graph,&nbsp;given&nbsp;a&nbsp;solver,&nbsp;result&nbsp;index&nbsp;and&nbsp;bit&nbsp;range</tt></dd></dl>
+ <dl><dt><a name="-results"><strong>results</strong></a>(algo=0, minBit=10, maxBit=44, saveFile='results.csv')</dt><dd><tt>generates&nbsp;results&nbsp;for&nbsp;a&nbsp;given&nbsp;algorithm</tt></dd></dl>
+ <dl><dt><a name="-saveResults"><strong>saveResults</strong></a>(saveFile)</dt><dd><tt>saves&nbsp;results&nbsp;to&nbsp;a&nbsp;csv&nbsp;file</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>resCount</strong> = {}<br>
+<strong>resTime</strong> = {}<br>
+<strong>saveFile</strong> = ''</td></tr></table>
+</body></html>

@@ -3,8 +3,8 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 2.0
-#    Date: 06/02/18
+#    Version: 2.1
+#    Date: 26/02/18
 #
 #    Functionality: Provides the functions needed to generatae k-bit primes,
 #    doing so using Fermat tests and repeated applications of

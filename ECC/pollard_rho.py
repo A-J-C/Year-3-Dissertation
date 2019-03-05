@@ -15,8 +15,6 @@
 #           python3 pollard_rho.py curve_a curve_b curve_fp G_x G_y Q_x Q_y [verbose]
 #           for base-point G and public-point Q
 #
-#   Note: this algorithm works very poorly for anything above 10 bits
-#
 
 ############ IMPORTS #########
 
@@ -33,7 +31,7 @@ try:
     import secrets
 except ImportError:
     from utils import secrets
-    
+
 import time
 from ECC.curves import *
 from ECC.solver import Solver

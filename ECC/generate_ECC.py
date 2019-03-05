@@ -134,7 +134,9 @@ class KeyGen:
         if self.curve is None or self.curve.ord == 0:
             return False                                            # curve not set up correctly
 
-        self.k = secrets.randbelow(self.curve.ord)                  # get random number below order
+        # we don't want anything too small (easy)
+        half = self.curve.ord // 2
+        self.k = half + secrets.randbelow(half)                     # get random number in the upper half of order's range
 
         self.Q = self.G * self.k                                    # Q = kP
 

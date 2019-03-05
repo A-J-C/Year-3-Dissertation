@@ -47,7 +47,8 @@ def runSolver(keys, solver, name, verbose):
 
 ############ MASTER PROGRAM #########
 
-def run(k = 10, brute = True, babyStep = True, rho=True, verbose = True):
+def run(k = 10, brute = True, babyStep = True, rho = True,
+        lamb = True, verbose = True):
     """ creates a k-bit ECC key, cracks it with several algorithms, and generates
         statistics to compare their performance """
 
@@ -83,7 +84,13 @@ def run(k = 10, brute = True, babyStep = True, rho=True, verbose = True):
         rhoS = pollard_rho.PRSolver(keys.curve, keys.Q, keys.G, verbose)        # create new instance with public key info
         rho_res = runSolver(keys, rhoS, "POLLARD'S RHO", verbose)               # check solver
 
-    return bf_res, bsgs_res, rho_res
+    ############ POLLARD'S RHO ATTACK #########
+    lambda_res = {}
+    if lamb:
+        lambSol = pollard_lambda.PLSolver(keys.curve, keys.Q, keys.G, verbose)  # create new instance with public key info
+        lambda_res = runSolver(keys, lambSol, "POLLARD'S LAMBDA", verbose)      # check solver
+
+    return bf_res, bsgs_res, rho_res, lambda_res
 
 
 def tests(k = 10, iter = 10000, algo = "bf", csvFile = "res.csv"):
@@ -121,6 +128,7 @@ if __name__ == '__main__':
     parser.add_argument("-bf", "--bruteforce", help="turns bruteforce decryption on", action="store_true")
     parser.add_argument("-bs", "--baby_step", help="turns baby_step-giant_step decryption on", action="store_true")
     parser.add_argument("-pr", "--pollard_rho", help="turns pollard_rho decryption on", action="store_true")
+    parser.add_argument("-pl", "--pollard_lambda", help="turns pollard_lambda decryption on", action="store_true")
     parser.add_argument("-a", "--all", help="turns all on", action="store_true")
 
     args = parser.parse_args()
@@ -129,6 +137,6 @@ if __name__ == '__main__':
         # default run
         run()
     elif args.all:
-        run(args.bitsize, True, True, True, not args.verbose)
+        run(args.bitsize, True, True, True, True, not args.verbose)
     else:
-        run(args.bitsize, args.bruteforce, args.baby_step, args.pollard_rho, not args.verbose)
+        run(args.bitsize, args.bruteforce, args.baby_step, args.pollard_rho, args.pollard_lambda, not args.verbose)
