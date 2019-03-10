@@ -36,7 +36,7 @@ from ECC.solver import Solver
 class BGSolver(Solver):
     """ inherits from the default solver Class """
 
-    def solve(self):
+    def solve(self, order = False):
         """ baby-step giant-step uses a hash table to speed up
             finding a solution """
 
@@ -49,7 +49,9 @@ class BGSolver(Solver):
         self.count = 1                                              # initial count
         self.start = time.time()
 
-        order = self.curve.order(self.G)                            # get order of base point
+        if not order:                                               # if order not yet set
+            order = self.curve.order(self.G)                        # get order of base point
+
         sqrtO = int(math.ceil(math.sqrt(order)))                    # root G's order
 
         # form hash table of nG ∀ 0 < n < sqrtO
@@ -58,7 +60,7 @@ class BGSolver(Solver):
         P = self.curve.pointAtInf()                                 # get starting point
         babySteps[str(P)] = 0                                       # initial point
 
-        for n in range(1, sqrtO):
+        for n in range(1, sqrtO + 1):
             P += self.G                                             # increment to next nG
             babySteps[str(P)] = n                                   # create look up table
             self.count += 1                                         # increment count

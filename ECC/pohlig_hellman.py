@@ -21,10 +21,12 @@
 # needed for pydocs to correctly find everything
 import sys
 sys.path.append('Programming/')
+filePath = ""
 
 # allows me to run this file directly, i.e. not wrapped up in the package
 if not __package__:
     sys.path.append('../')
+    filePath = "../"
 
 # to make it backwards compatable with Python < 3.6
 try:
@@ -32,23 +34,52 @@ try:
 except ImportError:
     from utils import secrets
 
+import pickle
 import time
+from ECC import baby_step
 from ECC.curves import *
 from ECC.solver import Solver
-from utils.helper import modInverse
+from utils.helper import extended_gcd
 
 
-############ EXTRA FUNCTIONS #########
+############ GLOBAL CONSTANT #########
 
-def g(arr, n, points):
-    """ polynomial function for semi-randomness """
-    P, a, b = arr                                                   # extract
-    xCoord = P.x                                                    # extract x coord
-    xCoord = bin(P.x)                                               # get binary representation
-    xCoord = "0" * 4 + xCoord[2:]                                   # pad front with 0's
-    ind = int(xCoord[-4:], 2)                                       # get random point by "hashing P"
-    Q = points[ind]                                                 # extract random point
-    return P + Q[0], (a + Q[1]) % n, (b + Q[2]) % n                 # return the addition
+# we load the first million primes from memory
+with open(filePath + "utils/millionPrimes.pkl", "rb") as f:
+    primes = pickle.load(f)
+
+
+############ PRIME FACTORISATION #########
+def xgcd(a, b):
+    """return (g, x, y) such that a*x + b*y = g = gcd(a, b)"""
+    x0, x1, y0, y1 = 0, 1, 1, 0
+    while a != 0:
+        q, b, a = b // a, a, b % a
+        y0, y1 = y1, y0 - q * y1
+        x0, x1 = x1, x0 - q * x1
+    return b, x0, y0
+
+def primeFac(n):
+    """ given a number returns a list of its prime factors """
+
+    factors = {}
+    p = 0
+
+    while n != 1:                                                       # until n is 1 we don't have all the prime factors
+
+        prime = primes[p]
+        pCount = 0
+
+        while n % prime == 0:                                           # while we can divide with no remainder
+            n = int(n/prime)                                            # perform division
+            pCount += 1                                                 # increment our count
+
+        if pCount != 0:                                                 # see if it ever worked
+            factors[prime] = pCount                                     # add to dictionary
+
+        p += 1                                                          # get next prime
+
+    return factors
 
 
 ############ MAIN CODE #########
@@ -63,48 +94,47 @@ class PHSolver(Solver):
         # sanity check
         if self.G is None or self.curve is None or self.Q is None:
             print("Can't solve not all parameters are set")
-            return False                                            # unsuccessful
+            return False                                                # unsuccessful
 
-        self.count = 1                                              # initial count
+        self.count = 0                                                  # initial count
         self.start = time.time()
 
-        order = self.curve.order(self.G)                            # get order of generator
+        order = self.curve.order(self.G)                                # get order of generator
 
-        ############ POLLARD'S RHO + FLOYD'S EXTENSION ############
-        found = False
+        ############ POHLIG HELLMAN ############
+        factors = primeFac(order)                                       # get factor decomposition
+        self.k = 0
+        print(factors)
+        for prime, power in factors.items():                            # loop over our dictionary
+            newOrd = prime ** power                                     # calculate this subgroups order
+            num = order // newOrd                                       # calculate number from order
 
-        # will probably find a factor, so need to loop with random numbers until we find it
-        while not found:
+            Gnum = self.G * num                                         # calculate two points on the curve
+            Qnum = self.Q * num
 
-            ############ GENERATE RANDOM FUNCTION POINTS ############
-            points = []                                                 # list of points to inform our random function
+            # now solve the smaller problem of Qnum = k_num * Gnum with order newOrd
+            # using BSGS
 
-            for _ in range(17):
-                a = secrets.randbelow(order)
-                b = secrets.randbelow(order)
-                P = (self.G * a) + (self.Q * b)                         # linear combination
-                points.append([P, a, b])                                # add to list
+            BSGS = baby_step.BGSolver(self.curve, Qnum, Gnum, False)    # initialise solver
+            solved = BSGS.solve()                                       # specify the sub group order
 
+            if not solved:
+                print("Failed")
+                return 0
 
-            ############ RANDOM START POINTS ############
-            Y, aY, bY = X, aX, bX = points.pop()                        # random starting points
+            k_num = BSGS.k                                              # extract multiplier
+            self.count += BSGS.count                                    # increment count
 
-            ############ FLOYD'S CYCLE DETECTION ############
-            while not found:
-                X, aX, bX = g((X, aX, bX), order, points)               # first runner
-                Y, aY, bY = g(g((Y,aY,bY),order,points),order,points)   # second runner
-                found = X == Y                                          # detect match
-                self.count += 1                                         # increment count
+            # chinese remainder theorem
+            gcd, quotient = extended_gcd(num, newOrd)
 
-            if bX == bY and aX == aY:                                   # if we arrive at identical combinations
-                found = False                                           # reset and try again
-            else:
-                inv = modInverse((bX - bY) % order, order)              # get mod inverse
+            add_k = k_num * num * quotient
 
-                if inv == 0:                                            # if no mod inverse exists
-                    found = False                                       # need to randomly try again
-                else:                                                   # we have found k
-                    self.k = ((aY - aX) * inv) % order                  # so set it
+            self.k += add_k
+
+        print(order)
+        print(self.k)
+        self.k = self.k % order                                         # modulo
 
         self.time = time.time() - self.start
 

@@ -22,6 +22,20 @@ def gcd(p, q):
     return p
 
 
+def extended_gcd(p, q):
+    """ explicid Euclid's Extended algorithm for gcd """
+
+    qOrig, y, x = q, 0, 1
+
+    while q != 0:
+        # x and y track quotients
+        x, y = y, x - (p // q) * y
+        p, q = q, p % q
+
+    # make x mod q to ensure it is postive
+    return x % qOrig, x
+
+
 def modInverse(p, q) :
     """ return modular multiplicative inverse using Euclid's Extended aglorithm """
     qOrig, y, x = q, 0, 1
