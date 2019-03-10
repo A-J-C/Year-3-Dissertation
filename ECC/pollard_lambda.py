@@ -32,6 +32,7 @@ try:
 except ImportError:
     from utils import secrets
 
+import math
 import time
 from ECC.curves import *
 from ECC.solver import Solver
@@ -48,7 +49,7 @@ def g(P, n):
     xCoord = "0" * 4 + xCoord[2:]                                   # pad front with 0's
     ind = int(xCoord[-4:], 2) + 1                                   # get random point by "hashing P"
 
-    return pow(2, ind % n)                                          # pollard said should be a power 2
+    return pow(2, int(ind + math.sqrt(n)) % n)                      # pollard said should be a power 2
 
 
 ############ MAIN CODE #########
@@ -76,10 +77,10 @@ class PLSolver(Solver):
 
         found = False
         n = 3                                                           # arbitrary initial value
-
+        #print(order, a, b)
         # will probably find a factor, so need to loop with random numbers until we find it
         while not found:
-            n +=1                                                       # change pseudo random generator
+            n += 1                                                      # change pseudo random generator
 
             # TAME KNAGAROO
             len_T = 0                                                   # tame kangaroo starts with 0 moves
@@ -100,12 +101,16 @@ class PLSolver(Solver):
             len_W = 0                                                   # wild kangaroo starts making 0 moves
             pos_W = self.Q                                              # start at point we need to calculate
 
-            while len_W < (len_T + b - a):                              # limit on how many random moves we make
+            moves = 100                                             # cap on number of moves
+            while len_W < (len_T + b - a) and moves:                    # limit on how many random moves we make
                 self.count += 1                                         # increment count
+                moves -= 1                                              # decrement moves remaining
 
                 moveW = g(pos_W, n)                                     # get pseudo random move
                 len_W = (len_W + moveW) % order                         # add to dist travelled
                 pos_W += self.G * moveW                                 # update position
+
+                #print(len_W, pos_W)
 
                 if pos_W == pos_T:                                      # if fallen in trap
                     print(b, len_T, len_W)
