@@ -153,8 +153,9 @@ class KeyGen:
         print(("Public-Key: {\n" +
                "    Curve: %s\n" +
                "    Base-Point: %s\n" +
+               "    Order(Base): %s\n" +
                "    Public-Point: %s\n" +
-               "}") % (self.curve, self.G, self.Q))
+               "}") % (self.curve, self.G, self.curve.order(self.G), self.Q))
         print("Private-Key:", self.k)
         print("n is %d bits" % math.ceil(math.log(self.p, 2)))
         print()

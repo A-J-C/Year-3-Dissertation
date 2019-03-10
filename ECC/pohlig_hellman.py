@@ -67,7 +67,11 @@ def primeFac(n):
 
     while n != 1:                                                       # until n is 1 we don't have all the prime factors
 
-        prime = primes[p]
+        if p < len(primes):                                             # if we have a prime
+            prime = primes[p]
+        else:                                                           # else iterate odd numbers after
+            prime = primes[-1] + 2 * (p - len(primes))
+            
         pCount = 0
 
         while n % prime == 0:                                           # while we can divide with no remainder
