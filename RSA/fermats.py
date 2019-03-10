@@ -85,4 +85,7 @@ if __name__ == '__main__':
     if len(sys.argv) == 4:
         solver.setVerbose(int(sys.argv[3]))
 
-    solver.solve()
+    s = solver.solve()
+
+    if not s:
+        print("Input not of correct form: python3 fermats.py PK_n PK_e [verbose]")
