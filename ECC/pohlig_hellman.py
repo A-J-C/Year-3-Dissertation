@@ -67,11 +67,8 @@ def primeFac(n):
 
     while n != 1:                                                       # until n is 1 we don't have all the prime factors
 
-        if p < len(primes):                                             # if we have a prime
-            prime = primes[p]
-        else:                                                           # else iterate odd numbers after
-            prime = primes[-1] + 2 * (p - len(primes))
-            
+        prime = primes[p]
+
         pCount = 0
 
         while n % prime == 0:                                           # while we can divide with no remainder
@@ -82,6 +79,10 @@ def primeFac(n):
             factors[prime] = pCount                                     # add to dictionary
 
         p += 1                                                          # get next prime
+
+        if p == len(primes):                                            # if we have run out of primes
+            factors[n] = 1                                              # add the remaining amount
+            break                                                       # break out of while loop
 
     return factors
 
@@ -136,8 +137,6 @@ class PHSolver(Solver):
 
             self.k += add_k
 
-        print(order)
-        print(self.k)
         self.k = self.k % order                                         # modulo
 
         self.time = time.time() - self.start
