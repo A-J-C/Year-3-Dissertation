@@ -1,10 +1,10 @@
 #
-#    File: pollard_rho.py
+#    File: quadratic_sieve.py
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 1.3
-#    Date: 06/02/19
+#    Version: 1.0
+#    Date: 13/03/19
 #
 #    Functionality: uses Pollard's Rho method to discover a private RSA key from
 #                   a given public key pair

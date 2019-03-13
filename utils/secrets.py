@@ -4,7 +4,7 @@
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
 #    Version: 1.0
-#    Date: 12/02/18
+#    Date: 12/02/19
 #
 #    Functionality: replaces secrets module from Python 3.6
 #

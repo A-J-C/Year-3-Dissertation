@@ -3,8 +3,8 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 1.0
-#    Date: 26/02/18
+#    Version: 1.2
+#    Date: 11/03/19
 #
 #    Functionality: uses "KNJ-Factorisation" first outlined in the paper
 #        "Modified Trial Division Algorithm Using KNJ-Factorization Method

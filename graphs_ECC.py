@@ -4,7 +4,7 @@
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
 #    Version: 1.0
-#    Date: 06/02/18
+#    Date: 06/02/19
 #
 #    Functionality: utilises other programs to generate and subsequently break ECC
 #                   keys using a variety of algorithms, generating a few graphs

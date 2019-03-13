@@ -4,7 +4,7 @@
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
 #    Version: 1.2
-#    Date: 06/02/18
+#    Date: 06/02/19
 #
 #    Functionality: utilises other programs to generate a k-bit semiprime
 #                   (a product of two not necessarily distnct primes)

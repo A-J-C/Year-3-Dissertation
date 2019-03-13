@@ -4,7 +4,7 @@
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
 #    Version: 2.1
-#    Date: 26/02/18
+#    Date: 26/02/19
 #
 #    Functionality: Provides the functions needed to generatae k-bit primes,
 #    doing so using Fermat tests and repeated applications of

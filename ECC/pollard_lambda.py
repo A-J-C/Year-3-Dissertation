@@ -4,7 +4,7 @@
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
 #    Version: 1.0
-#    Date: 26/02/18
+#    Date: 26/02/19
 #
 #    Functionality: uses pollard's lambda method to caclualte
 #                   a private ECC key from a given public key set
