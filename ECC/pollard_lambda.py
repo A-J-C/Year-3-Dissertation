@@ -120,6 +120,9 @@ class PLSolver(Solver):
 
         self.time = time.time() - self.start
 
+        # set space
+        self.space = 20
+        
         if self.verbose:
             print("k:", self.k)
             print("Time taken: %.3f s" % (self.time))                   # print time taken

@@ -61,6 +61,9 @@ class FFSolver(Solver):
             bSquared = a*a - self.n
             b = math.sqrt(bSquared)
 
+        # set space
+        self.space = 3
+        
         # by fermat's method
         self.p = int(a - b)
         self.q = int(a + b)

@@ -178,6 +178,8 @@ class PSolver(Solver):
                 else:
                     fail = True
 
+        # set space
+        self.space = len(cache) * 2
 
         # set p and q once candidate found
         self.p = d

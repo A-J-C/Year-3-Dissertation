@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html><head><title>Python: module Programming.RSA.pollard_p_minus_1</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+</head><body bgcolor="#f0f0f8">
+
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="heading">
+<tr bgcolor="#7799ee">
+<td valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="Programming.html"><font color="#ffffff">Programming</font></a>.<a href="Programming.RSA.html"><font color="#ffffff">RSA</font></a>.pollard_p_minus_1</strong></big></big></font></td
+><td align=right valign=bottom
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Calexj%5Cgoogle%20drive%5Cdocuments%5Cuniversity%5Cyear%203%5Cindividual%20project%5Cprogramming%5Crsa%5Cpollard_p_minus_1.py">c:\users\alexj\google drive\documents\university\year 3\individual project\programming\rsa\pollard_p_minus_1.py</a></font></td></tr></table>
+    <p><tt>#&nbsp;&nbsp;&nbsp;&nbsp;File:&nbsp;pollard_p_minus_1.py<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Author:&nbsp;Alexander&nbsp;Craig<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Project:&nbsp;An&nbsp;Analysis&nbsp;of&nbsp;the&nbsp;Security&nbsp;of&nbsp;RSA&nbsp;&amp;&nbsp;Elliptic&nbsp;Curve&nbsp;Cryptography<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Supervisor:&nbsp;Maximilien&nbsp;Gadouleau<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Version:&nbsp;1.1<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;10/02/19<br>
+#<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Functionality:&nbsp;uses&nbsp;Pollard's&nbsp;p-1&nbsp;method&nbsp;to&nbsp;discover&nbsp;a&nbsp;private&nbsp;RSA&nbsp;key&nbsp;from<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;given&nbsp;public&nbsp;key&nbsp;pair<br>
+#<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Instructions:&nbsp;intended&nbsp;use&nbsp;is&nbsp;to&nbsp;import&nbsp;this&nbsp;file&nbsp;and&nbsp;use&nbsp;the&nbsp;Class&nbsp;as&nbsp;defined<br>
+#<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;CLI:&nbsp;for&nbsp;testing&nbsp;can&nbsp;be&nbsp;used&nbsp;from&nbsp;command&nbsp;line&nbsp;-<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python3&nbsp;pollard_p_minus_1.py&nbsp;PK_n&nbsp;PK_e&nbsp;[verbose]<br>
+#</tt></p>
+<p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#aa55cc">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Modules</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="utils.helper.html">utils.helper</a><br>
+<a href="math.html">math</a><br>
+</td><td width="25%" valign=top><a href="pickle.html">pickle</a><br>
+<a href="secrets.html">secrets</a><br>
+</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+<a href="time.html">time</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ee77aa">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Classes</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#ee77aa"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><dl>
+<dt><font face="helvetica, arial"><a href="RSA.solver.html#Solver">RSA.solver.Solver</a>(<a href="RSA.generate_RSA.html#KeyGen">RSA.generate_RSA.KeyGen</a>)
+</font></dt><dd>
+<dl>
+<dt><font face="helvetica, arial"><a href="Programming.RSA.pollard_p_minus_1.html#PSolver">PSolver</a>
+</font></dt></dl>
+</dd>
+</dl>
+ <p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#ffc8d8">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#000000" face="helvetica, arial"><a name="PSolver">class <strong>PSolver</strong></a>(<a href="RSA.solver.html#Solver">RSA.solver.Solver</a>)</font></td></tr>
+    
+<tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
+<td colspan=2><tt><a href="#PSolver">PSolver</a>(n=0,&nbsp;e=0,&nbsp;verbose=False)<br>
+&nbsp;<br>
+inherits&nbsp;from&nbsp;the&nbsp;default&nbsp;solver&nbsp;Class<br>&nbsp;</tt></td></tr>
+<tr><td>&nbsp;</td>
+<td width="100%"><dl><dt>Method resolution order:</dt>
+<dd><a href="Programming.RSA.pollard_p_minus_1.html#PSolver">PSolver</a></dd>
+<dd><a href="RSA.solver.html#Solver">RSA.solver.Solver</a></dd>
+<dd><a href="RSA.generate_RSA.html#KeyGen">RSA.generate_RSA.KeyGen</a></dd>
+<dd><a href="builtins.html#object">builtins.object</a></dd>
+</dl>
+<hr>
+Methods defined here:<br>
+<dl><dt><a name="PSolver-calcM"><strong>calcM</strong></a>(self, bound)</dt><dd><tt>given&nbsp;a&nbsp;bound&nbsp;calculates&nbsp;M&nbsp;which&nbsp;is&nbsp;the&nbsp;product&nbsp;of&nbsp;all&nbsp;prime&nbsp;powers<br>
+less&nbsp;than&nbsp;the&nbsp;bound</tt></dd></dl>
+
+<dl><dt><a name="PSolver-solve"><strong>solve</strong></a>(self)</dt><dd><tt>uses&nbsp;pollards&nbsp;p-1&nbsp;for&nbsp;prime&nbsp;factorisation&nbsp;relies&nbsp;on<br>
+fermat's&nbsp;little&nbsp;theorem&nbsp;and&nbsp;properties&nbsp;of&nbsp;smooth&nbsp;numbers<br>
+relies&nbsp;on&nbsp;the&nbsp;fact&nbsp;that&nbsp;p-1&nbsp;may&nbsp;have&nbsp;many&nbsp;small&nbsp;factors<br>
+theoretical&nbsp;runtime:&nbsp;O(q)&nbsp;where&nbsp;q&nbsp;is&nbsp;the&nbsp;largest&nbsp;factor<br>
+of&nbsp;p&nbsp;-&nbsp;1,&nbsp;where&nbsp;p&nbsp;is&nbsp;the&nbsp;largest&nbsp;prime&nbsp;factor&nbsp;or&nbsp;semi-prime&nbsp;N</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="RSA.solver.html#Solver">RSA.solver.Solver</a>:<br>
+<dl><dt><a name="PSolver-__init__"><strong>__init__</strong></a>(self, n=0, e=0, verbose=False)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+
+<dl><dt><a name="PSolver-findPrivateKey"><strong>findPrivateKey</strong></a>(self)</dt><dd><tt>generates&nbsp;the&nbsp;correct&nbsp;private&nbsp;key,&nbsp;once&nbsp;p&nbsp;and&nbsp;q&nbsp;have&nbsp;been<br>
+calculated,&nbsp;and&nbsp;provided&nbsp;n&nbsp;and&nbsp;e&nbsp;from&nbsp;the&nbsp;public&nbsp;key&nbsp;are<br>
+provided</tt></dd></dl>
+
+<hr>
+Methods inherited from <a href="RSA.generate_RSA.html#KeyGen">RSA.generate_RSA.KeyGen</a>:<br>
+<dl><dt><a name="PSolver-generateKeys"><strong>generateKeys</strong></a>(self)</dt><dd><tt>generates&nbsp;both&nbsp;public&nbsp;and&nbsp;private&nbsp;keys</tt></dd></dl>
+
+<dl><dt><a name="PSolver-generatePrimes"><strong>generatePrimes</strong></a>(self)</dt><dd><tt>generates&nbsp;two&nbsp;primes&nbsp;of&nbsp;bit-length&nbsp;k/2</tt></dd></dl>
+
+<dl><dt><a name="PSolver-generatePrivateKey"><strong>generatePrivateKey</strong></a>(self)</dt><dd><tt>generate&nbsp;private&nbsp;key,&nbsp;for&nbsp;reversing&nbsp;trapdoor&nbsp;function</tt></dd></dl>
+
+<dl><dt><a name="PSolver-generatePublicKey"><strong>generatePublicKey</strong></a>(self)</dt><dd><tt>generates&nbsp;a&nbsp;k-bit&nbsp;key&nbsp;from&nbsp;two&nbsp;primes&nbsp;(will&nbsp;either&nbsp;be&nbsp;k&nbsp;or&nbsp;k-1)</tt></dd></dl>
+
+<dl><dt><a name="PSolver-printKeys"><strong>printKeys</strong></a>(self)</dt><dd><tt>prints&nbsp;out&nbsp;current&nbsp;value&nbsp;of&nbsp;keys</tt></dd></dl>
+
+<dl><dt><a name="PSolver-setE"><strong>setE</strong></a>(self, e)</dt><dd><tt>sets&nbsp;value&nbsp;for&nbsp;second&nbsp;part&nbsp;of&nbsp;public&nbsp;key</tt></dd></dl>
+
+<dl><dt><a name="PSolver-setK"><strong>setK</strong></a>(self, k)</dt><dd><tt>sets&nbsp;value&nbsp;for&nbsp;bit&nbsp;length&nbsp;of&nbsp;n</tt></dd></dl>
+
+<dl><dt><a name="PSolver-setN"><strong>setN</strong></a>(self, n)</dt><dd><tt>sets&nbsp;value&nbsp;for&nbsp;semi-prime</tt></dd></dl>
+
+<dl><dt><a name="PSolver-setP"><strong>setP</strong></a>(self, p)</dt><dd><tt>sets&nbsp;value&nbsp;for&nbsp;first&nbsp;prime</tt></dd></dl>
+
+<dl><dt><a name="PSolver-setPHI"><strong>setPHI</strong></a>(self, phi)</dt><dd><tt>sets&nbsp;totient&nbsp;value&nbsp;for&nbsp;n</tt></dd></dl>
+
+<dl><dt><a name="PSolver-setQ"><strong>setQ</strong></a>(self, q)</dt><dd><tt>sets&nbsp;value&nbsp;for&nbsp;second&nbsp;prime</tt></dd></dl>
+
+<dl><dt><a name="PSolver-setVerbose"><strong>setVerbose</strong></a>(self, verbose)</dt><dd><tt>sets&nbsp;additional&nbsp;output&nbsp;or&nbsp;not</tt></dd></dl>
+
+<hr>
+Data descriptors inherited from <a href="RSA.generate_RSA.html#KeyGen">RSA.generate_RSA.KeyGen</a>:<br>
+<dl><dt><strong>__dict__</strong></dt>
+<dd><tt>dictionary&nbsp;for&nbsp;instance&nbsp;variables&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+<dl><dt><strong>__weakref__</strong></dt>
+<dd><tt>list&nbsp;of&nbsp;weak&nbsp;references&nbsp;to&nbsp;the&nbsp;object&nbsp;(if&nbsp;defined)</tt></dd>
+</dl>
+</td></tr></table></td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>f</strong> = &lt;_io.BufferedReader name='utils/millionPrimes.pkl'&gt;<br>
+<strong>filePath</strong> = ''<br>
+<strong>primes</strong> = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, ...]<br>
+<strong>setOfBounds</strong> = [(0, 0), (10, 50), (50, 100), (100, 250), (250, 500), (500, 1000), (1000, 2500), (2500, 10000), (10000, 25000), (25000, 50000), (50000, 999999)]</td></tr></table>
+</body></html>

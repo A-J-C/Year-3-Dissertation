@@ -40,6 +40,7 @@ from ECC import baby_step
 from ECC.curves import *
 from ECC.solver import Solver
 from utils.helper import extended_gcd
+from utils.helper import primeFac
 
 
 ############ GLOBAL CONSTANT #########
@@ -47,44 +48,6 @@ from utils.helper import extended_gcd
 # we load the first million primes from memory
 with open(filePath + "utils/millionPrimes.pkl", "rb") as f:
     primes = pickle.load(f)
-
-
-############ PRIME FACTORISATION #########
-def xgcd(a, b):
-    """return (g, x, y) such that a*x + b*y = g = gcd(a, b)"""
-    x0, x1, y0, y1 = 0, 1, 1, 0
-    while a != 0:
-        q, b, a = b // a, a, b % a
-        y0, y1 = y1, y0 - q * y1
-        x0, x1 = x1, x0 - q * x1
-    return b, x0, y0
-
-def primeFac(n):
-    """ given a number returns a list of its prime factors """
-
-    factors = {}
-    p = 0
-
-    while n != 1:                                                       # until n is 1 we don't have all the prime factors
-
-        prime = primes[p]
-
-        pCount = 0
-
-        while n % prime == 0:                                           # while we can divide with no remainder
-            n = int(n/prime)                                            # perform division
-            pCount += 1                                                 # increment our count
-
-        if pCount != 0:                                                 # see if it ever worked
-            factors[prime] = pCount                                     # add to dictionary
-
-        p += 1                                                          # get next prime
-
-        if p == len(primes):                                            # if we have run out of primes
-            factors[n] = 1                                              # add the remaining amount
-            break                                                       # break out of while loop
-
-    return factors
 
 
 ############ MAIN CODE #########
@@ -141,6 +104,9 @@ class PHSolver(Solver):
 
         self.time = time.time() - self.start
 
+        # set space
+        self.space = len(factors) + BSGS.space
+        
         if self.verbose:
             print("k:", self.k)
             print("Time taken: %.3f s" % (self.time))                   # print time taken

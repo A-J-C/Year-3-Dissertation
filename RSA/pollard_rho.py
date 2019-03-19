@@ -81,6 +81,9 @@ class RhoSolver(Solver):
             print("Couldn't find the private key.")
             return False                                            # unsuccessful
 
+        # set space
+        self.space = 5
+        
         # set p and q once candidate found
         self.p = d
         self.q = int(self.n / self.p)

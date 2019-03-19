@@ -108,6 +108,9 @@ class PRSolver(Solver):
 
         self.time = time.time() - self.start
 
+        # set space
+        self.space = 18
+
         if self.verbose:
             print("k:", self.k)
             print("Time taken: %.3f s" % (self.time))                   # print time taken

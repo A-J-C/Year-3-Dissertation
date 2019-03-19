@@ -29,7 +29,7 @@ sys.path.append('Programming/')
 # allows me to run this file directly, i.e. not wrapped up in the package
 if not __package__:
     sys.path.append('../')
-
+    
 from cypari import pari
 from utils import helper
 

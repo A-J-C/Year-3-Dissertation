@@ -76,7 +76,8 @@ class KNJSolver(Solver):
             # by using inbuilt bisect function
             closest = bisect.bisect_left(primes, candidate)
             candidatesList = primes[closest::-1]                    # reverse section of list we are interested in
-
+            self.space = closest
+            
             # loop through all possible primes
             for prime in candidatesList:
                 self.count += 1                                     # increment count

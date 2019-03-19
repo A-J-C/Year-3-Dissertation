@@ -42,3 +42,4 @@ class Solver(KeyGen):
         self.count = 0                                      # counts number of checks
         self.start = 0                                      # for timing
         self.time = 0
+        self.space = 1                                      # constant space

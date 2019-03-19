@@ -14,7 +14,7 @@
 #&nbsp;&nbsp;&nbsp;&nbsp;Project:&nbsp;An&nbsp;Analysis&nbsp;of&nbsp;the&nbsp;Security&nbsp;of&nbsp;RSA&nbsp;&amp;&nbsp;Elliptic&nbsp;Curve&nbsp;Cryptography<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Supervisor:&nbsp;Maximilien&nbsp;Gadouleau<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Version:&nbsp;2.1<br>
-#&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;26/02/18<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;26/02/19<br>
 #<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Functionality:&nbsp;utilises&nbsp;other&nbsp;programs&nbsp;to&nbsp;generate&nbsp;and&nbsp;subsequently&nbsp;break&nbsp;RSA<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;keys&nbsp;using&nbsp;a&nbsp;variety&nbsp;of&nbsp;algorithms,&nbsp;while&nbsp;collecting&nbsp;diagnostics<br>
@@ -36,8 +36,9 @@
 </td><td width="25%" valign=top><a href="RSA.fermats.html">RSA.fermats</a><br>
 <a href="RSA.generate_RSA.html">RSA.generate_RSA</a><br>
 </td><td width="25%" valign=top><a href="RSA.knj_factorisation.html">RSA.knj_factorisation</a><br>
-<a href="RSA.pollard_rho.html">RSA.pollard_rho</a><br>
-</td><td width="25%" valign=top><a href="sys.html">sys</a><br>
+<a href="RSA.pollard_p_minus_1.html">RSA.pollard_p_minus_1</a><br>
+</td><td width="25%" valign=top><a href="RSA.pollard_rho.html">RSA.pollard_rho</a><br>
+<a href="sys.html">sys</a><br>
 </td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#eeaa77">
@@ -45,7 +46,7 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-run"><strong>run</strong></a>(k=10, brute=True, ferm=True, pRho=True, knj=True, verbose=True)</dt><dd><tt>creates&nbsp;a&nbsp;k-bit&nbsp;RSA&nbsp;key,&nbsp;cracks&nbsp;it&nbsp;with&nbsp;several&nbsp;algorithms,&nbsp;and&nbsp;generates<br>
+<td width="100%"><dl><dt><a name="-run"><strong>run</strong></a>(k=10, brute=True, ferm=True, pRho=True, knj=True, pMinus=True, verbose=True)</dt><dd><tt>creates&nbsp;a&nbsp;k-bit&nbsp;RSA&nbsp;key,&nbsp;cracks&nbsp;it&nbsp;with&nbsp;several&nbsp;algorithms,&nbsp;and&nbsp;generates<br>
 statistics&nbsp;to&nbsp;compare&nbsp;their&nbsp;performance</tt></dd></dl>
  <dl><dt><a name="-runSolver"><strong>runSolver</strong></a>(keys, solver, name, verbose)</dt><dd><tt>runs&nbsp;a&nbsp;check&nbsp;on&nbsp;the&nbsp;solver,&nbsp;given&nbsp;the&nbsp;correct&nbsp;keys</tt></dd></dl>
  <dl><dt><a name="-tests"><strong>tests</strong></a>(k=10, iter=10000, algo='bf', csvFile='res.csv')</dt><dd><tt>run&nbsp;tests&nbsp;to&nbsp;generate&nbsp;statistics</tt></dd></dl>
