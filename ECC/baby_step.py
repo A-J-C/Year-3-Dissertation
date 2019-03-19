@@ -3,8 +3,8 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 1.1
-#    Date: 06/02/19
+#    Version: 1.2
+#    Date: 19/03/19
 #
 #    Functionality: uses the babystep-giant-step method to caclualte
 #                   a private ECC key from a given public key set
@@ -83,7 +83,7 @@ class BGSolver(Solver):
 
         # set space
         self.space = len(babySteps) * 2
-        
+
         if self.verbose:
             print("k:", self.k)
             print("Time taken: %.3f s" % (self.time))               # print time taken

@@ -3,8 +3,8 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 1.2
-#    Date: 12/02/19
+#    Version: 1.3
+#    Date: 19/03/19
 #
 #    Functionality: uses fermat's factorisation method to discover a private RSA
 #                   key from a given public key pair
@@ -63,7 +63,7 @@ class FFSolver(Solver):
 
         # set space
         self.space = 3
-        
+
         # by fermat's method
         self.p = int(a - b)
         self.q = int(a + b)

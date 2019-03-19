@@ -3,8 +3,8 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 1.3
-#    Date: 06/02/19
+#    Version: 1.4
+#    Date: 19/03/19
 #
 #    Functionality: uses Pollard's Rho method to discover a private RSA key from
 #                   a given public key pair
@@ -83,7 +83,7 @@ class RhoSolver(Solver):
 
         # set space
         self.space = 5
-        
+
         # set p and q once candidate found
         self.p = d
         self.q = int(self.n / self.p)

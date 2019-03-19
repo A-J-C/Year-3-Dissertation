@@ -3,8 +3,8 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 1.0
-#    Date: 13/03/19
+#    Version: 1.1
+#    Date: 19/03/19
 #
 #    Functionality: uses Pollard's Rho method to discover a private RSA key from
 #                   a given public key pair

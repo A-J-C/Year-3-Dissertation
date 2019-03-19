@@ -3,8 +3,8 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 1.2
-#    Date: 06/02/19
+#    Version: 2.0
+#    Date: 19/03/19
 #
 #    Functionality: helper functions that multiple other files use
 #

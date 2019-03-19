@@ -3,8 +3,8 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 1.1
-#    Date: 10/02/19
+#    Version: 1.2
+#    Date: 19/03/19
 #
 #    Functionality: uses Pollard's p-1 method to discover a private RSA key from
 #                   a given public key pair

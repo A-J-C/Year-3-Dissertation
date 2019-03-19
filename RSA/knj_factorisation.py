@@ -3,8 +3,8 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 1.2
-#    Date: 11/03/19
+#    Version: 1.3
+#    Date: 19/03/19
 #
 #    Functionality: uses "KNJ-Factorisation" first outlined in the paper
 #        "Modified Trial Division Algorithm Using KNJ-Factorization Method
@@ -77,7 +77,7 @@ class KNJSolver(Solver):
             closest = bisect.bisect_left(primes, candidate)
             candidatesList = primes[closest::-1]                    # reverse section of list we are interested in
             self.space = closest
-            
+
             # loop through all possible primes
             for prime in candidatesList:
                 self.count += 1                                     # increment count
