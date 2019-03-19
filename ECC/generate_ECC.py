@@ -115,7 +115,9 @@ class KeyGen:
             while not C.valid():                                    # if not valid
                 C = getRandCurve(self.n, self.verbose)              # try again
 
-            print(C)
+            if self.verbose:
+                print(C)
+
             G = C.getG()                                            # get generator point
             order = C.ord                                           # get order of curve
             p = C.fp                                                # get prime field

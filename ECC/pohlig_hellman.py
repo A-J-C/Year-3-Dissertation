@@ -40,7 +40,6 @@ from ECC import baby_step
 from ECC.curves import *
 from ECC.solver import Solver
 from utils.helper import extended_gcd
-from utils.helper import primeFac
 
 
 ############ GLOBAL CONSTANT #########
@@ -50,7 +49,37 @@ with open(filePath + "utils/millionPrimes.pkl", "rb") as f:
     primes = pickle.load(f)
 
 
-############ MAIN CODE #########
+############ PRIME FACTORISATION ############
+
+def primeFac(n):
+    """ given a number returns a list of its prime factors """
+
+    factors = {}
+    p = 0
+
+    while n != 1:                                                       # until n is 1 we don't have all the prime factors
+
+        prime = primes[p]
+
+        pCount = 0
+
+        while n % prime == 0:                                           # while we can divide with no remainder
+            n = int(n/prime)                                            # perform division
+            pCount += 1                                                 # increment our count
+
+        if pCount != 0:                                                 # see if it ever worked
+            factors[prime] = pCount                                     # add to dictionary
+
+        p += 1                                                          # get next prime
+
+        if p == len(primes):                                            # if we have run out of primes
+            factors[n] = 1                                              # add the remaining amount
+            break                                                       # break out of while loop
+
+    return factors
+
+
+############ MAIN CODE ############
 
 class PHSolver(Solver):
     """ inherits from the default solver Class """
@@ -72,7 +101,10 @@ class PHSolver(Solver):
         ############ POHLIG HELLMAN ############
         factors = primeFac(order)                                       # get factor decomposition
         self.k = 0
-        print(factors)
+
+        if self.verbose:
+            print(factors)
+
         for prime, power in factors.items():                            # loop over our dictionary
             newOrd = prime ** power                                     # calculate this subgroups order
             num = order // newOrd                                       # calculate number from order
@@ -82,12 +114,13 @@ class PHSolver(Solver):
 
             # now solve the smaller problem of Qnum = k_num * Gnum with order newOrd
             # using BSGS
-
             BSGS = baby_step.BGSolver(self.curve, Qnum, Gnum, False)    # initialise solver
             solved = BSGS.solve()                                       # specify the sub group order
 
             if not solved:
-                print("Failed")
+                if self.verbose:
+                    print("Failed")
+
                 return 0
 
             k_num = BSGS.k                                              # extract multiplier

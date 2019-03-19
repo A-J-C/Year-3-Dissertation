@@ -55,31 +55,3 @@ def modInverse(p, q) :
 
     # make x mod q to ensure it is postive
     return x % qOrig
-
-
-def primeFac(n):
-    """ given a number returns a list of its prime factors """
-
-    factors = {}
-    p = 0
-
-    while n != 1:                                                       # until n is 1 we don't have all the prime factors
-
-        prime = primes[p]
-
-        pCount = 0
-
-        while n % prime == 0:                                           # while we can divide with no remainder
-            n = int(n/prime)                                            # perform division
-            pCount += 1                                                 # increment our count
-
-        if pCount != 0:                                                 # see if it ever worked
-            factors[prime] = pCount                                     # add to dictionary
-
-        p += 1                                                          # get next prime
-
-        if p == len(primes):                                            # if we have run out of primes
-            factors[n] = 1                                              # add the remaining amount
-            break                                                       # break out of while loop
-
-    return factors

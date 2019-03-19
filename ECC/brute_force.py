@@ -55,7 +55,8 @@ class BFSolver(Solver):
 
         # sanity check
         if P != self.Q:
-            print ("Point not found")
+            if self.verbose:
+                print ("Point not found")
             return 0
 
         # set k once candidate found

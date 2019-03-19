@@ -76,7 +76,9 @@ class BGSolver(Solver):
                 break                                               # break out of for loop
         else:
             # sanity check
-            print ("Point not found")
+            if self.verbose:
+                print ("Point not found")
+                
             return 0
 
         self.time = time.time() - self.start

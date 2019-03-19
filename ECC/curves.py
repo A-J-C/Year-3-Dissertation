@@ -29,7 +29,7 @@ sys.path.append('Programming/')
 # allows me to run this file directly, i.e. not wrapped up in the package
 if not __package__:
     sys.path.append('../')
-    
+
 from cypari import pari
 from utils import helper
 
@@ -124,7 +124,7 @@ class Point:
         """ defines multiplication via repeated squares """
 
         # sanity check
-        if self.inf or k == 0:
+        if self.inf or k % self.curve.order(self) == 0:
             return self.curve.pointAtInf()                              # return point at infinity
 
         # repeated squares algorith

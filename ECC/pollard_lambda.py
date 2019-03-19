@@ -101,7 +101,7 @@ class PLSolver(Solver):
             len_W = 0                                                   # wild kangaroo starts making 0 moves
             pos_W = self.Q                                              # start at point we need to calculate
 
-            moves = 100                                             # cap on number of moves
+            moves = 100000                                              # cap on number of moves
             while len_W < (len_T + b - a) and moves:                    # limit on how many random moves we make
                 self.count += 1                                         # increment count
                 moves -= 1                                              # decrement moves remaining
@@ -113,7 +113,9 @@ class PLSolver(Solver):
                 #print(len_W, pos_W)
 
                 if pos_W == pos_T:                                      # if fallen in trap
-                    print(b, len_T, len_W)
+                    if self.verbose:
+                        print(b, len_T, len_W)
+
                     self.k = (b + len_T - len_W) % order                # calculate k
                     found = True                                        # set to found
                     break
