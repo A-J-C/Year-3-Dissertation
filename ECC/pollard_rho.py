@@ -4,7 +4,7 @@
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
 #    Version: 1.4
-#    Date: 19/03/19
+#    Date: 20/03/19
 #
 #    Functionality: uses pollard's rho method to caclualte
 #                   a private ECC key from a given public key set
@@ -85,7 +85,6 @@ class PRSolver(Solver):
                 P = (self.G * a) + (self.Q * b)                         # linear combination
                 points.append([P, a, b])                                # add to list
 
-
             ############ RANDOM START POINTS ############
             Y, aY, bY = X, aX, bX = points.pop()                        # random starting points
 
@@ -93,6 +92,7 @@ class PRSolver(Solver):
             while not found:
                 X, aX, bX = g((X, aX, bX), order, points)               # first runner
                 Y, aY, bY = g(g((Y,aY,bY),order,points),order,points)   # second runner
+
                 found = X == Y                                          # detect match
                 self.count += 1                                         # increment count
 
@@ -105,6 +105,9 @@ class PRSolver(Solver):
                     found = False                                       # need to randomly try again
                 else:                                                   # we have found k
                     self.k = ((aY - aX) * inv) % order                  # so set it
+
+                    if self.G * self.k != self.Q:                       # not always 100% going to work
+                        found = False
 
         self.time = time.time() - self.start
 

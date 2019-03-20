@@ -98,26 +98,15 @@ def run(k = 10, brute = True, ferm = True, pRho = True, knj = True, pMinus = Tru
     return bf_res, fer_res, rho_res, knj_res, minus_res
 
 
-def tests(k = 10, iter = 10000, algo = "bf", csvFile = "res.csv"):
-    """ run tests to generate statistics """
+def test(k = 10):
+    """ tries to find failure point """
 
-    with open(csvFile, "w+") as file:
-        out = "keySize,"
-        out += algo + "_success," + algo + "_time," + algo + "_count,"
-        file.write(out + "\n")
+    res = {}
+    res['res'] = True
 
-        bf = (algo == "bf")
-        rho = (algo == "rho")
-
-        for _ in range(iter):
-            res = run(k, bf, rho, True)
-            out = str(k) + ","
-            r = res[0] if algo == "bf" else res[1]
-
-            out += (str(r["res"]) + "," + str(r["time"]) +
-                    "," + str(r["count"]) + ",")
-            file.write(out + "\n")
-            file.flush()
+    # loop till fail
+    while res['res']:
+        res = run(k, False, False, False, False, True, verbose = True)[-1]
 
 
 ############ COMMAND LINE INTERFACE #########
@@ -132,11 +121,14 @@ if __name__ == '__main__':
     parser.add_argument("-pr", "--pollard_rho", help="turns pollard_rho decryption on", action="store_true")
     parser.add_argument("-knj", "--KNJ_factorisation", help="turns KNJ_factorisation decryption on", action="store_true")
     parser.add_argument("-pp", "--pollard_p_minus_1", help="turns pollard_p_minus_1 decryption on", action="store_true")
-    parser.add_argument("-a", "--all", help="turns all on", action="store_true")
+    parser.add_argument("-t", "--test", help="runs failure test", action="store_true")
 
     args = parser.parse_args()
 
-    if len(sys.argv) == 1:
+    if args.test:
+        test(args.bitsize)
+
+    elif len(sys.argv) == 1:
         # default run
         run()
     elif args.all:

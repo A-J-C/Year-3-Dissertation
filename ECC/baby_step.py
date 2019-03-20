@@ -3,8 +3,8 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 1.2
-#    Date: 19/03/19
+#    Version: 1.3
+#    Date: 20/03/19
 #
 #    Functionality: uses the babystep-giant-step method to caclualte
 #                   a private ECC key from a given public key set
@@ -49,37 +49,42 @@ class BGSolver(Solver):
         self.count = 1                                              # initial count
         self.start = time.time()
 
-        if not order:                                               # if order not yet set
-            order = self.curve.order(self.G)                        # get order of base point
-
-        sqrtO = int(math.ceil(math.sqrt(order)))                    # root G's order
-
-        # form hash table of nG ∀ 0 < n < sqrtO
-        babySteps = {}                                              # store hash table as dictionary
-
-        P = self.curve.pointAtInf()                                 # get starting point
-        babySteps[str(P)] = 0                                       # initial point
-
-        for n in range(1, sqrtO + 1):
-            P += self.G                                             # increment to next nG
-            babySteps[str(P)] = n                                   # create look up table
-            self.count += 1                                         # increment count
-
-        # giant steps
-        for i in range(sqrtO):
-            P = self.Q - self.G * (i*sqrtO)                         # Q - i.sqrtO.G
-            self.count += 1                                         # increment count
-
-            if str(P) in babySteps:                                 # if it is in out lookup table
-                n = babySteps[str(P)]
-                self.k = n + i*sqrtO
-                break                                               # break out of for loop
+        # sanity check
+        if self.G == self.Q:
+            self.k = 1
+            babySteps = {}
         else:
-            # sanity check
-            if self.verbose:
-                print ("Point not found")
-                
-            return 0
+            if not order:                                               # if order not yet set
+                order = self.curve.order(self.G)                        # get order of base point
+
+            sqrtO = int(math.ceil(math.sqrt(order)))                    # root G's order
+
+            # form hash table of nG ∀ 0 < n < sqrtO
+            babySteps = {}                                              # store hash table as dictionary
+
+            P = self.curve.pointAtInf()                                 # get starting point
+            babySteps[str(P)] = 0                                       # initial point
+
+            for n in range(1, sqrtO + 1):
+                P += self.G                                             # increment to next nG
+                babySteps[str(P)] = n                                   # create look up table
+                self.count += 1                                         # increment count
+
+            # giant steps
+            for i in range(sqrtO):
+                P = self.Q - self.G * (i*sqrtO)                         # Q - i.sqrtO.G
+                self.count += 1                                         # increment count
+
+                if str(P) in babySteps:                                 # if it is in out lookup table
+                    n = babySteps[str(P)]
+                    self.k = n + i*sqrtO
+                    break                                               # break out of for loop
+            else:
+                # sanity check
+                if self.verbose:
+                    print ("Point not found")
+
+                return 0
 
         self.time = time.time() - self.start
 

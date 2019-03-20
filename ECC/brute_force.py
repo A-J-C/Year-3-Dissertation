@@ -26,6 +26,7 @@ if not __package__:
     sys.path.append('../')
 
 import time
+from ECC.curves import *
 from ECC.solver import Solver
 
 

@@ -99,29 +99,15 @@ def run(k = 10, brute = True, babyStep = True, rho = True,
     return bf_res, bsgs_res, rho_res, lambda_res, poh_res
 
 
-def tests(k = 10, iter = 10000, algo = "bf", csvFile = "res.csv"):
-    """ run tests to generate statistics """
+def test(k = 10):
+    """ tries to find failure point """
 
-    with open(csvFile, "w+") as file:
-        out = "keySize,"
-        out += algo + "_success," + algo + "_time," + algo + "_count,"
-        file.write(out + "\n")
+    res = {}
+    res['res'] = True
 
-        bf = (algo == "bf")
-        bsgs = (algo == "bsgs")
-        rho = (algo == "rho")
-
-        algorithms = ["bf", "bsbgs", "rho"]
-
-        for _ in range(iter):
-            res = run(k, bf, bsgs, rho, True)
-            out = str(k) + ","
-            r = res[algorithms.index(algo)]
-
-            out += (str(r["res"]) + "," + str(r["time"]) +
-                    "," + str(r["count"]) + ",")
-            file.write(out + "\n")
-            file.flush()
+    # loop till fail
+    while res['res']:
+        res = run(k, False, False, False, False, True, verbose = True)[-1]
 
 
 ############ COMMAND LINE INTERFACE #########
@@ -137,10 +123,14 @@ if __name__ == '__main__':
     parser.add_argument("-pl", "--pollard_lambda", help="turns pollard_lambda decryption on", action="store_true")
     parser.add_argument("-ph", "--pohlig_hellman", help="turns pohlig_hellman decryption on", action="store_true")
     parser.add_argument("-a", "--all", help="turns all on", action="store_true")
+    parser.add_argument("-t", "--test", help="runs failure test", action="store_true")
 
     args = parser.parse_args()
 
-    if len(sys.argv) == 1:
+    if args.test:
+        test(args.bitsize)
+
+    elif len(sys.argv) == 1:
         # default run
         run()
     elif args.all:

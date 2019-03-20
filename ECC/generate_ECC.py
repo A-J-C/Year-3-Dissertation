@@ -142,6 +142,7 @@ class KeyGen:
 
         self.Q = self.G * self.k                                    # Q = kP
 
+        print("k = %s  G = %s   Q = %s" % (self.k, self.G, self.Q))
         if self.verbose:
             self.printKeys()
 

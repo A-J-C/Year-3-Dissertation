@@ -95,6 +95,7 @@ class PSolver(Solver):
         b = 1                                                       # start with smallest bounds
 
         bound1, bound2 = setOfBounds[b]
+        cache = {}                                                  # cache for dynamic programming
 
         while not found and not fail:
 

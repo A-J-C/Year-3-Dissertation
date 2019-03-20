@@ -3,8 +3,8 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 1.2
-#    Date: 19/03/19
+#    Version: 1.3
+#    Date: 20/03/19
 #
 #    Functionality: uses pohlig_hellman method to caclualte
 #                   a private ECC key from a given public key set
@@ -115,6 +115,12 @@ class PHSolver(Solver):
             # now solve the smaller problem of Qnum = k_num * Gnum with order newOrd
             # using BSGS
             BSGS = baby_step.BGSolver(self.curve, Qnum, Gnum, False)    # initialise solver
+
+            # sanity check
+            if Gnum == self.Q:
+                self.k = num
+                break
+
             solved = BSGS.solve()                                       # specify the sub group order
 
             if not solved:
