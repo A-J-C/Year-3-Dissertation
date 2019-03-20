@@ -93,6 +93,7 @@ class PSolver(Solver):
 
         a = 2                                                       # most things should work with 2
         b = 1                                                       # start with smallest bounds
+        changes = 0
 
         bound1, bound2 = setOfBounds[b]
         cache = {}                                                  # cache for dynamic programming
@@ -113,12 +114,15 @@ class PSolver(Solver):
                 break
 
             elif d == self.n:
+
                 bound1 = bound1 - 1                                 # try again with smaller bound
                 bound2 = bound1
 
-                if bound1 == setOfBounds[b - 1][0]:                 # then we have failed
-                    fail = True
-                    break
+                if bound1 == setOfBounds[b - 1][0]:                 # then we might have failed
+                    a += 1                                          # try new a
+
+                    if a > 5:                                       # don't waste time
+                        fail = True
 
             # STAGE 2 EXTENSION
             # uses cache so only need multiplication not exponentiation
