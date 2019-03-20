@@ -54,19 +54,25 @@ class FFSolver(Solver):
         bSquared = a*a - self.n                                     # get b^2
         b = math.sqrt(bSquared)                                     # will be same as int(b) if bSquared is a perfect square
 
+        found = False
+
         # iterate a until we find the correct pair
-        while b != int(b):
+        while not found:
             self.count += 1                                         # increment count
             a += 1                                                  # check next a
             bSquared = a*a - self.n
             b = math.sqrt(bSquared)
 
+            if b == int(b):
+
+                self.p = int(a - b)
+                self.q = int(a + b)
+
+                if self.p * self.q == self.n:                        # math.sqrt not accurate so need check too
+                    found = True
+
         # set space
         self.space = 3
-
-        # by fermat's method
-        self.p = int(a - b)
-        self.q = int(a + b)
 
         if self.verbose:
             print("p:", self.p)
