@@ -41,7 +41,7 @@ from utils.helper import modInverse
 
 ############ EXTRA FUNCTIONS #########
 
-def g(P, n):
+def g(P, n, order):
     """ polynomial function for semi-randomness """
 
     xCoord = P.x                                                    # extract x coord
@@ -51,8 +51,8 @@ def g(P, n):
 
     moves = pow(2, int(ind + math.sqrt(n)) % n)                     # pollard said should be a power 2
 
-    if moves % P.curve.order(P) == 0:                               # ensure we actually move
-        moves += 1
+    if moves % order == 0:                                          # ensure we actually move
+        moves += 2
 
     return moves
 
@@ -81,24 +81,30 @@ class PLSolver(Solver):
         b = order - 1                                                   # end of search interval
 
         found = False
-        n = 3                                                           # arbitrary initial value
+        fail = False
+        n = 1
+
         #print(order, a, b)
         # will probably find a factor, so need to loop with random numbers until we find it
-        while not found:
+        while (not found) and (not fail):
             n += 1                                                      # change pseudo random generator
+
+            if n > 25:                                                  # give up
+                fail = True
+                break
 
             # TAME KNAGAROO
             len_T = 0                                                   # tame kangaroo starts with 0 moves
             pos_T = self.G * b                                          # tame starts at end
 
             # moves until setting trap
-            trap = (g(self.G, n) + g(pos_T, n))                         # trap moves dependant on our function
+            trap = (g(self.G, n, order) + g(pos_T, n, order))           # trap moves dependant on our function
             trap = int(trap / 4)                                        # divide by a constant and ensure int
 
             # move until in position to place trap
             for t in range(trap):
                 self.count += 1                                         # increment count
-                moveT = g(pos_T, n)                                     # get function on pos_T
+                moveT = g(pos_T, n, order)                              # get function on pos_T
                 len_T = (len_T + moveT) % order                         # tracks total path length
                 pos_T += self.G * moveT                                 # pseudo random jumps
 
@@ -106,12 +112,12 @@ class PLSolver(Solver):
             len_W = 0                                                   # wild kangaroo starts making 0 moves
             pos_W = self.Q                                              # start at point we need to calculate
 
-            moves = 100000                                              # cap on number of moves
+            moves = min(order * 100, 100000)                            # cap on number of moves
             while len_W < (len_T + b - a) and moves:                    # limit on how many random moves we make
                 self.count += 1                                         # increment count
                 moves -= 1                                              # decrement moves remaining
 
-                moveW = g(pos_W, n)                                     # get pseudo random move
+                moveW = g(pos_W, n, order)                              # get pseudo random move
                 len_W = (len_W + moveW) % order                         # add to dist travelled
                 pos_W += self.G * moveW                                 # update position
 
@@ -124,6 +130,13 @@ class PLSolver(Solver):
                     break
 
         self.time = time.time() - self.start
+
+        if fail:
+            if self.verbose:
+                print("Failed")
+
+            self.k = 1
+            return 0
 
         # set space
         self.space = 20

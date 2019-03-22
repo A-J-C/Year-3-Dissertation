@@ -107,7 +107,7 @@ def test(k = 10):
 
     # loop till fail
     while res['res']:
-        res = run(k, False, False, False, False, True, verbose = True)[-1]
+        res = run(k, False, False, False, True, False, verbose = True)[3]
 
 
 ############ COMMAND LINE INTERFACE #########

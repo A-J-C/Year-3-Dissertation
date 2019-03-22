@@ -73,18 +73,16 @@ def saveResults(saveFile):
 def getResults(solver, minBit, maxBit, saveFile, noResults):
     """ saves a results csv, given a solver, result index and bit range """
 
-    for bit in range(minBit, maxBit + 1, 2):
+    for k in range(minBit, maxBit + 1, 2):
         for i in range(noResults):
 
-            keys = generate_RSA.KeyGen(bit)                                     # initialise keys
+            keys = generate_RSA.KeyGen(k)                                       # initialise keys
             keys.generateKeys()                                                 # generate keys
 
             solver.setN(keys.n)                                                 # setup solver
             solver.setE(keys.e)
 
             solver.solve()                                                      # solve problem
-
-            k = int(math.ceil(math.log(keys.n, 2)))                             # get accurate bit length
 
             if solver.d == keys.d:                                              # if we got it right
                 resTime = resTime_C                                             # update correct dictionaries

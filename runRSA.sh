@@ -3,16 +3,18 @@
 
 ARRALG=("bf" "ff" "knj" "pp" "pr")
 ARR0=(6 6 6 6 6)
+ARR0U=(52 54 52 52 68)
 ARR1S=(54 56 54 54 70)
+ARR1U=(58 58 58 58 82)
 ARR10S=(60 60 60 60 84)
-ARR1M=(66 66 66 66 94)
+ARR10U=(66 66 66 66 94)
 
 num=25000
 
 j=0
 for i in "${ARRALG[@]}"
 do
-    params="python3 results_RSA.py -s RSA_results_"$i"_1S -$i -l ${ARR0[$j]} -u ${ARR1S[$j]} -n $num"
+    params="python3 results_RSA.py -s RSA_results_"$i"_1S -$i -l ${ARR0[$j]} -u ${ARR0U[$j]} -n $num"
 
     echo $i
 
@@ -24,12 +26,12 @@ do
     ((j++))
 done
 
-num=2500
+num=5000
 
 j=0
 for i in "${ARRALG[@]}"
 do
-    params="python3 results_RSA.py -s RSA_results_"$i"_10S -$i -l ${ARR1S[$j]} -u ${ARR10S[$j]} -n $num"
+    params="python3 results_RSA.py -s RSA_results_"$i"_10S -$i -l ${ARR1S[$j]} -u ${ARR1U[$j]} -n $num"
 
     echo $i
 
@@ -41,12 +43,12 @@ do
     ((j++))
 done
 
-num=250
+num=1000
 
 j=0
 for i in "${ARRALG[@]}"
 do
-    params="python3 results_RSA.py -s RSA_results_"$i"_1M -$i -l ${ARR10S[$j]} -u ${ARR1M[$j]} -n $num"
+    params="python3 results_RSA.py -s RSA_results_"$i"_1M -$i -l ${ARR10S[$j]} -u ${ARR10U[$j]} -n $num"
 
     echo $i
 
