@@ -3,8 +3,8 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 1.3
-#    Date: 20/03/19
+#    Version: 1.4
+#    Date: 22/03/19
 #
 #    Functionality: uses Pollard's p-1 method to discover a private RSA key from
 #                   a given public key pair
@@ -129,12 +129,12 @@ class PSolver(Solver):
             prevPrime = primes[bound1]
             cache = {}                                              # cache for dynamic programming
             savepoint = aM                                          # for backtracking
-            saveP = 0
+            saveP = bound1
 
             for p in range(bound1 + 1, bound2 + 1):                 # go though each prime between two bounds
 
                 self.count += 1                                     # extra check
-                #print(primes[bound1], primes[p])
+
                 prime = primes[p]                                   # extract prime
                 delta = prime - prevPrime                           # get delta
 
@@ -156,9 +156,10 @@ class PSolver(Solver):
 
                         aM = savepoint                              # revert to savepoint
                         end = min(bound2, saveP + 50)
-                        prevPrime = primes[p - 1]
 
-                        for p in range(saveP, end):                 # re run last set of calculations
+                        prevPrime = primes[saveP]
+
+                        for p in range(saveP + 1, end):             # re run last set of calculations
                             prime = primes[p]                       # run as before
                             delta = prime - prevPrime               # gaurenteed to be in cache
 
