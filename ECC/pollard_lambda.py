@@ -3,8 +3,8 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 1.1
-#    Date: 19/03/19
+#    Version: 1.2
+#    Date: 22/03/19
 #
 #    Functionality: uses pollard's lambda method to caclualte
 #                   a private ECC key from a given public key set

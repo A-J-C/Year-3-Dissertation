@@ -3,8 +3,8 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 1.3
-#    Date: 19/03/19
+#    Version: 1.4
+#    Date: 22/03/19
 #
 #    Functionality: uses fermat's factorisation method to discover a private RSA
 #                   key from a given public key pair
@@ -50,9 +50,7 @@ class FFSolver(Solver):
         self.start = time.time()                                    # start timer
         self.count = 1                                              # initial count
 
-        a = int(math.ceil(math.sqrt(self.n)))                       # get square root
-        bSquared = a*a - self.n                                     # get b^2
-        b = math.sqrt(bSquared)                                     # will be same as int(b) if bSquared is a perfect square
+        a = int(math.ceil(math.sqrt(self.n))) - 1                   # get square root
 
         found = False
 

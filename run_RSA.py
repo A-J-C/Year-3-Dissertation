@@ -98,7 +98,7 @@ def run(k = 10, brute = True, ferm = True, pRho = True, knj = True, pMinus = Tru
     return bf_res, fer_res, rho_res, knj_res, minus_res
 
 
-def test(k = 10):
+def test(k = 50):
     """ tries to find failure point """
 
     res = {}

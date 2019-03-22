@@ -47,11 +47,13 @@ def modInverse(p, q) :
     # loop till p is less than 1
     while p > 1:
         # x and y track quotients
+        if q == 0 and p != 1:               # means modInverse doesn't exist
+            return 0                        # so return before // 0 error
+
         x, y = y, x - (p // q) * y
         p, q = q, p % q
 
-        if q == 0 and p != 1:               # means modInverse doesn't exist
-            return 0                        # so return before // 0 error
+
 
     # make x mod q to ensure it is postive
     return x % qOrig
