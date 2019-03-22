@@ -45,11 +45,16 @@ def g(P, n):
     """ polynomial function for semi-randomness """
 
     xCoord = P.x                                                    # extract x coord
-    xCoord = bin(P.x)                                               # get binary representation
+    xCoord = bin(xCoord)                                            # get binary representation
     xCoord = "0" * 4 + xCoord[2:]                                   # pad front with 0's
     ind = int(xCoord[-4:], 2) + 1                                   # get random point by "hashing P"
 
-    return pow(2, int(ind + math.sqrt(n)) % n)                      # pollard said should be a power 2
+    moves = pow(2, int(ind + math.sqrt(n)) % n)                     # pollard said should be a power 2
+
+    if moves % P.curve.order(P) == 0:                               # ensure we actually move
+        moves += 1
+
+    return moves
 
 
 ############ MAIN CODE #########
@@ -109,8 +114,6 @@ class PLSolver(Solver):
                 moveW = g(pos_W, n)                                     # get pseudo random move
                 len_W = (len_W + moveW) % order                         # add to dist travelled
                 pos_W += self.G * moveW                                 # update position
-
-                #print(len_W, pos_W)
 
                 if pos_W == pos_T:                                      # if fallen in trap
                     if self.verbose:
