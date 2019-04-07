@@ -37,6 +37,7 @@ import math
 import pickle
 import time
 from bisect import bisect_left
+from functools import reduce 
 from RSA.solver import Solver
 from utils import helper
 
@@ -161,17 +162,17 @@ def gauss(expMatrix):
 
     noRows = len(expMatrix)
     noCols = len(expMatrix[0])
-    
+
     # tracks "used" rows
     used = [False for i in range(noCols)]
 
     # loop for each row in matrix
-    for r in range(noRows): 
+    for r in range(noRows):
 
         # loop for each column in row
         for c in expMatrix[r]:
 
-            # find pivot 
+            # find pivot
             if expMatrix[r][c]:
 
                 # set as pivot
@@ -182,14 +183,14 @@ def gauss(expMatrix):
                     # enumerate column
                     if expMatrix[i][c] == 1 and i != r:
 
-                        # combine rows mod 2 
+                        # combine rows mod 2
                         for j in range(noCols):
                             expMatrix[i][j] = (expMatrix[i][j] + expMatrix[r][i]) % 2
                 break
 
-    # swap rows and columns 
+    # swap rows and columns
     expMatrix = list(map(list, zip(*expMatrix)))
-    
+
     # extract all free rows i.e. unused ones
     # forcing everything to be a list
     linearDeps = [(expMatrix[i], i) for i in range(noCols) if not used[i]]
@@ -201,51 +202,42 @@ def gauss(expMatrix):
     return expMatrix, linearDeps, used
 
 
-def solveRow(linearDeps, expMatrix, used, row):
+def solveRow(linearDeps, expMatrix, used, rowNum):
     """ solves a row of the matix to produce solution vector """
-    
-    solVector, indices = [],[]
-    free = linearDeps[row][0] 
-    
-    for i in range(len(free)):
-        if free[i] == 1:
-            indices.append(i)
-            
-    for r in range(len(expMatrix)): #rows with 1 in the same column will be dependent
-        for i in indices:
-            if expMatrix[r][i] == 1 and used[r]:
-                solVector.append(r)
-                break
 
-    solVector.append(linearDeps[row][1])
+    # index of rowNum will trivially be in solution vector 
+    solVector = [linearDeps[rowNum][1]]
+    row = linearDeps[rowNum][0]
+
+    # extract indices of value 1
+    pivots = [i for i in range(len(row)) if row[i]]
+
+    # find dependent rows to add to solution vector
+    for r in range(len(expMatrix)):
+        rowInd = [expMatrix[r][p] for p in pivots]
+        if used[r] and sum(rowInd) > 0:
+            solVector.append(r)
+
     return solVector
 
 
-def solveCongruence(solution_vec,smooth_nums,xlist,N):
+def solveCongruence(solVector, smooth, indices, n):
+    """ extracts factor from given soution vector """
 
-    solution_nums = [smooth_nums[i] for i in solution_vec]
-    x_nums = [xlist[i] for i in solution_vec]
-
-    Asquare = 1
-    for n in solution_nums:
-        Asquare *= n
-
-    b = 1
-    for n in x_nums:
-        b *= n
+    prodSmooth = reduce(lambda x, y: x * y, [smooth[i] for i in solVector])
+    prodIndices = reduce(lambda x, y: x * y, [indices[i] for i in solVector])
 
     # newton's method for square root as math library couldn't
     # handle big numbers
-    
-    a = Asquare
+
+    a = prodSmooth
     y = (a + 1) // 2
 
     while y < a:
         a = y
-        y = (a + Asquare // a) // 2    
+        y = (a + prodSmooth // a) // 2
 
-    factor = helper.gcd(b-a,N)
-    return factor
+    return helper.gcd(prodIndices - a, n)
 
 
 ############ MAIN CLASS #########
@@ -265,31 +257,29 @@ class QSolver(Solver):
         self.count = 0                                              # reset
 
         ##### DATA COLLECTION #####
-        bits = int(math.log(self.n, 2)) 
+        bits = int(math.log(self.n, 2))
         multiplier = bits // 2
         solved = False
 
         # trying multiple times with bigger bounds
         while not solved and multiplier <= (bits // 4) * 3:
-            
+
             multiplier += max(bits // 10, 1)
-            
+
             ### DEFINE BOUNDS AND GET PRIMES
             # set bound limit
             bound = min(bits * 20 * multiplier, primes[-1])
             bound = bisect_left(primes, bound)
 
-            print("trying new bound %d" % bound)
-            
             # get subset of all possible prime factors which are B-smooth
             primesSub = primes[:bound]
-            
+
             # filter list as we are only interested in square conguences
             residPrimes = list(filter(lambda p: quadRes(self.n, p) == 1, primesSub))
 
             if self.verbose:
                 print("%d residual primes found" % len(residPrimes))
-                
+
             #### SIEVE FOR SMOOTH NUMBERS
             # sieve to find B-smooth numbers matching f(x) = x**2 - self.n
             rootN = int(math.sqrt(self.n))
@@ -298,7 +288,7 @@ class QSolver(Solver):
             if rootN == math.sqrt(self.n):
                 d = rootN
                 solved = True
-                
+
             else:
                 # start sieve at square root and go upto our max bound
                 sieve = [x ** 2 - self.n for x in range(rootN , rootN + primes[bound])]
@@ -331,7 +321,7 @@ class QSolver(Solver):
 
                     if len(smooth) > len(residPrimes):
                         break
-                else:   
+                else:
                     if self.verbose:
                         print("Not enough smooth numbers to compute sieve")
                     continue
@@ -350,7 +340,7 @@ class QSolver(Solver):
                     if self.verbose:
                         print("Couldn't find the private key.")
                     continue                                               # unsuccessful
-                
+
                 ### SOLVE CONGRUENCE (repeats if trivial factor found)
                 for i in range(len(linearDeps)):
                     solVector = solveRow(linearDeps, expMatrix, used, i)
@@ -370,7 +360,7 @@ class QSolver(Solver):
             if self.verbose:
                 print("Failed to find private key")
             return False
-        
+
         # set p and q once candidate found
         self.p = d
         self.q = int(self.n / self.p)
