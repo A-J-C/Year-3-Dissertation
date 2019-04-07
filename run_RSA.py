@@ -3,8 +3,8 @@
 #    Author: Alexander Craig
 #    Project: An Analysis of the Security of RSA & Elliptic Curve Cryptography
 #    Supervisor: Maximilien Gadouleau
-#    Version: 2.1
-#    Date: 26/02/19
+#    Version: 2.2
+#    Date: 06/04/19
 #
 #    Functionality: utilises other programs to generate and subsequently break RSA
 #                   keys using a variety of algorithms, while collecting diagnostics
@@ -48,7 +48,7 @@ def runSolver(keys, solver, name, verbose):
 
 ############ MASTER PROGRAM #########
 
-def run(k = 10, brute = True, ferm = True, pRho = True, knj = True, pMinus = True, verbose = True):
+def run(k = 10, brute = True, ferm = True, pRho = True, knj = True, pMinus = True, quad = True, verbose = True):
     """ creates a k-bit RSA key, cracks it with several algorithms, and generates
         statistics to compare their performance """
 
@@ -95,7 +95,13 @@ def run(k = 10, brute = True, ferm = True, pRho = True, knj = True, pMinus = Tru
         polMin = pollard_p_minus_1.PSolver(keys.n, keys.e, verbose)             # create new instance with public key info
         minus_res = runSolver(keys, polMin, "POLLARD'S P-1", verbose)           # check solver
 
-    return bf_res, fer_res, rho_res, knj_res, minus_res
+    ############ QUADRATIC SIEVE METHOD #########
+    quad_sieve = {}
+    if quad:
+        quadS = quadratic_sieve.QSolver(keys.n, keys.e, verbose)             # create new instance with public key info
+        quad_sieve = runSolver(keys, quadS, "QUADRATIC SIEVE", verbose)           # check solver
+
+    return bf_res, fer_res, rho_res, knj_res, minus_res, quad_sieve
 
 
 def test(k = 50):
@@ -106,7 +112,7 @@ def test(k = 50):
 
     # loop till fail
     while res['res']:
-        res = run(k, False, True, False, False, False, verbose = True)[1]
+        res = run(k, False, False, False, False, False, True, verbose = True)[-1]
 
 
 ############ COMMAND LINE INTERFACE #########
@@ -121,6 +127,8 @@ if __name__ == '__main__':
     parser.add_argument("-pr", "--pollard_rho", help="turns pollard_rho decryption on", action="store_true")
     parser.add_argument("-knj", "--KNJ_factorisation", help="turns KNJ_factorisation decryption on", action="store_true")
     parser.add_argument("-pp", "--pollard_p_minus_1", help="turns pollard_p_minus_1 decryption on", action="store_true")
+    parser.add_argument("-qs", "--quadratic_sieve", help="turns quadratic_sieve decryption on", action="store_true")
+    parser.add_argument("-a", "--all", help="turns all on", action="store_true")
     parser.add_argument("-t", "--test", help="runs failure test", action="store_true")
 
     args = parser.parse_args()
@@ -132,6 +140,6 @@ if __name__ == '__main__':
         # default run
         run()
     elif args.all:
-        run(args.bitsize, True, True, True, True, True, not args.verbose)
+        run(args.bitsize, True, True, True, True, True, True, not args.verbose)
     else:
-        run(args.bitsize, args.bruteforce, args.fermats, args.pollard_rho, args.KNJ_factorisation, args.pollard_p_minus_1, not args.verbose)
+        run(args.bitsize, args.bruteforce, args.fermats, args.pollard_rho, args.KNJ_factorisation, args.pollard_p_minus_1, args.quadratic_sieve, not args.verbose)

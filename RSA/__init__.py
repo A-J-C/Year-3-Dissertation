@@ -4,5 +4,6 @@ __all__ = [
         "pollard_rho",
         "pollard_p_minus_1",
         "fermats",
-        "knj_factorisation"
+        "knj_factorisation",
+        "quadratic_sieve"
         ]

@@ -107,7 +107,8 @@ class PRSolver(Solver):
                     self.k = ((aY - aX) * inv) % order                  # so set it
 
                     if self.G * self.k != self.Q:                       # not always 100% going to work
-                        found = False
+                        print("error")
+                        found = True
 
         self.time = time.time() - self.start
 
@@ -117,6 +118,7 @@ class PRSolver(Solver):
         if self.verbose:
             print("k:", self.k)
             print("Time taken: %.3f s" % (self.time))                   # print time taken
+            print("Space used: %.3f s" % (self.space))                  # print space used
             print("Numbers checked:", self.count)                       # print total count
 
         return True

@@ -67,6 +67,7 @@ class Solver(KeyGen):
         # output more stats
         if self.verbose:
             print("Numbers checked:", self.count)           # print total count
+            print("Space used: %.3f s" % (self.space))      # print space used
             print("Time taken: %.3f s" % (self.time))       # print time taken
 
         # sanity check
