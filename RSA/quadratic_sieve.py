@@ -355,6 +355,7 @@ class QSolver(Solver):
                 for i in range(len(linearDeps)):
                     solVector = solveRow(linearDeps, expMatrix, used, i)
                     d = solveCongruence(solVector, smooth, indices, self.n)
+                    self.count += 1
 
                     if d not in [1, self.n]:
                         solved = True
@@ -373,6 +374,7 @@ class QSolver(Solver):
         # set p and q once candidate found
         self.p = d
         self.q = int(self.n / self.p)
+        self.space = len(expMatrix) * len(expMatrix[0])
 
         if self.verbose:
             print("p:", self.p)

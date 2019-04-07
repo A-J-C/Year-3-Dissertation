@@ -67,7 +67,7 @@ class BFSolver(Solver):
         if self.verbose:
             print("k:", self.k)
             print("Time taken: %.3f s" % (self.time))               # print time taken
-            print("Space used: %.3f s" % (self.space))                  # print space used
+            print("Space used: %d" % (self.space))                  # print space used
             print("Numbers checked:", self.count)                   # print total count
 
         return True

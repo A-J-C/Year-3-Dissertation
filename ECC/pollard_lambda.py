@@ -84,7 +84,6 @@ class PLSolver(Solver):
         fail = False
         n = 1
 
-        #print(order, a, b)
         # will probably find a factor, so need to loop with random numbers until we find it
         while (not found) and (not fail):
             n += 1                                                      # change pseudo random generator
@@ -144,7 +143,7 @@ class PLSolver(Solver):
         if self.verbose:
             print("k:", self.k)
             print("Time taken: %.3f s" % (self.time))                   # print time taken
-            print("Space used: %.3f s" % (self.space))                  # print space used
+            print("Space used: %d" % (self.space))                      # print space used
             print("Numbers checked:", self.count)                       # print total count
 
         return True
