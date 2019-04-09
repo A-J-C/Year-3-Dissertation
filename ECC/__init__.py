@@ -4,5 +4,6 @@ __all__ = [
         "pollard_rho",
         "pollard_lambda",
         "pohlig_hellman",
-        "baby_step"
+        "baby_step",
+        "mov_attack"
         ]

@@ -48,7 +48,7 @@ def runSolver(keys, solver, name, verbose):
 ############ MASTER PROGRAM #########
 
 def run(k = 10, brute = True, babyStep = True, rho = True,
-        lamb = True, poHel = True, verbose = True):
+        lamb = True, poHel = True, movAttack = True, verbose = True):
     """ creates a k-bit ECC key, cracks it with several algorithms, and generates
         statistics to compare their performance """
 
@@ -96,19 +96,38 @@ def run(k = 10, brute = True, babyStep = True, rho = True,
         pohSol = pohlig_hellman.PHSolver(keys.curve, keys.Q, keys.G, verbose)   # create new instance with public key info
         poh_res = runSolver(keys, pohSol, "POHLIG HELLMAN", verbose)            # check solver
 
-    return bf_res, bsgs_res, rho_res, lambda_res, poh_res
+    ############ MOV ATTACK #########
+    mov_res = {}
+    if movAttack:
+        movSol = mov_attack.MOVSolver(keys.curve, keys.Q, keys.G, verbose)      # create new instance with public key info
+        mov_res = runSolver(keys, movSol, "MOV ATTACK", verbose)                # check solver
+
+    return bf_res, bsgs_res, rho_res, lambda_res, poh_res, mov_res
 
 
 def test(k = 10):
     """ tries to find failure point """
 
+    """
     res = {}
     res['res'] = True
 
     # loop till fail
     while res['res']:
-        res = run(k, False, False, True, False, False, verbose = True)[2]
+    """
+    counter = 0
+    fail = 0
 
+    for i in range(10000):
+        res = run(k, False, False, False, False, False, True, verbose = True)[-1]
+
+        if res['res'] == True:
+            print("WORKED")
+            counter += 1
+        else:
+            fail += 1
+
+    print("WORKED: %d \nFAILED: %d" % (counter, fail))
 
 ############ COMMAND LINE INTERFACE #########
 
@@ -122,6 +141,7 @@ if __name__ == '__main__':
     parser.add_argument("-pr", "--pollard_rho", help="turns pollard_rho decryption on", action="store_true")
     parser.add_argument("-pl", "--pollard_lambda", help="turns pollard_lambda decryption on", action="store_true")
     parser.add_argument("-ph", "--pohlig_hellman", help="turns pohlig_hellman decryption on", action="store_true")
+    parser.add_argument("-ma", "--mov_attack", help="turns mov_attack decryption on", action="store_true")
     parser.add_argument("-a", "--all", help="turns all on", action="store_true")
     parser.add_argument("-t", "--test", help="runs failure test", action="store_true")
 
@@ -134,6 +154,6 @@ if __name__ == '__main__':
         # default run
         run()
     elif args.all:
-        run(args.bitsize, True, True, True, True, True, not args.verbose)
+        run(args.bitsize, True, True, True, True, True, True, not args.verbose)
     else:
-        run(args.bitsize, args.bruteforce, args.baby_step, args.pollard_rho, args.pollard_lambda, args.pohlig_hellman, not args.verbose)
+        run(args.bitsize, args.bruteforce, args.baby_step, args.pollard_rho, args.pollard_lambda, args.pohlig_hellman, arggs.mov_attack, not args.verbose)

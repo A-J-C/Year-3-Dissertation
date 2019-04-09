@@ -85,8 +85,8 @@ class PHSolver(Solver):
     """ inherits from the default solver Class """
 
     def solve(self):
-        """ baby-step giant-step uses a hash table to speed up
-            finding a solution """
+        """ uses factoring to break groups into smaller cycic groups
+            then applies BSGS """
 
         # sanity check
         if self.G is None or self.curve is None or self.Q is None:

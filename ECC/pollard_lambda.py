@@ -63,8 +63,8 @@ class PLSolver(Solver):
     """ inherits from the default solver Class """
 
     def solve(self):
-        """ baby-step giant-step uses a hash table to speed up
-            finding a solution """
+        """ takes random works around the cyclic groups and sets traps
+            in the hope that it catches another random walker """
 
         # sanity check
         if self.G is None or self.curve is None or self.Q is None:

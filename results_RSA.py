@@ -129,6 +129,8 @@ def results(algo = 0, minBit = 10, maxBit = 44, saveFile = "results", noResults 
         solver = knj_factorisation.KNJSolver(verbose = False)
     elif algo == 4:
         solver = pollard_p_minus_1.PSolver(verbose = False)
+    elif algo == 5:
+        solver = quadratic_sieve.QSolver(verbose = False)
 
     getResults(solver, minBit, maxBit, saveFile, noResults)
 
@@ -147,6 +149,7 @@ if __name__ == '__main__':
     parser.add_argument("-pr", "--pollard_rho", help="turns pollard_rho decryption on", action="store_true")
     parser.add_argument("-knj", "--KNJ_factorisation", help="turns KNJ_factorisation decryption on", action="store_true")
     parser.add_argument("-pp", "--pollard_p_minus_1", help="turns pollard_p_minus_1 decryption on", action="store_true")
+    parser.add_argument("-qs", "--quadratic_sieve", help="turns quadratic_sieve decryption on", action="store_true")
 
     args = parser.parse_args()
 
@@ -160,5 +163,7 @@ if __name__ == '__main__':
         algo = 3
     elif args.pollard_p_minus_1:
         algo = 4
+    elif args.quadratic_sieve:
+        algo = 5
 
     results(algo, args.minbit, args.maxbit, args.savefile, args.noresults)

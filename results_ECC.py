@@ -133,6 +133,8 @@ def results(algo = 0, minBit = 10, maxBit = 18, saveFile = "results", noResults 
         solver = pollard_lambda.PLSolver(v = False)
     elif algo == 4:
         solver = pohlig_hellman.PHSolver(v = False)
+    elif algo == 5:
+        solver = mov_attack.MOVSolver(v = False)
 
     getResults(solver, minBit, maxBit, saveFile, noResults)
 
@@ -151,6 +153,7 @@ if __name__ == '__main__':
     parser.add_argument("-pr", "--pollard_rho", help="turns pollard_rho decryption on", action="store_true")
     parser.add_argument("-pl", "--pollard_lambda", help="turns pollard_lambda decryption on", action="store_true")
     parser.add_argument("-ph", "--pohlig_hellman", help="turns pohlig_hellman decryption on", action="store_true")
+    parser.add_argument("-ma", "--mov_attack", help="turns mov_attack decryption on", action="store_true")
 
     args = parser.parse_args()
 
@@ -163,5 +166,7 @@ if __name__ == '__main__':
         algo = 3
     elif args.pohlig_hellman:
         algo = 4
+    elif args.mov_attack:
+        algo = 5
 
     results(algo, args.minbit, args.maxbit, args.savefile, args.noresults)

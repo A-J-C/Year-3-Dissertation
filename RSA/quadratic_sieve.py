@@ -37,7 +37,7 @@ import math
 import pickle
 import time
 from bisect import bisect_left
-from functools import reduce 
+from functools import reduce
 from RSA.solver import Solver
 from utils import helper
 
@@ -205,7 +205,7 @@ def gauss(expMatrix):
 def solveRow(linearDeps, expMatrix, used, rowNum):
     """ solves a row of the matix to produce solution vector """
 
-    # index of rowNum will trivially be in solution vector 
+    # index of rowNum will trivially be in solution vector
     solVector = [linearDeps[rowNum][1]]
     row = linearDeps[rowNum][0]
 

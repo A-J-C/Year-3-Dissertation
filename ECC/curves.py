@@ -33,6 +33,42 @@ if not __package__:
 from cypari import pari
 from utils import helper
 
+############ EXTRA FUNCTIONS #########
+
+def secondCurve(curve, degree):
+    """ creates a second curve over an extended field """
+
+    p = pow(curve.fp, degree)
+
+    field = pari("a = ffgen(" + str(p) + ", 'a)")
+
+    curve2str = "["+str(curve.a)+","+str(curve.b)+"]" +", " + str(field)
+
+    curve2 = pari("E2 = ellinit(" + curve2str + ")")
+
+    c = Curve()
+    c.setE(curve2)
+
+    return c.getR(), c
+
+
+def cyclicLog(G, Q, o):
+    """ answers the log problem of G = Q^k over a cyclic field of order o """
+
+    # might not work
+    try:
+        return pari('fflog(' + G + ',' + Q + ',' + o + ')')
+    except:
+        return 0
+
+
+def isPrime(p):
+    """ uses pari to test for primes (easier to use than my own implementation) """
+
+    if p != int(p):
+        return False
+
+    return pari("isprime(" + str(int(p)) + ")")
 
 ############ POINT CLASS #########
 
@@ -177,6 +213,7 @@ class Curve:
         self.verbose = verbose                                          # additional output
         self.E = None                                                   # pari version of curve
         self.discriminant = 0                                           # discriminant of curve
+        self.card = 0                                                   # cardinality of the curve
         self.initPari()                                                 # initialise pari curve
 
 
@@ -197,6 +234,10 @@ class Curve:
     def setG(self, G):
         """ sets generator value """
         self.G = G
+
+    def setE(self, E):
+        """ sets pari curve """
+        self.E = E
 
 
     ############ COMPUTATION FUNCTIONS #########
@@ -231,6 +272,11 @@ class Curve:
 
         curve = "["+str(self.a)+","+str(self.b)+"]"+" , "+str(self.fp)  # get string rep of curve
         self.E = pari('ellinit(' + curve + ')')                         # create pari version of curve
+
+        try:
+            self.card = pari(self.E).ellcard()                              # get cardinality
+        except:
+            pass
 
 
     def pointAtInf(self):
@@ -295,6 +341,58 @@ class Curve:
         self.ord = self.order(G)                                        # store order
 
         return G                                                        # return point
+
+
+    def getR(self):
+        """ returns a new generator point if one exists"""
+
+        generators = pari(self.E).ellgenerators()                       # get all generators
+        print(str(generators))
+
+        # find G
+        if self.G is not None:
+            G = self.G
+
+        # else generate it
+        else:
+            pG = str(generators[0])
+            if pG.startswith("[Mod"):
+                Gx = int(pG.split(",")[0].split("(")[1])                # extract x coord
+                Gy = int(pG.split(",")[2].split("(")[1])                # extract y coord
+            else:
+                Gx, Gy = pG.split(",")
+
+
+        for gen in generators:
+            pR = str(gen)                                               # get string representation
+
+            if pR.startswith("[Mod"):
+                Rx = int(pR.split(",")[0].split("(")[1])                # extract x coord
+                Ry = int(pR.split(",")[2].split("(")[1])                # extract y coord
+            else:
+                Rx, Ry = str(pR).split(",")
+
+            if Rx != Gx and Ry != Gy:                                   # if not the same as G
+                return pR                                               # return result
+
+        return False                                                    # return point
+
+
+    def group(self):
+        """ returns ellgroup """
+
+        return str(pari(self.E).ellgroup()[0])
+
+
+    def weil(self, G, P, m):
+        """ uses pari to compute the weil paring of a point on the curve
+            to a new prime extension field """
+
+        P = "[" + str(P.x) + "," + str(P.y) + "]"                       # string representation of point
+        wP = pari("ellweilpairing(" + str(self.E) + ", "
+                  + str(G) + "," + P + "," + str(m) +")")
+
+        return str(wP)
 
 
     def __str__(self):

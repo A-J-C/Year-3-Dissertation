@@ -168,24 +168,6 @@ def millerRabin(n, r):
     return True                                 # if no witness can be found for n being composite, it is a probable prime
 
 
-def perfectSquare(n):
-    """ tests whether n is a perfect square
-        following NIST-FIPS-186-4 """
-    pass
-
-
-def jacobiSym(n):
-    """ computes the Jacobi symbol of a/n
-        following NIST-FIPS-186-4 """
-    pass
-
-
-def lucasTest(n):
-    """ performs Lucas Test to check n for primality
-        following NIST-FIPS-186-4 """
-
-    return True
-
 
 def checks(candidate, primeList, r = 10):
     """ given a candidate and list of primes checks for pseudo-primes """
@@ -202,11 +184,7 @@ def checks(candidate, primeList, r = 10):
         return False                                    # if check fails return False
 
     ############ Miller-Rabin CHECK #########
-    if not millerRabin(candidate, r):
-        return False                                    # if check fails return False
-
-    ############ Lucas CHECK #########
-    return lucasTest(candidate)                         # final check
+    return millerRabin(candidate, r)
 
 
 def isPrime(n, primes):
