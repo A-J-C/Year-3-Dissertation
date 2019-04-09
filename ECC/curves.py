@@ -30,7 +30,7 @@ sys.path.append('Programming/')
 if not __package__:
     sys.path.append('../')
 
-from cypari import pari
+#from cypari import pari
 from utils import helper
 
 ############ EXTRA FUNCTIONS #########

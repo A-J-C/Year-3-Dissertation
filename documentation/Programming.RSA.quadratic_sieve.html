@@ -8,21 +8,21 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="Programming.html"><font color="#ffffff">Programming</font></a>.<a href="Programming.RSA.html"><font color="#ffffff">RSA</font></a>.quadratic_sieve</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Calexj%5Cgoogle%20drive%5Cdocuments%5Cuniversity%5Cyear%203%5Cindividual%20project%5Cprogramming%5Crsa%5Cquadratic_sieve.py">c:\users\alexj\google drive\documents\university\year 3\individual project\programming\rsa\quadratic_sieve.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:f%3A%5Cdocuments%5Cuniversity%5Cyear%203%5Cindividual%20project%5Cprogramming%5Crsa%5Cquadratic_sieve.py">f:\documents\university\year 3\individual project\programming\rsa\quadratic_sieve.py</a></font></td></tr></table>
     <p><tt>#&nbsp;&nbsp;&nbsp;&nbsp;File:&nbsp;quadratic_sieve.py<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Author:&nbsp;Alexander&nbsp;Craig<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Project:&nbsp;An&nbsp;Analysis&nbsp;of&nbsp;the&nbsp;Security&nbsp;of&nbsp;RSA&nbsp;&amp;&nbsp;Elliptic&nbsp;Curve&nbsp;Cryptography<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Supervisor:&nbsp;Maximilien&nbsp;Gadouleau<br>
-#&nbsp;&nbsp;&nbsp;&nbsp;Version:&nbsp;1.0<br>
-#&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;13/03/19<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Version:&nbsp;1.1<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;05/04/19<br>
 #<br>
-#&nbsp;&nbsp;&nbsp;&nbsp;Functionality:&nbsp;uses&nbsp;Pollard's&nbsp;Rho&nbsp;method&nbsp;to&nbsp;discover&nbsp;a&nbsp;private&nbsp;RSA&nbsp;key&nbsp;from<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Functionality:&nbsp;uses&nbsp;Quadratic&nbsp;Sieve&nbsp;method&nbsp;to&nbsp;discover&nbsp;a&nbsp;private&nbsp;RSA&nbsp;key&nbsp;from<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;given&nbsp;public&nbsp;key&nbsp;pair<br>
 #<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Instructions:&nbsp;intended&nbsp;use&nbsp;is&nbsp;to&nbsp;import&nbsp;this&nbsp;file&nbsp;and&nbsp;use&nbsp;the&nbsp;Class&nbsp;as&nbsp;defined<br>
 #<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;CLI:&nbsp;for&nbsp;testing&nbsp;can&nbsp;be&nbsp;used&nbsp;from&nbsp;command&nbsp;line&nbsp;-<br>
-#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python3&nbsp;pollard_rho.py&nbsp;PK_n&nbsp;PK_e&nbsp;[verbose]<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;python3&nbsp;quadratic_sieve.py&nbsp;PK_n&nbsp;PK_e&nbsp;[verbose]<br>
 #</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -32,10 +32,12 @@
     
 <tr><td bgcolor="#aa55cc"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
 <td width="100%"><table width="100%" summary="list"><tr><td width="25%" valign=top><a href="utils.helper.html">utils.helper</a><br>
-</td><td width="25%" valign=top><a href="secrets.html">secrets</a><br>
+<a href="math.html">math</a><br>
+</td><td width="25%" valign=top><a href="pickle.html">pickle</a><br>
+<a href="secrets.html">secrets</a><br>
 </td><td width="25%" valign=top><a href="sys.html">sys</a><br>
-</td><td width="25%" valign=top><a href="time.html">time</a><br>
-</td></tr></table></td></tr></table><p>
+<a href="time.html">time</a><br>
+</td><td width="25%" valign=top></td></tr></table></td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ee77aa">
 <td colspan=3 valign=bottom>&nbsp;<br>
@@ -46,7 +48,7 @@
 <dt><font face="helvetica, arial"><a href="RSA.solver.html#Solver">RSA.solver.Solver</a>(<a href="RSA.generate_RSA.html#KeyGen">RSA.generate_RSA.KeyGen</a>)
 </font></dt><dd>
 <dl>
-<dt><font face="helvetica, arial"><a href="Programming.RSA.quadratic_sieve.html#RhoSolver">RhoSolver</a>
+<dt><font face="helvetica, arial"><a href="Programming.RSA.quadratic_sieve.html#QSolver">QSolver</a>
 </font></dt></dl>
 </dd>
 </dl>
@@ -54,57 +56,56 @@
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
 <tr bgcolor="#ffc8d8">
 <td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#000000" face="helvetica, arial"><a name="RhoSolver">class <strong>RhoSolver</strong></a>(<a href="RSA.solver.html#Solver">RSA.solver.Solver</a>)</font></td></tr>
+<font color="#000000" face="helvetica, arial"><a name="QSolver">class <strong>QSolver</strong></a>(<a href="RSA.solver.html#Solver">RSA.solver.Solver</a>)</font></td></tr>
     
 <tr bgcolor="#ffc8d8"><td rowspan=2><tt>&nbsp;&nbsp;&nbsp;</tt></td>
-<td colspan=2><tt><a href="#RhoSolver">RhoSolver</a>(n=0,&nbsp;e=0,&nbsp;verbose=False)<br>
+<td colspan=2><tt><a href="#QSolver">QSolver</a>(n=0,&nbsp;e=0,&nbsp;verbose=False)<br>
 &nbsp;<br>
 inherits&nbsp;from&nbsp;the&nbsp;default&nbsp;solver&nbsp;Class<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%"><dl><dt>Method resolution order:</dt>
-<dd><a href="Programming.RSA.quadratic_sieve.html#RhoSolver">RhoSolver</a></dd>
+<dd><a href="Programming.RSA.quadratic_sieve.html#QSolver">QSolver</a></dd>
 <dd><a href="RSA.solver.html#Solver">RSA.solver.Solver</a></dd>
 <dd><a href="RSA.generate_RSA.html#KeyGen">RSA.generate_RSA.KeyGen</a></dd>
 <dd><a href="builtins.html#object">builtins.object</a></dd>
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="RhoSolver-solve"><strong>solve</strong></a>(self)</dt><dd><tt>uses&nbsp;pollardsRho&nbsp;for&nbsp;prime&nbsp;factorisation&nbsp;relies&nbsp;on&nbsp;birthday&nbsp;paradox,<br>
-picking&nbsp;enough&nbsp;numbers&nbsp;should&nbsp;result&nbsp;in&nbsp;a&nbsp;collision</tt></dd></dl>
+<dl><dt><a name="QSolver-solve"><strong>solve</strong></a>(self)</dt><dd><tt>uses&nbsp;quadratic&nbsp;sieve&nbsp;for&nbsp;prime&nbsp;factorisation</tt></dd></dl>
 
 <hr>
 Methods inherited from <a href="RSA.solver.html#Solver">RSA.solver.Solver</a>:<br>
-<dl><dt><a name="RhoSolver-__init__"><strong>__init__</strong></a>(self, n=0, e=0, verbose=False)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
+<dl><dt><a name="QSolver-__init__"><strong>__init__</strong></a>(self, n=0, e=0, verbose=False)</dt><dd><tt>Initialize&nbsp;self.&nbsp;&nbsp;See&nbsp;help(type(self))&nbsp;for&nbsp;accurate&nbsp;signature.</tt></dd></dl>
 
-<dl><dt><a name="RhoSolver-findPrivateKey"><strong>findPrivateKey</strong></a>(self)</dt><dd><tt>generates&nbsp;the&nbsp;correct&nbsp;private&nbsp;key,&nbsp;once&nbsp;p&nbsp;and&nbsp;q&nbsp;have&nbsp;been<br>
+<dl><dt><a name="QSolver-findPrivateKey"><strong>findPrivateKey</strong></a>(self)</dt><dd><tt>generates&nbsp;the&nbsp;correct&nbsp;private&nbsp;key,&nbsp;once&nbsp;p&nbsp;and&nbsp;q&nbsp;have&nbsp;been<br>
 calculated,&nbsp;and&nbsp;provided&nbsp;n&nbsp;and&nbsp;e&nbsp;from&nbsp;the&nbsp;public&nbsp;key&nbsp;are<br>
 provided</tt></dd></dl>
 
 <hr>
 Methods inherited from <a href="RSA.generate_RSA.html#KeyGen">RSA.generate_RSA.KeyGen</a>:<br>
-<dl><dt><a name="RhoSolver-generateKeys"><strong>generateKeys</strong></a>(self)</dt><dd><tt>generates&nbsp;both&nbsp;public&nbsp;and&nbsp;private&nbsp;keys</tt></dd></dl>
+<dl><dt><a name="QSolver-generateKeys"><strong>generateKeys</strong></a>(self)</dt><dd><tt>generates&nbsp;both&nbsp;public&nbsp;and&nbsp;private&nbsp;keys</tt></dd></dl>
 
-<dl><dt><a name="RhoSolver-generatePrimes"><strong>generatePrimes</strong></a>(self)</dt><dd><tt>generates&nbsp;two&nbsp;primes&nbsp;of&nbsp;bit-length&nbsp;k/2</tt></dd></dl>
+<dl><dt><a name="QSolver-generatePrimes"><strong>generatePrimes</strong></a>(self)</dt><dd><tt>generates&nbsp;two&nbsp;primes&nbsp;of&nbsp;bit-length&nbsp;k/2</tt></dd></dl>
 
-<dl><dt><a name="RhoSolver-generatePrivateKey"><strong>generatePrivateKey</strong></a>(self)</dt><dd><tt>generate&nbsp;private&nbsp;key,&nbsp;for&nbsp;reversing&nbsp;trapdoor&nbsp;function</tt></dd></dl>
+<dl><dt><a name="QSolver-generatePrivateKey"><strong>generatePrivateKey</strong></a>(self)</dt><dd><tt>generate&nbsp;private&nbsp;key,&nbsp;for&nbsp;reversing&nbsp;trapdoor&nbsp;function</tt></dd></dl>
 
-<dl><dt><a name="RhoSolver-generatePublicKey"><strong>generatePublicKey</strong></a>(self)</dt><dd><tt>generates&nbsp;a&nbsp;k-bit&nbsp;key&nbsp;from&nbsp;two&nbsp;primes&nbsp;(will&nbsp;either&nbsp;be&nbsp;k&nbsp;or&nbsp;k-1)</tt></dd></dl>
+<dl><dt><a name="QSolver-generatePublicKey"><strong>generatePublicKey</strong></a>(self)</dt><dd><tt>generates&nbsp;a&nbsp;k-bit&nbsp;key&nbsp;from&nbsp;two&nbsp;primes&nbsp;(will&nbsp;either&nbsp;be&nbsp;k&nbsp;or&nbsp;k-1)</tt></dd></dl>
 
-<dl><dt><a name="RhoSolver-printKeys"><strong>printKeys</strong></a>(self)</dt><dd><tt>prints&nbsp;out&nbsp;current&nbsp;value&nbsp;of&nbsp;keys</tt></dd></dl>
+<dl><dt><a name="QSolver-printKeys"><strong>printKeys</strong></a>(self)</dt><dd><tt>prints&nbsp;out&nbsp;current&nbsp;value&nbsp;of&nbsp;keys</tt></dd></dl>
 
-<dl><dt><a name="RhoSolver-setE"><strong>setE</strong></a>(self, e)</dt><dd><tt>sets&nbsp;value&nbsp;for&nbsp;second&nbsp;part&nbsp;of&nbsp;public&nbsp;key</tt></dd></dl>
+<dl><dt><a name="QSolver-setE"><strong>setE</strong></a>(self, e)</dt><dd><tt>sets&nbsp;value&nbsp;for&nbsp;second&nbsp;part&nbsp;of&nbsp;public&nbsp;key</tt></dd></dl>
 
-<dl><dt><a name="RhoSolver-setK"><strong>setK</strong></a>(self, k)</dt><dd><tt>sets&nbsp;value&nbsp;for&nbsp;bit&nbsp;length&nbsp;of&nbsp;n</tt></dd></dl>
+<dl><dt><a name="QSolver-setK"><strong>setK</strong></a>(self, k)</dt><dd><tt>sets&nbsp;value&nbsp;for&nbsp;bit&nbsp;length&nbsp;of&nbsp;n</tt></dd></dl>
 
-<dl><dt><a name="RhoSolver-setN"><strong>setN</strong></a>(self, n)</dt><dd><tt>sets&nbsp;value&nbsp;for&nbsp;semi-prime</tt></dd></dl>
+<dl><dt><a name="QSolver-setN"><strong>setN</strong></a>(self, n)</dt><dd><tt>sets&nbsp;value&nbsp;for&nbsp;semi-prime</tt></dd></dl>
 
-<dl><dt><a name="RhoSolver-setP"><strong>setP</strong></a>(self, p)</dt><dd><tt>sets&nbsp;value&nbsp;for&nbsp;first&nbsp;prime</tt></dd></dl>
+<dl><dt><a name="QSolver-setP"><strong>setP</strong></a>(self, p)</dt><dd><tt>sets&nbsp;value&nbsp;for&nbsp;first&nbsp;prime</tt></dd></dl>
 
-<dl><dt><a name="RhoSolver-setPHI"><strong>setPHI</strong></a>(self, phi)</dt><dd><tt>sets&nbsp;totient&nbsp;value&nbsp;for&nbsp;n</tt></dd></dl>
+<dl><dt><a name="QSolver-setPHI"><strong>setPHI</strong></a>(self, phi)</dt><dd><tt>sets&nbsp;totient&nbsp;value&nbsp;for&nbsp;n</tt></dd></dl>
 
-<dl><dt><a name="RhoSolver-setQ"><strong>setQ</strong></a>(self, q)</dt><dd><tt>sets&nbsp;value&nbsp;for&nbsp;second&nbsp;prime</tt></dd></dl>
+<dl><dt><a name="QSolver-setQ"><strong>setQ</strong></a>(self, q)</dt><dd><tt>sets&nbsp;value&nbsp;for&nbsp;second&nbsp;prime</tt></dd></dl>
 
-<dl><dt><a name="RhoSolver-setVerbose"><strong>setVerbose</strong></a>(self, verbose)</dt><dd><tt>sets&nbsp;additional&nbsp;output&nbsp;or&nbsp;not</tt></dd></dl>
+<dl><dt><a name="QSolver-setVerbose"><strong>setVerbose</strong></a>(self, verbose)</dt><dd><tt>sets&nbsp;additional&nbsp;output&nbsp;or&nbsp;not</tt></dd></dl>
 
 <hr>
 Data descriptors inherited from <a href="RSA.generate_RSA.html#KeyGen">RSA.generate_RSA.KeyGen</a>:<br>
@@ -121,6 +122,43 @@ Data descriptors inherited from <a href="RSA.generate_RSA.html#KeyGen">RSA.gener
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-g"><strong>g</strong></a>(x, n, c)</dt><dd><tt>polynomial&nbsp;function&nbsp;for&nbsp;semi-randomness</tt></dd></dl>
-</td></tr></table>
+<td width="100%"><dl><dt><a name="-bisect_left"><strong>bisect_left</strong></a>(...)</dt><dd><tt><a href="#-bisect_left">bisect_left</a>(a,&nbsp;x[,&nbsp;lo[,&nbsp;hi]])&nbsp;-&gt;&nbsp;index<br>
+&nbsp;<br>
+Return&nbsp;the&nbsp;index&nbsp;where&nbsp;to&nbsp;insert&nbsp;item&nbsp;x&nbsp;in&nbsp;list&nbsp;a,&nbsp;assuming&nbsp;a&nbsp;is&nbsp;sorted.<br>
+&nbsp;<br>
+The&nbsp;return&nbsp;value&nbsp;i&nbsp;is&nbsp;such&nbsp;that&nbsp;all&nbsp;e&nbsp;in&nbsp;a[:i]&nbsp;have&nbsp;e&nbsp;&lt;&nbsp;x,&nbsp;and&nbsp;all&nbsp;e&nbsp;in<br>
+a[i:]&nbsp;have&nbsp;e&nbsp;&gt;=&nbsp;x.&nbsp;&nbsp;So&nbsp;if&nbsp;x&nbsp;already&nbsp;appears&nbsp;in&nbsp;the&nbsp;list,&nbsp;i&nbsp;points&nbsp;just<br>
+before&nbsp;the&nbsp;leftmost&nbsp;x&nbsp;already&nbsp;there.<br>
+&nbsp;<br>
+Optional&nbsp;args&nbsp;lo&nbsp;(default&nbsp;0)&nbsp;and&nbsp;hi&nbsp;(default&nbsp;len(a))&nbsp;bound&nbsp;the<br>
+slice&nbsp;of&nbsp;a&nbsp;to&nbsp;be&nbsp;searched.</tt></dd></dl>
+ <dl><dt><a name="-buildExponentMat"><strong>buildExponentMat</strong></a>(residPrimes, smooth)</dt><dd><tt>builds&nbsp;matrix&nbsp;around&nbsp;exponent&nbsp;vectors&nbsp;mod&nbsp;2</tt></dd></dl>
+ <dl><dt><a name="-divX"><strong>divX</strong></a>(n, X)</dt><dd><tt>takes&nbsp;as&nbsp;many&nbsp;factors&nbsp;of&nbsp;X&nbsp;as&nbsp;possible&nbsp;out&nbsp;of&nbsp;number&nbsp;n</tt></dd></dl>
+ <dl><dt><a name="-divXCount"><strong>divXCount</strong></a>(n, X)</dt><dd><tt>as&nbsp;above&nbsp;with&nbsp;additional&nbsp;counter</tt></dd></dl>
+ <dl><dt><a name="-gauss"><strong>gauss</strong></a>(expMatrix)</dt><dd><tt>gaussian&nbsp;elimination&nbsp;around&nbsp;pivot&nbsp;mod&nbsp;2&nbsp;so<br>
+all&nbsp;linear&nbsp;combinations&nbsp;are&nbsp;either&nbsp;1&nbsp;or&nbsp;0</tt></dd></dl>
+ <dl><dt><a name="-quadRes"><strong>quadRes</strong></a>(p, n)</dt><dd><tt>returns&nbsp;True&nbsp;if&nbsp;n&nbsp;is&nbsp;a&nbsp;quadratic&nbsp;residue&nbsp;mod&nbsp;p</tt></dd></dl>
+ <dl><dt><a name="-reduce"><strong>reduce</strong></a>(...)</dt><dd><tt><a href="#-reduce">reduce</a>(function,&nbsp;sequence[,&nbsp;initial])&nbsp;-&gt;&nbsp;value<br>
+&nbsp;<br>
+Apply&nbsp;a&nbsp;function&nbsp;of&nbsp;two&nbsp;arguments&nbsp;cumulatively&nbsp;to&nbsp;the&nbsp;items&nbsp;of&nbsp;a&nbsp;sequence,<br>
+from&nbsp;left&nbsp;to&nbsp;right,&nbsp;so&nbsp;as&nbsp;to&nbsp;reduce&nbsp;the&nbsp;sequence&nbsp;to&nbsp;a&nbsp;single&nbsp;value.<br>
+For&nbsp;example,&nbsp;<a href="#-reduce">reduce</a>(lambda&nbsp;x,&nbsp;y:&nbsp;x+y,&nbsp;[1,&nbsp;2,&nbsp;3,&nbsp;4,&nbsp;5])&nbsp;calculates<br>
+((((1+2)+3)+4)+5).&nbsp;&nbsp;If&nbsp;initial&nbsp;is&nbsp;present,&nbsp;it&nbsp;is&nbsp;placed&nbsp;before&nbsp;the&nbsp;items<br>
+of&nbsp;the&nbsp;sequence&nbsp;in&nbsp;the&nbsp;calculation,&nbsp;and&nbsp;serves&nbsp;as&nbsp;a&nbsp;default&nbsp;when&nbsp;the<br>
+sequence&nbsp;is&nbsp;empty.</tt></dd></dl>
+ <dl><dt><a name="-shanksTonelli"><strong>shanksTonelli</strong></a>(n, p)</dt><dd><tt>implemented&nbsp;shanks&nbsp;tonelli&nbsp;algotihm<br>
+to&nbsp;solve&nbsp;x^2&nbsp;=&nbsp;n&nbsp;(mod&nbsp;p)</tt></dd></dl>
+ <dl><dt><a name="-solveCongruence"><strong>solveCongruence</strong></a>(solVector, smooth, indices, n)</dt><dd><tt>extracts&nbsp;factor&nbsp;from&nbsp;given&nbsp;soution&nbsp;vector</tt></dd></dl>
+ <dl><dt><a name="-solveRow"><strong>solveRow</strong></a>(linearDeps, expMatrix, used, rowNum)</dt><dd><tt>solves&nbsp;a&nbsp;row&nbsp;of&nbsp;the&nbsp;matix&nbsp;to&nbsp;produce&nbsp;solution&nbsp;vector</tt></dd></dl>
+</td></tr></table><p>
+<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
+<tr bgcolor="#55aa55">
+<td colspan=3 valign=bottom>&nbsp;<br>
+<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
+    
+<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
+<td width="100%"><strong>f</strong> = &lt;_io.BufferedReader name='utils/millionPrimes.pkl'&gt;<br>
+<strong>filePath</strong> = ''<br>
+<strong>primes</strong> = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43, 47, 53, 59, 61, 67, 71, ...]<br>
+<strong>solv</strong> = &lt;Programming.RSA.quadratic_sieve.QSolver object&gt;</td></tr></table>
 </body></html>

@@ -8,13 +8,13 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="Programming.html"><font color="#ffffff">Programming</font></a>.<a href="Programming.ECC.html"><font color="#ffffff">ECC</font></a>.pollard_lambda</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Calexj%5Cgoogle%20drive%5Cdocuments%5Cuniversity%5Cyear%203%5Cindividual%20project%5Cprogramming%5Cecc%5Cpollard_lambda.py">c:\users\alexj\google drive\documents\university\year 3\individual project\programming\ecc\pollard_lambda.py</a></font></td></tr></table>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:f%3A%5Cdocuments%5Cuniversity%5Cyear%203%5Cindividual%20project%5Cprogramming%5Cecc%5Cpollard_lambda.py">f:\documents\university\year 3\individual project\programming\ecc\pollard_lambda.py</a></font></td></tr></table>
     <p><tt>#&nbsp;&nbsp;&nbsp;&nbsp;File:&nbsp;pollard_lambda.py<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Author:&nbsp;Alexander&nbsp;Craig<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Project:&nbsp;An&nbsp;Analysis&nbsp;of&nbsp;the&nbsp;Security&nbsp;of&nbsp;RSA&nbsp;&amp;&nbsp;Elliptic&nbsp;Curve&nbsp;Cryptography<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Supervisor:&nbsp;Maximilien&nbsp;Gadouleau<br>
-#&nbsp;&nbsp;&nbsp;&nbsp;Version:&nbsp;1.0<br>
-#&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;26/02/19<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Version:&nbsp;1.2<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;22/03/19<br>
 #<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Functionality:&nbsp;uses&nbsp;pollard's&nbsp;lambda&nbsp;method&nbsp;to&nbsp;caclualte<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;private&nbsp;ECC&nbsp;key&nbsp;from&nbsp;a&nbsp;given&nbsp;public&nbsp;key&nbsp;set<br>
@@ -71,8 +71,8 @@ inherits&nbsp;from&nbsp;the&nbsp;default&nbsp;solver&nbsp;Class<br>&nbsp;</tt></
 </dl>
 <hr>
 Methods defined here:<br>
-<dl><dt><a name="PLSolver-solve"><strong>solve</strong></a>(self)</dt><dd><tt>baby-step&nbsp;giant-step&nbsp;uses&nbsp;a&nbsp;hash&nbsp;table&nbsp;to&nbsp;speed&nbsp;up<br>
-finding&nbsp;a&nbsp;solution</tt></dd></dl>
+<dl><dt><a name="PLSolver-solve"><strong>solve</strong></a>(self)</dt><dd><tt>takes&nbsp;random&nbsp;works&nbsp;around&nbsp;the&nbsp;cyclic&nbsp;groups&nbsp;and&nbsp;sets&nbsp;traps<br>
+in&nbsp;the&nbsp;hope&nbsp;that&nbsp;it&nbsp;catches&nbsp;another&nbsp;random&nbsp;walker</tt></dd></dl>
 
 <hr>
 Methods inherited from <a href="ECC.solver.html#Solver">ECC.solver.Solver</a>:<br>
@@ -115,6 +115,6 @@ Data descriptors inherited from <a href="ECC.generate_ECC.html#KeyGen">ECC.gener
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-g"><strong>g</strong></a>(P, n)</dt><dd><tt>polynomial&nbsp;function&nbsp;for&nbsp;semi-randomness</tt></dd></dl>
+<td width="100%"><dl><dt><a name="-g"><strong>g</strong></a>(P, n, order)</dt><dd><tt>polynomial&nbsp;function&nbsp;for&nbsp;semi-randomness</tt></dd></dl>
 </td></tr></table>
 </body></html>

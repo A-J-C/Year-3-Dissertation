@@ -288,6 +288,7 @@ class QSolver(Solver):
             if rootN == math.sqrt(self.n):
                 d = rootN
                 solved = True
+                expMatrix = [[]]
 
             else:
                 # start sieve at square root and go upto our max bound
