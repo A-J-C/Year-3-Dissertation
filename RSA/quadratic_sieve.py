@@ -378,10 +378,6 @@ class QSolver(Solver):
 
 ############ COMMAND LINE INTERFACE #########
 
-solv = QSolver(1811706971, 985590479, True)
-solv.solve()
-
-"""
 if __name__ == '__main__':
     solver = QSolver()
 
@@ -395,4 +391,3 @@ if __name__ == '__main__':
 
     if not s:
         print("Input not of correct form: python3 pollard_rho.py PK_n PK_e [verbose]")
-"""

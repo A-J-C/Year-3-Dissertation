@@ -8,17 +8,17 @@
 <td valign=bottom>&nbsp;<br>
 <font color="#ffffff" face="helvetica, arial">&nbsp;<br><big><big><strong><a href="Programming.html"><font color="#ffffff">Programming</font></a>.results_ECC</strong></big></big></font></td
 ><td align=right valign=bottom
-><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:c%3A%5Cusers%5Calexj%5Cgoogle%20drive%5Cdocuments%5Cuniversity%5Cyear%203%5Cindividual%20project%5Cprogramming%5Cresults_ecc.py">c:\users\alexj\google drive\documents\university\year 3\individual project\programming\results_ecc.py</a></font></td></tr></table>
-    <p><tt>#&nbsp;&nbsp;&nbsp;&nbsp;File:&nbsp;results_RSA.py<br>
+><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:f%3A%5Cdocuments%5Cuniversity%5Cyear%203%5Cindividual%20project%5Cprogramming%5Cresults_ecc.py">f:\documents\university\year 3\individual project\programming\results_ecc.py</a></font></td></tr></table>
+    <p><tt>#&nbsp;&nbsp;&nbsp;&nbsp;File:&nbsp;results_ECC.py<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Author:&nbsp;Alexander&nbsp;Craig<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Project:&nbsp;An&nbsp;Analysis&nbsp;of&nbsp;the&nbsp;Security&nbsp;of&nbsp;RSA&nbsp;&amp;&nbsp;Elliptic&nbsp;Curve&nbsp;Cryptography<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Supervisor:&nbsp;Maximilien&nbsp;Gadouleau<br>
-#&nbsp;&nbsp;&nbsp;&nbsp;Version:&nbsp;1.0<br>
-#&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;06/02/19<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Version:&nbsp;2.0<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;Date:&nbsp;19/03/19<br>
 #<br>
 #&nbsp;&nbsp;&nbsp;&nbsp;Functionality:&nbsp;gathers&nbsp;results&nbsp;for&nbsp;RSA&nbsp;in&nbsp;given&nbsp;range<br>
 #<br>
-#&nbsp;&nbsp;&nbsp;&nbsp;CLI:&nbsp;python3&nbsp;results_RSA.py&nbsp;-h&nbsp;(to&nbsp;see&nbsp;possible&nbsp;flags)<br>
+#&nbsp;&nbsp;&nbsp;&nbsp;CLI:&nbsp;python3&nbsp;results_ECC.py&nbsp;-h&nbsp;(to&nbsp;see&nbsp;possible&nbsp;flags)<br>
 #</tt></p>
 <p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -32,8 +32,8 @@
 <a href="ECC.brute_force.html">ECC.brute_force</a><br>
 <a href="ECC.generate_ECC.html">ECC.generate_ECC</a><br>
 </td><td width="25%" valign=top><a href="math.html">math</a><br>
+<a href="ECC.mov_attack.html">ECC.mov_attack</a><br>
 <a href="numpy.html">numpy</a><br>
-<a href="matplotlib.pyplot.html">matplotlib.pyplot</a><br>
 <a href="ECC.pohlig_hellman.html">ECC.pohlig_hellman</a><br>
 </td><td width="25%" valign=top><a href="ECC.pollard_lambda.html">ECC.pollard_lambda</a><br>
 <a href="ECC.pollard_rho.html">ECC.pollard_rho</a><br>
@@ -47,8 +47,8 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-getResults"><strong>getResults</strong></a>(solver, minBit, maxBit, saveFile)</dt><dd><tt>produces&nbsp;a&nbsp;graph,&nbsp;given&nbsp;a&nbsp;solver,&nbsp;result&nbsp;index&nbsp;and&nbsp;bit&nbsp;range</tt></dd></dl>
- <dl><dt><a name="-results"><strong>results</strong></a>(algo=0, minBit=10, maxBit=44, saveFile='results.csv')</dt><dd><tt>generates&nbsp;results&nbsp;for&nbsp;a&nbsp;given&nbsp;algorithm</tt></dd></dl>
+<td width="100%"><dl><dt><a name="-getResults"><strong>getResults</strong></a>(solver, minBit, maxBit, saveFile, noResults)</dt><dd><tt>saves&nbsp;a&nbsp;results&nbsp;csv,&nbsp;given&nbsp;a&nbsp;solver,&nbsp;result&nbsp;index&nbsp;and&nbsp;bit&nbsp;range</tt></dd></dl>
+ <dl><dt><a name="-results"><strong>results</strong></a>(algo=0, minBit=10, maxBit=18, saveFile='results', noResults=100)</dt><dd><tt>generates&nbsp;results&nbsp;for&nbsp;a&nbsp;given&nbsp;algorithm</tt></dd></dl>
  <dl><dt><a name="-saveResults"><strong>saveResults</strong></a>(saveFile)</dt><dd><tt>saves&nbsp;results&nbsp;to&nbsp;a&nbsp;csv&nbsp;file</tt></dd></dl>
 </td></tr></table><p>
 <table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
@@ -57,7 +57,11 @@
 <font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
     
 <tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><strong>resCount</strong> = {}<br>
-<strong>resTime</strong> = {}<br>
+<td width="100%"><strong>resCount_C</strong> = {}<br>
+<strong>resCount_W</strong> = {}<br>
+<strong>resSpace_C</strong> = {}<br>
+<strong>resSpace_W</strong> = {}<br>
+<strong>resTime_C</strong> = {}<br>
+<strong>resTime_W</strong> = {}<br>
 <strong>saveFile</strong> = ''</td></tr></table>
 </body></html>

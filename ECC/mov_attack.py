@@ -73,7 +73,7 @@ class MOVSolver(Solver):
             if self.verbose:
                 print("Not Suceptible to MOV attack")
             return False
-            
+
 
         ############ IF IT IS CONVERT ECDLP TO DLP ############
 
