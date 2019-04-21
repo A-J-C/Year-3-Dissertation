@@ -21,10 +21,12 @@
 # needed for pydocs to correctly find everything
 import sys
 sys.path.append('Programming/')
+filePath = ""
 
 # allows me to run this file directly, i.e. not wrapped up in the package
 if not __package__:
     sys.path.append('../')
+    filePath = "../"
 
 # to make it backwards compatable with Python < 3.6
 try:
@@ -32,10 +34,40 @@ try:
 except ImportError:
     from utils import secrets
 
+import math
+import pickle
 import time
+from bisect import bisect_left
 from ECC.curves import *
 from ECC.solver import Solver
 from utils.helper import modInverse
+
+
+############ GLOBAL CONSTANT #########
+
+# we load the first million primes from memory
+with open(filePath + "utils/millionPrimes.pkl", "rb") as f:
+    primes = pickle.load(f)
+
+
+############ EXTRA FUNCTIONS #########
+
+def quadRes(p, n):
+    """ returns True if n is a quadratic residue mod p """
+
+    lamb = 1
+    alpha = (n - 1) // 2
+    p = p % n
+
+    while alpha != 0:
+        if alpha % 2:
+            alpha -= 1
+            lamb = (lamb * p) % n
+        else:
+            p = (p ** 2) % n
+            alpha = alpha // 2
+
+    return lamb
 
 
 ############ MAIN CODE #########
@@ -98,9 +130,25 @@ class MOVSolver(Solver):
 
         self.time = time.time() - self.start
 
-        # set space
-        self.space = int(m) // 100
-        self.count = self.space
+        # calculate estimated space and time
+        m = int(m)
+        print(m)
+        bits = int(math.log(m, 2))
+
+        multiplier =  bits // 2
+        bound = min(bits * 20 * multiplier, primes[-1])
+        bound = bisect_left(primes, bound)
+
+        # get subset of all possible prime factors which are B-smooth
+        primesSub = primes[:bound]
+
+        # filter list as we are only interested in square conguences
+        residPrimes = list(filter(lambda p: quadRes(m, p) == 1, primesSub))
+
+        phi = len(residPrimes)
+
+        self.count = phi
+        self.space = phi * phi
 
         if self.verbose:
             print("k:", self.k)

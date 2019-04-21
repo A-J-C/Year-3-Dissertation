@@ -108,26 +108,13 @@ def run(k = 10, brute = True, babyStep = True, rho = True,
 def test(k = 10):
     """ tries to find failure point """
 
-    """
     res = {}
-    res['res'] = True
+    res['res'] = False
 
-    # loop till fail
-    while res['res']:
-    """
-    counter = 0
-    fail = 0
-
-    for i in range(10000):
+    # loop till success
+    while not res['res']:
         res = run(k, False, False, False, False, False, True, verbose = True)[-1]
 
-        if res['res'] == True:
-            print("WORKED")
-            counter += 1
-        else:
-            fail += 1
-
-    print("WORKED: %d \nFAILED: %d" % (counter, fail))
 
 ############ COMMAND LINE INTERFACE #########
 
@@ -156,4 +143,4 @@ if __name__ == '__main__':
     elif args.all:
         run(args.bitsize, True, True, True, True, True, True, not args.verbose)
     else:
-        run(args.bitsize, args.bruteforce, args.baby_step, args.pollard_rho, args.pollard_lambda, args.pohlig_hellman, arggs.mov_attack, not args.verbose)
+        run(args.bitsize, args.bruteforce, args.baby_step, args.pollard_rho, args.pollard_lambda, args.pohlig_hellman, args.mov_attack, not args.verbose)

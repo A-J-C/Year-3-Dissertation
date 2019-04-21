@@ -63,7 +63,7 @@ class PLSolver(Solver):
     """ inherits from the default solver Class """
 
     def solve(self):
-        """ takes random works around the cyclic groups and sets traps
+        """ takes random walks around the cyclic groups and sets traps
             in the hope that it catches another random walker """
 
         # sanity check
