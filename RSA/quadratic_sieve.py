@@ -40,6 +40,7 @@ from bisect import bisect_left
 from functools import reduce
 from RSA.solver import Solver
 from utils import helper
+from IPython.display import display, clear_output
 
 
 ############ GLOBAL CONSTANT #########
@@ -274,10 +275,18 @@ class QSolver(Solver):
             # get subset of all possible prime factors which are B-smooth
             primesSub = primes[:bound]
 
+            # for demo purposes
+            if self.demo:
+                print("Length of possible primes: %d" % len(primesSub))
+
             # filter list as we are only interested in square conguences
             residPrimes = list(filter(lambda p: quadRes(self.n, p) == 1, primesSub))
 
-            if self.verbose:
+            # for demo purposes
+            if self.demo:
+                print("Length of primes with quadRes(n,p) == 1: %d \n" % len(residPrimes))
+
+            if self.verbose and not self.demo:
                 print("%d residual primes found" % len(residPrimes))
 
             #### SIEVE FOR SMOOTH NUMBERS
@@ -308,7 +317,7 @@ class QSolver(Solver):
                     for resid in shanksTonelli(self.n, prime):
                         start = resid - rootN % prime
 
-                        # from our sieve we now every primeth term will be divisible
+                        # from our sieve we k8now every primeth term will be divisible
                         for i in range(start, sieveLen, prime):
                             sieve[i] = divX(sieve[i], prime)
 

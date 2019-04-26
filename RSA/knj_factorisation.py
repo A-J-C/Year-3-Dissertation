@@ -36,6 +36,7 @@ if not __package__:
 
 from RSA.solver import Solver
 from utils import generate_prime
+from IPython.display import display, clear_output
 
 
 ############ GLOBAL CONSTANT #########
@@ -82,6 +83,11 @@ class KNJSolver(Solver):
             for prime in candidatesList:
                 self.count += 1                                     # increment count
 
+                # for demo purposes
+                if self.demo and self.count %  100 == 0:
+                    clear_output(wait=True)
+                    display(str(self.n) + " % " + str(prime) + " = " + str(self.n % prime ))
+
                 # check if it is a factor
                 if self.n % prime == 0:
                     candidate = prime                               # if it is set it as the candidate
@@ -99,6 +105,11 @@ class KNJSolver(Solver):
         if self.n % candidate != 0:
             print ("No prime factors found.")
             return 0
+
+        # display as last test for demo
+        if self.demo:
+            clear_output(wait=True)
+            display(str(self.n) + " % " + str(prime) + " = " + str(self.n % prime ))
 
         # set p and q once candidate found
         self.p = candidate

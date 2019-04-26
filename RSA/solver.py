@@ -35,7 +35,7 @@ class Solver(KeyGen):
         it itslef extends the key generation class to allow it to
         utilise several functions """
 
-    def __init__(self, n = 0, e = 0, verbose = False):
+    def __init__(self, n = 0, e = 0, verbose = False, demo = False):
         super(Solver, self).__init__()                      # initalises all variables
         self.n = n                                          # public key
         self.e = e                                          # public exponent
@@ -44,6 +44,7 @@ class Solver(KeyGen):
         self.start = 0                                      # for timing
         self.time = 0
         self.space = 1                                      # default constant amount of space
+        self.demo = demo                                    # extra output for demo
 
 
     def findPrivateKey(self):
@@ -67,7 +68,7 @@ class Solver(KeyGen):
         # output more stats
         if self.verbose:
             print("Numbers checked:", self.count)           # print total count
-            print("Space used: %d" % (self.space))          # print space used
+            print("Space used: %d bytes" % (self.space * 2))# print space used
             print("Time taken: %.3f s" % (self.time))       # print time taken
 
         # sanity check

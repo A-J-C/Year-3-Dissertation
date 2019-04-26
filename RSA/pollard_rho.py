@@ -34,6 +34,7 @@ except ImportError:
 import time
 from RSA.solver import Solver
 from utils import helper
+from IPython.display import display, clear_output
 
 
 ############ EXTRA FUNCTIONS #########
@@ -72,14 +73,27 @@ class RhoSolver(Solver):
                 d = helper.gcd(abs(x - y), self.n)                  # detects when two runners meet at the finish line, signifying a full cycle
                 self.count += 1                                     # increment count
 
+                # for demo purposes
+                if self.demo and self.count % 25 == 0:
+                    clear_output(wait=True)
+                    display("gcd(" + str(x) + " - " + str(y) +
+                            ", " + str(self.n) + ") = " + str(d))
+
             if d == self.n:                                         # if we didn't find a factor
                 d = 1                                               # reset d
                 c = secrets.randbelow(self.n)                       # get new random c
                 x = y = secrets.randbelow(self.n - 1) + 1           # get new non-zero random start point
 
+        # sanity check
         if d == self.n:
             print("Couldn't find the private key.")
             return False                                            # unsuccessful
+
+        # display final test if demo
+        if self.demo:
+            clear_output(wait=True)
+            display("gcd(" + str(x) + " - " + str(y) +
+                    ", " + str(self.n) + ") = " + str(d))
 
         # set space
         self.space = 5
