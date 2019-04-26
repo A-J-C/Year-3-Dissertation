@@ -28,6 +28,7 @@ sys.path.append('Programming/')
 if not __package__:
     sys.path.append('../')
 
+from IPython.display import display, clear_output
 from RSA.solver import Solver
 
 
@@ -60,10 +61,20 @@ class BFSolver(Solver):
             candidate -= 2
             self.count += 1                                         # increment count
 
+            # for demo purposes
+            if self.demo and candidate//2 % 100 == 0:
+                clear_output(wait=True)
+                display(str(self.n) + " % " + str(candidate) + " = " + str(self.n % candidate))
+
         # sanity check
         if candidate <= 0:
             print ("No prime factors found.")
             return 0
+
+        # display final test on demo
+        if self.demo:
+            clear_output(wait=True)
+            display(str(self.n) + " % " + str(candidate) + " = " + str(self.n % candidate))
 
         # set p and q once candidate found
         self.p = candidate

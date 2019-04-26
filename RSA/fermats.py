@@ -28,6 +28,7 @@ sys.path.append('Programming/')
 if not __package__:
     sys.path.append('../')
 
+from IPython.display import display, clear_output
 from RSA.solver import Solver
 
 
@@ -61,7 +62,17 @@ class FFSolver(Solver):
             bSquared = a*a - self.n
             b = math.sqrt(bSquared)
 
+            # for demo purposes
+            if self.demo and a %  100 == 0:
+                clear_output(wait=True)
+                display("sqrt(" + str(a*a) + " - " + str(self.n) + ") = " + str(b))
+
             if b == int(b):
+
+                # for demo purposes
+                if self.demo:
+                    clear_output(wait=True)
+                    display("sqrt(" + str(a*a) + " - " + str(self.n) + ") = " + str(b))
 
                 self.p = int(a - b)
                 self.q = int(a + b)

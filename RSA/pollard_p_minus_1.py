@@ -38,6 +38,7 @@ import pickle
 import time
 from RSA.solver import Solver
 from utils import helper
+from IPython.display import display, clear_output
 
 
 ############ GLOBAL CONSTANT #########
@@ -107,7 +108,10 @@ class PSolver(Solver):
             aM = pow(a, M, self.n)                                  # a^M % n
             d = helper.gcd(aM - 1, self.n)                          # gcd(p * r, p * q) = p
 
-            #print(primes[bound1], d)
+            # for demo purposes
+            if self.demo and self.count % 20 == 0:
+                clear_output(wait=True)
+                display("Testing B = " + str(primes[bound1]))
 
             if d > 1 and d < self.n:
                 found = True                                        # we have found a factor
@@ -137,6 +141,11 @@ class PSolver(Solver):
 
                 prime = primes[p]                                   # extract prime
                 delta = prime - prevPrime                           # get delta
+
+                # for demo purposes
+                if self.demo and self.count % 20 == 0:
+                    clear_output(wait=True)
+                    display("Testing B = " + str(prime))
 
                 if delta not in cache:                              # check if we already know the answer
                     powMod = pow(aM, delta, self.n)                 # else get answer

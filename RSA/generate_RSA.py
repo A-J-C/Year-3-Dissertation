@@ -42,7 +42,7 @@ from utils import helper
 class KeyGen:
     """ used to generate a k-bit RSA key """
 
-    def __init__(self, k = 64, verbose = False):
+    def __init__(self, k = 64, verbose = False, demo = False):
         self.p = 0              # first prime
         self.q = 0              # second prime
         self.n = 0              # semi-prime n = p.q
@@ -51,6 +51,7 @@ class KeyGen:
         self.d = 0              # private key
         self.k = k              # bit length of n
         self.verbose = verbose  # verbose mode for additonal output
+        self.demo = demo        # even more output in demo mode
 
 
     ############ SETTERS #########
@@ -98,8 +99,8 @@ class KeyGen:
             print("Number of bits must be greater than 1")
             return False                                            # unsuccessful
 
-        self.p = generate_prime.getPrime(bit, self.verbose)         # False to limit output
-        self.q = generate_prime.getPrime(bit, self.verbose)
+        self.p = generate_prime.getPrime(bit, self.verbose, self.demo)    # both False to limit output
+        self.q = generate_prime.getPrime(bit, self.verbose, self.demo)
 
         if self.verbose:
             print()
