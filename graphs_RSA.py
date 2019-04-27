@@ -37,17 +37,15 @@ from utils.plots import *
 
 ############ GLOBAL VARIABLES #########
 
-resCount = [{}, {}, {}]                                                         # stores results to graph as dictionaries
-resTime = [{}, {}, {}]                                                          # stores results to graph as dictionaries
+resCount = [{}, {}, {}, {}]                                                     # stores results to graph as dictionaries
+resTime = [{}, {}, {}, {}]                                                     # stores results to graph as dictionaries
 running = True                                                                  # to stop threads
 
 
 ############ FUNCTIONS #########
 
-def updateGraph():
-    """ redraws the plot to take account of incoming data
-        adapted to enable it to work with jupyter notebooks """
-
+def setupGraph():
+    """ initial setup """
     outFig = plt.figure(figsize = (8, 8))                                       # define output figure
     tPlt = outFig.add_subplot(211)                                              # add sub plot to figure
     cPlt = outFig.add_subplot(212)                                              # add sub plot to figure
@@ -55,27 +53,36 @@ def updateGraph():
     outFig.show()                                                               # show figure
     outFig.canvas.draw()                                                        # first render
 
-    while running:
-        tPlt.clear()                                                            # clear plot
-        cPlt.clear()
-
-        dataToPlot(resTime, tPlt)                                               # plot data
-        dataToPlot(resCount, cPlt)
-
-        tPlt.set_xlabel("Key-Size (bits)")
-        cPlt.set_xlabel("Key-Size (bits)")
-        tPlt.set_ylabel("log(Time (s))")
-        cPlt.set_ylabel("log(Numbers Checked)")
-
-        outFig.tight_layout()                                                   # looks nicer
-        outFig.canvas.draw()                                                    # re draw
-        plt.pause(0.001)                                                        # pause
+    return outFig, tPlt, cPlt
 
 
-def getResults(solver, ind, minBit, maxBit):
+def updateGraph(outFig, tPlt, cPlt, labels):
+    """ redraws the plot to take account of incoming data
+        adapted to enable it to work with jupyter notebooks """
+
+    tPlt.clear()                                                                # clear plot
+    cPlt.clear()
+
+    dataToPlot(resTime, tPlt, labels)                                           # plot data
+    dataToPlot(resCount, cPlt, labels)
+
+    tPlt.set_xlabel("Key-Size (bits)")
+    cPlt.set_xlabel("Key-Size (bits)")
+    tPlt.set_ylabel("log(Time (s))")
+    cPlt.set_ylabel("log(Numbers Checked)")
+
+    tPlt.legend()
+    cPlt.legend()
+
+    outFig.tight_layout()                                                       # looks nicer
+    outFig.canvas.draw()                                                        # re draw
+    plt.pause(0.001)                                                            # pause
+
+
+def getResults(solver, ind, minBit, maxBit, COUNT):
     """ produces a graph, given a solver, result index and bit range """
 
-    while running:
+    for i in range(COUNT):
         k = secrets.randbelow(maxBit - minBit) + minBit                         # get in range
         keys = generate_RSA.KeyGen(k)                                           # initialise keys
         keys.generateKeys()                                                     # generate keys
@@ -89,17 +96,18 @@ def getResults(solver, ind, minBit, maxBit):
 
         if solver.d == keys.d:                                                  # if we got it right
             if k not in resTime[ind]:                                           # if we've not yet had a result for k
-                resTime[ind][k] = [solver.time, 1]                              # then set
+                resTime[ind][k] = [solver.time * 10000, 1]                      # then set
                 resCount[ind][k] = [solver.count, 1]
             else:
                 oldT, oldC = resTime[ind][k]                                    # keeps a running average
                 newC = oldC + 1                                                 # increment count
-                newT = ((oldT * oldC) + solver.time) / newC                     # get new averagae
+                newT = ((oldT * oldC) + solver.time * 10000) / newC             # get new averagae
                 resTime[ind][k] = [newT, newC]                                  # without storing all variables
 
                 oldCount, oldC = resCount[ind][k]                               # keeps a running average
                 newCount = ((oldCount * oldC) + solver.count) / newC
                 resCount[ind][k] = [newCount, newC]                             # without storing all variables
+
 
 def stop():
     global running
@@ -107,30 +115,36 @@ def stop():
     running = False                                                             # stop running
 
 
-def testGraphs(minBit = 10, bf_bit = 44, ff_bit = 50, rho_bit = 54):
+def testGraphs(minBit = 10, bf_bit = 44, ff_bit = 50, knj_bit = 40,
+                rho_bit = 54, COUNT = 100):
     """ generates graphs testing all algorithms to show general trends
         uses a thread for each algorith, to ease congestion """
 
-    global running                                                              # to stop program
+    global running, resCount, resTime                                           # to stop and reset program
+
+    resCount = [{}, {}, {}, {}]                                                 # reset
+    resTime = [{}, {}, {}, {}]
 
     running = True
 
     bf = brute_force.BFSolver(verbose = False)
-    rho = pollard_rho.RhoSolver(verbose = False)
     ferm = fermats.FFSolver(verbose = False)
+    knj = knj_factorisation.KNJSolver(verbose = False)
+    rho = pollard_rho.RhoSolver(verbose = False)
 
-    threading.Thread(target = getResults,                                       # launch Rho thread
-                     args=(bf, 0, minBit, bf_bit)).start()
+    solvers = [bf, ferm, knj, rho]
+    max_bit = [bf_bit, ff_bit, knj_bit, rho_bit]
 
-    threading.Thread(target = getResults,                                       # launch fermat thread
-                     args=(ferm, 1, minBit, ff_bit)).start()
-
-    threading.Thread(target = getResults,                                       # launch Rho thread
-                     args=(rho, 2, minBit, rho_bit)).start()
+    labels = ["Brute-force", "Fermat's", "KNJ", "Pollard's Rho"]
 
     threading.Thread(target = stop).start()                                     # allows us to gracefully stop
+    outFig, tPlt, cPlt = setupGraph()
 
-    updateGraph()                                                               # has to be run in main thread
+    while running:
+
+         for i in range(len(solvers)):                                          # loop over each solver
+             getResults(solvers[i], i, minBit, max_bit[i], COUNT)               # collect a few results
+             updateGraph(outFig, tPlt, cPlt, labels)                            # update graph
 
 
 ############ COMMAND LINE INTERFACE #########
@@ -142,7 +156,9 @@ if __name__ == '__main__':
     parser.add_argument("-bf", "--bruteforce", help="maximum bit size for brute force", type=int, default=44)
     parser.add_argument("-ff", "--fermat", help="maximum bit size for fermat's method", type=int, default=44)
     parser.add_argument("-pr", "--pollard_rho", help="maximum bit size for Pollard's Rho", type=int, default=44)
+    parser.add_argument("-knj", "--knj_fact", help="maximum bit size for KNJ", type=int, default=44)
+    parser.add_argument("-c", "--count", help="count for each algorithm", type=int, default=44)
 
     args = parser.parse_args()
 
-    testGraphs(args.minbit, args.bruteforce, args.fermat, args.pollard_rho)
+    testGraphs(args.minbit, args.bruteforce, args.fermat, args.knj_fact, args.pollard_rho, args.count)

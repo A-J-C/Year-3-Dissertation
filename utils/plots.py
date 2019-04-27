@@ -18,8 +18,11 @@ import math
 import matplotlib.pyplot as plt                                                 # for drawing graphs
 
 
+############ GLOBAL CONSTANTS ############
 
-############ GRAPHICAL FUNCTIONS #########
+marks = ["o", "s", "^", "d"]
+
+############ GRAPHICAL FUNCTIONS ############
 
 def curve_func(x, a, b, c):
     """ trying to draw this curve to fit data """
@@ -27,8 +30,10 @@ def curve_func(x, a, b, c):
     return a * np.exp(b * x) + c
 
 
-def dataToPlot(data, plot):
+def dataToPlot(data, plot, labels):
     """ given a dictionary of data and a plt adds the data and a best fit line """
+
+    i = 0
 
     for resDic in data:
         if resDic != {}:                                                        # check for empty
@@ -36,12 +41,13 @@ def dataToPlot(data, plot):
             vals = [resDic[key][0] for key in keys]                             # extract Y axis
             vals = [math.log(v,2) if v != 0 else 0 for v in vals]               # log it
 
-            plot.scatter(keys, vals)                                            # draw points
+            plot.scatter(keys, vals, label=labels[i], marker=marks[i])          # draw points
 
             try:
                 xFit = np.linspace(keys[0], keys[-1], 100)                      # these are our x points
                 p = np.poly1d(np.polyfit(keys, vals, 1))
                 plot.plot(xFit, p(xFit))                                        # plot our expected line
+                i += 1
 
             except Exception:
                 pass
