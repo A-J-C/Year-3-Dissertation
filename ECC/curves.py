@@ -347,7 +347,6 @@ class Curve:
         """ returns a new generator point if one exists"""
 
         generators = pari(self.E).ellgenerators()                       # get all generators
-        print(str(generators))
 
         # find G
         if self.G is not None:

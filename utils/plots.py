@@ -22,7 +22,12 @@ import matplotlib.pyplot as plt                                                 
 
 marks = ["o", "s", "^", "d", "*", "4"]
 
+
 ############ GRAPHICAL FUNCTIONS ############
+
+# supress warnings
+import warnings
+warnings.simplefilter('ignore', np.RankWarning)
 
 
 def setupGraph():
