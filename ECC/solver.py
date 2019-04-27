@@ -34,7 +34,9 @@ class Solver(KeyGen):
         it itslef extends the key generation class to allow it to
         utilise several functions """
 
-    def __init__(self, C = None, Q = None, G = None, v = True):
+    def __init__(self, C = None, Q = None, G = None,
+                v = True, demo = False ):
+                
         super(Solver, self).__init__(verbose = v)           # initalises all variables
         self.setCurve(C)                                    # set curve
         self.setQ(Q)                                        # set public point
@@ -43,3 +45,4 @@ class Solver(KeyGen):
         self.start = 0                                      # for timing
         self.time = 0
         self.space = 1                                      # constant space
+        self.demo = demo                                    # even more output

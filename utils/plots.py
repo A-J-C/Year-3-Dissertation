@@ -20,9 +20,45 @@ import matplotlib.pyplot as plt                                                 
 
 ############ GLOBAL CONSTANTS ############
 
-marks = ["o", "s", "^", "d"]
+marks = ["o", "s", "^", "d", "*", "4"]
 
 ############ GRAPHICAL FUNCTIONS ############
+
+
+def setupGraph():
+    """ initial setup """
+    outFig = plt.figure(figsize = (8, 8))                                       # define output figure
+    tPlt = outFig.add_subplot(211)                                              # add sub plot to figure
+    cPlt = outFig.add_subplot(212)                                              # add sub plot to figure
+
+    outFig.show()                                                               # show figure
+    outFig.canvas.draw()                                                        # first render
+
+    return outFig, tPlt, cPlt
+
+
+def updateGraph(resTime, resCount, outFig, tPlt, cPlt, labels):
+    """ redraws the plot to take account of incoming data
+        adapted to enable it to work with jupyter notebooks """
+
+    tPlt.clear()                                                                # clear plot
+    cPlt.clear()
+
+    dataToPlot(resTime, tPlt, labels)                                           # plot data
+    dataToPlot(resCount, cPlt, labels)
+
+    tPlt.set_xlabel("Key-Size (bits)")
+    cPlt.set_xlabel("Key-Size (bits)")
+    tPlt.set_ylabel("log(Time (s))")
+    cPlt.set_ylabel("log(Numbers Checked)")
+
+    tPlt.legend()
+    cPlt.legend()
+
+    outFig.tight_layout()                                                       # looks nicer
+    outFig.canvas.draw()                                                        # re draw
+    plt.pause(0.001)                                                            # pause
+
 
 def curve_func(x, a, b, c):
     """ trying to draw this curve to fit data """

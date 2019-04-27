@@ -38,10 +38,10 @@ from utils import generate_prime
 
 ############ HELPER FUNCTIONS #########
 
-def getRandCurve(n, v):
+def getRandCurve(n, v, d):
     """ returns a random curve over a random prime n-bits long """
 
-    p = generate_prime.getPrime(n, v)                               # get a random n-bit prime
+    p = generate_prime.getPrime(n, v, d)                            # get a random n-bit prime
     a = secrets.randbelow(10)                                       # generate random coefficient
     b = secrets.randbelow(10)                                       # generate random coefficient
 
@@ -55,7 +55,7 @@ def getRandCurve(n, v):
 class KeyGen:
     """ used to generate an ECC curve over a n-bit prime field """
 
-    def __init__(self, n = 10, verbose = True):
+    def __init__(self, n = 10, verbose = True, demo = False):
         self.n = n                                                  # n-bit field
         self.p = 0                                                  # prime our field is over
         self.G = None                                               # generator point for curve
@@ -63,6 +63,7 @@ class KeyGen:
         self.curve = None                                           # public-key curve
         self.k = 0                                                  # private key
         self.verbose = verbose                                      # verbose mode for additonal output
+        self.demo = demo                                            # even more output
 
 
     ############ SETTERS #########
@@ -110,13 +111,19 @@ class KeyGen:
 
         while order < p/2:                                          # loop till order big enough
             checks += 1
-            C = getRandCurve(self.n, self.verbose)                  # get random curve of correct size
+            C = getRandCurve(self.n, self.verbose, self.demo)       # get random curve of correct size
+
+            if self.demo:
+                print("\nChecking: %s" % str(C))
 
             while not C.valid():                                    # if not valid
-                C = getRandCurve(self.n, self.verbose)              # try again
+                C = getRandCurve(self.n, self.verbose, self.demo)   # try again
+
+                if self.demo:
+                    print("\nChecking: %s" % str(C))
 
             if self.verbose:
-                print(C)
+                print("\n" + str(C))
 
             G = C.getG()                                            # get generator point
             order = C.ord                                           # get order of curve

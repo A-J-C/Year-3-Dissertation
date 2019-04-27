@@ -38,45 +38,18 @@ from utils.plots import *
 
 ############ GLOBAL VARIABLES #########
 
-resCount = [{}, {}, {}]                                                         # stores results to graph as dictionaries
-resTime = [{}, {}, {}]                                                          # stores results to graph as dictionaries
+resCount = [{}, {}, {}, {}, {}]                                                 # stores results to graph as dictionaries
+resTime = [{}, {}, {}, {}, {}]                                                  # stores results to graph as dictionaries
 running = True                                                                  # to stop threads
 
 
 ############ FUNCTIONS #########
 
-def updateGraph():
-    """ redraws the plot to take account of incoming data
-        adapted to enable it to work with jupyter notebooks """
 
-    outFig = plt.figure(figsize = (8, 8))                                       # define output figure
-    tPlt = outFig.add_subplot(211)                                              # add sub plot to figure
-    cPlt = outFig.add_subplot(212)                                              # add sub plot to figure
-
-    outFig.show()                                                               # show figure
-    outFig.canvas.draw()                                                        # first render
-
-    while running:
-        tPlt.clear()                                                            # clear plot
-        cPlt.clear()
-
-        dataToPlot(resTime, tPlt)                                               # plot data
-        dataToPlot(resCount, cPlt)
-
-        tPlt.set_xlabel("Key-Size (bits)")
-        cPlt.set_xlabel("Key-Size (bits)")
-        tPlt.set_ylabel("Time (s)")
-        cPlt.set_ylabel("Numbers Checked")
-
-        outFig.tight_layout()                                                   # looks nicer
-        outFig.canvas.draw()                                                    # re draw
-        plt.pause(0.001)                                                        # pause
-
-
-def getResults(solver, ind, minBit, maxBit):
+def getResults(solver, ind, minBit, maxBit, COUNT):
     """ produces a graph, given a solver, result index and bit range """
 
-    while running:
+    for i in range(COUNT):
         k = secrets.randbelow(maxBit - minBit) + minBit                         # get in range
         keys = generate_ECC.KeyGen(k, False)                                    # initialise keys
         keys.generateCurve()                                                    # get curve paramaters
@@ -110,30 +83,39 @@ def stop():
     running = False                                                             # stop running
 
 
-def testGraphs(minBit = 10, bf_bit = 22, bsgs_bit = 30, rho_bit = 30):
+def testGraphs(minBit = 10, bf_bit = 22, bsgs_bit = 30, ph_bit = 30,
+               rho_bit = 30, mov_bit = 30, COUNT = 100):
     """ generates graphs testing all algorithms to show general trends
         uses a thread for each algorith, to ease congestion """
 
-    global running                                                              # to stop program
+    global running, resCount, resTime                                           # to stop and reset program
+
+    resCount = [{}, {}, {}, {}, {}]                                             # reset
+    resTime = [{}, {}, {}, {}, {}]
 
     running = True
 
     bf = brute_force.BFSolver(v = False)                                        # define solvers
     bsgs = baby_step.BGSolver(v = False)
+    ph = pohlig_hellman.PHSolver(v = False)
     rho = pollard_rho.PRSolver(v = False)
+    mov = mov_attack.MOVSolver(v = False)
 
-    threading.Thread(target = getResults,                                       # launch Rho thread
-                     args=(bf, 0, minBit, bf_bit)).start()
+    solvers = [bf, bsgs, ph, rho, mov]
+    max_bit = [bf_bit, bsgs_bit, ph_bit, rho_bit, mov_bit]
 
-    threading.Thread(target = getResults,                                       # launch Rho thread
-                     args=(bsgs, 1, minBit, bsgs_bit)).start()
-
-    threading.Thread(target = getResults,                                       # launch Rho thread
-                     args=(rho, 2, minBit, rho_bit)).start()
+    labels = ["Brute-force", "Baby-Step, Giant-Step", "Pohlig-Hellman",
+              "Pollard's Rho", "MOV-attack"]
 
     threading.Thread(target = stop).start()                                     # allows us to gracefully stop
+    outFig, tPlt, cPlt = setupGraph()
 
-    updateGraph()                                                               # has to be run in main thread
+
+    while running:
+
+         for i in range(len(solvers)):                                          # loop over each solver
+             getResults(solvers[i], i, minBit, max_bit[i], COUNT)               # collect a few results
+             updateGraph(resTime, resCount, outFig, tPlt, cPlt, labels)         # update graph
 
 
 ############ COMMAND LINE INTERFACE #########
@@ -145,7 +127,12 @@ if __name__ == '__main__':
     parser.add_argument("-bf", "--bruteforce", help="maximum bit size for brute force", type=int, default=24)
     parser.add_argument("-bs", "--baby_step", help="maximum bit size for babystep-giantstep", type=int, default=34)
     parser.add_argument("-pr", "--pollard_rho", help="maximum bit size for Pollard's Rho", type=int, default=36)
+    parser.add_argument("-pl", "--pollard_lambda", help="maximum bit size for Pollard's Lambda", type=int, default=36)
+    parser.add_argument("-ph", "--pohlig_hellman", help="maximum bit size for Pohlig-Hellman", type=int, default=36)
+    parser.add_argument("-ma", "--mov_attack", help="maximum bit size for MOV-attack", type=int, default=36)
+    parser.add_argument("-c", "--count", help="count for each algorithm", type=int, default=44)
 
     args = parser.parse_args()
 
-    testGraphs(args.minbit, args.bruteforce, args.baby_step, args.pollard_rho)
+    testGraphs(args.minbit, args.bruteforce, args.baby_step, args.pohlig_hellman,
+                args.pollard_lambda, args.pollard_rho, args.mov_attack, args.count)

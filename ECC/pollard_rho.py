@@ -36,6 +36,7 @@ import time
 from ECC.curves import *
 from ECC.solver import Solver
 from utils.helper import modInverse
+from IPython.display import display, clear_output
 
 
 ############ EXTRA FUNCTIONS #########
@@ -93,6 +94,11 @@ class PRSolver(Solver):
                 X, aX, bX = g((X, aX, bX), order, points)               # first runner
                 Y, aY, bY = g(g((Y,aY,bY),order,points),order,points)   # second runner
 
+                # for demo purposes
+                if self.demo and self.count % 100 == 0:
+                    clear_output(wait=True)
+                    display("X: " + str(X) + " Y: " + str(Y))
+
                 found = X == Y                                          # detect match
                 self.count += 1                                         # increment count
 
@@ -107,8 +113,15 @@ class PRSolver(Solver):
                     self.k = ((aY - aX) * inv) % order                  # so set it
 
                     if self.G * self.k != self.Q:                       # not always 100% going to work
-                        print("error")
+                        if self.verbose:
+                            print("error")
+                            
                         found = True
+
+        # for demo purposes
+        if self.demo:
+            clear_output(wait=True)
+            display("X: " + str(X) + " Y: " + str(Y))
 
         self.time = time.time() - self.start
 
@@ -118,7 +131,7 @@ class PRSolver(Solver):
         if self.verbose:
             print("k:", self.k)
             print("Time taken: %.3f s" % (self.time))                   # print time taken
-            print("Space used: %d" % (self.space))                      # print space used
+            print("Space used: %d bytes" % (self.space * 4))            # print space used
             print("Numbers checked:", self.count)                       # print total count
 
         return True

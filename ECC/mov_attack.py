@@ -41,6 +41,7 @@ from bisect import bisect_left
 from ECC.curves import *
 from ECC.solver import Solver
 from utils.helper import modInverse
+from IPython.display import display, clear_output
 
 
 ############ GLOBAL CONSTANT #########
@@ -123,7 +124,9 @@ class MOVSolver(Solver):
         dlpG = curve2.weil(G2, self.G, m)
         dlpQ = curve2.weil(G2, self.Q, m)
 
-        print(dlpG, dlpQ, m)
+        if self.verbose:
+            print(dlpG, dlpQ, m)
+            
         ############ SOLVE DLP ############
 
         self.k = cyclicLog(dlpQ, dlpG, m)
@@ -132,7 +135,7 @@ class MOVSolver(Solver):
 
         # calculate estimated space and time
         m = int(m)
-        print(m)
+
         bits = int(math.log(m, 2))
 
         multiplier =  bits // 2
@@ -153,7 +156,7 @@ class MOVSolver(Solver):
         if self.verbose:
             print("k:", self.k)
             print("Time taken: %.3f s" % (self.time))                   # print time taken
-            print("Space used: %d" % (self.space))                      # print space used
+            print("Space used: %d bytes" % (self.space * 4))            # print space used
             print("Numbers checked:", self.count)                       # print total count
 
         return True

@@ -30,6 +30,8 @@ import math
 import time
 from ECC.curves import *
 from ECC.solver import Solver
+from IPython.display import display, clear_output
+
 
 ############ MAIN CODE #########
 
@@ -70,14 +72,33 @@ class BGSolver(Solver):
                 babySteps[str(P)] = n                                   # create look up table
                 self.count += 1                                         # increment count
 
+                # for demo purposes
+                if self.demo and self.count % 100 == 0:
+                    clear_output(wait=True)
+                    display(str(self.count) + ".G = " + str(P))
+
             # giant steps
             for i in range(sqrtO):
                 P = self.Q - self.G * (i*sqrtO)                         # Q - i.sqrtO.G
                 self.count += 1                                         # increment count
 
+                # for demo purposes
+                if self.demo and self.count % 100 == 0:
+                    clear_output(wait=True)
+                    display(str(self.Q) + " - " + str(self.G) + " * "
+                            + str(i*sqrtO) + " = " + str(P))
+
+
                 if str(P) in babySteps:                                 # if it is in out lookup table
                     n = babySteps[str(P)]
                     self.k = n + i*sqrtO
+
+                    # for demo purposes
+                    if self.demo:
+                        clear_output(wait=True)
+                        display(str(self.Q) + " - " + str(self.G) + " * "
+                                + str(i*sqrtO) + " = " + str(P))
+
                     break                                               # break out of for loop
             else:
                 # sanity check
@@ -94,7 +115,7 @@ class BGSolver(Solver):
         if self.verbose:
             print("k:", self.k)
             print("Time taken: %.3f s" % (self.time))               # print time taken
-            print("Space used: %d" % (self.space))                  # print space used
+            print("Space used: %d bytes" % (self.space * 4))        # print space used
             print("Numbers checked:", self.count)                   # print total count
 
         return True

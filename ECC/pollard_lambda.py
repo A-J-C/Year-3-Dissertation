@@ -37,6 +37,7 @@ import time
 from ECC.curves import *
 from ECC.solver import Solver
 from utils.helper import modInverse
+from IPython.display import display, clear_output
 
 
 ############ EXTRA FUNCTIONS #########
@@ -107,6 +108,9 @@ class PLSolver(Solver):
                 len_T = (len_T + moveT) % order                         # tracks total path length
                 pos_T += self.G * moveT                                 # pseudo random jumps
 
+            if self.demo:
+                print("Trap: %s" % str(pos_T))
+
             # WILD KANGAROO RELEASED
             len_W = 0                                                   # wild kangaroo starts making 0 moves
             pos_W = self.Q                                              # start at point we need to calculate
@@ -120,12 +124,22 @@ class PLSolver(Solver):
                 len_W = (len_W + moveW) % order                         # add to dist travelled
                 pos_W += self.G * moveW                                 # update position
 
+                # for demo purposes
+                if self.demo and self.count % 50 == 0:
+                    clear_output(wait=True)
+                    display("Trap: " + str(pos_T) + " Wild: " + str(pos_W))
+
                 if pos_W == pos_T:                                      # if fallen in trap
                     if self.verbose:
                         print(b, len_T, len_W)
 
                     self.k = (b + len_T - len_W) % order                # calculate k
                     found = True                                        # set to found
+
+                    # for demo purposes
+                    if self.demo:
+                        clear_output(wait=True)
+                        display("Trap: " + str(pos_T) + " Wild: " + str(pos_W))
                     break
 
         self.time = time.time() - self.start
@@ -143,7 +157,7 @@ class PLSolver(Solver):
         if self.verbose:
             print("k:", self.k)
             print("Time taken: %.3f s" % (self.time))                   # print time taken
-            print("Space used: %d" % (self.space))                      # print space used
+            print("Space used: %d bytes" % (self.space * 4))            # print space used
             print("Numbers checked:", self.count)                       # print total count
 
         return True

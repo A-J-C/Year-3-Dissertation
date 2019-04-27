@@ -28,6 +28,7 @@ if not __package__:
 import time
 from ECC.curves import *
 from ECC.solver import Solver
+from IPython.display import display, clear_output
 
 
 ############ MAIN CODE #########
@@ -54,11 +55,22 @@ class BFSolver(Solver):
             P += self.G                                             # add another G
             self.count += 1                                         # increment count
 
+            # for demo purposes
+            if self.demo and self.count % 500 == 0:
+                clear_output(wait=True)
+                display(str(self.count) + ".G = " + str(P))
+
+
         # sanity check
         if P != self.Q:
             if self.verbose:
                 print ("Point not found")
             return 0
+
+        # for demo purposes
+        if self.demo:
+            clear_output(wait=True)
+            display(str(self.count) + ".G = " + str(P))
 
         # set k once candidate found
         self.k = self.count
@@ -67,7 +79,7 @@ class BFSolver(Solver):
         if self.verbose:
             print("k:", self.k)
             print("Time taken: %.3f s" % (self.time))               # print time taken
-            print("Space used: %d" % (self.space))                  # print space used
+            print("Space used: %d bytes" % (self.space * 4))        # print space used
             print("Numbers checked:", self.count)                   # print total count
 
         return True

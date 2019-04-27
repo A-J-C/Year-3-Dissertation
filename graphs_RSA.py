@@ -44,40 +44,6 @@ running = True                                                                  
 
 ############ FUNCTIONS #########
 
-def setupGraph():
-    """ initial setup """
-    outFig = plt.figure(figsize = (8, 8))                                       # define output figure
-    tPlt = outFig.add_subplot(211)                                              # add sub plot to figure
-    cPlt = outFig.add_subplot(212)                                              # add sub plot to figure
-
-    outFig.show()                                                               # show figure
-    outFig.canvas.draw()                                                        # first render
-
-    return outFig, tPlt, cPlt
-
-
-def updateGraph(outFig, tPlt, cPlt, labels):
-    """ redraws the plot to take account of incoming data
-        adapted to enable it to work with jupyter notebooks """
-
-    tPlt.clear()                                                                # clear plot
-    cPlt.clear()
-
-    dataToPlot(resTime, tPlt, labels)                                           # plot data
-    dataToPlot(resCount, cPlt, labels)
-
-    tPlt.set_xlabel("Key-Size (bits)")
-    cPlt.set_xlabel("Key-Size (bits)")
-    tPlt.set_ylabel("log(Time (s))")
-    cPlt.set_ylabel("log(Numbers Checked)")
-
-    tPlt.legend()
-    cPlt.legend()
-
-    outFig.tight_layout()                                                       # looks nicer
-    outFig.canvas.draw()                                                        # re draw
-    plt.pause(0.001)                                                            # pause
-
 
 def getResults(solver, ind, minBit, maxBit, COUNT):
     """ produces a graph, given a solver, result index and bit range """
@@ -96,12 +62,12 @@ def getResults(solver, ind, minBit, maxBit, COUNT):
 
         if solver.d == keys.d:                                                  # if we got it right
             if k not in resTime[ind]:                                           # if we've not yet had a result for k
-                resTime[ind][k] = [solver.time * 10000, 1]                      # then set
+                resTime[ind][k] = [solver.time, 1]                              # then set
                 resCount[ind][k] = [solver.count, 1]
             else:
                 oldT, oldC = resTime[ind][k]                                    # keeps a running average
                 newC = oldC + 1                                                 # increment count
-                newT = ((oldT * oldC) + solver.time * 10000) / newC             # get new averagae
+                newT = ((oldT * oldC) + solver.time) / newC                     # get new averagae
                 resTime[ind][k] = [newT, newC]                                  # without storing all variables
 
                 oldCount, oldC = resCount[ind][k]                               # keeps a running average
@@ -144,7 +110,7 @@ def testGraphs(minBit = 10, bf_bit = 44, ff_bit = 50, knj_bit = 40,
 
          for i in range(len(solvers)):                                          # loop over each solver
              getResults(solvers[i], i, minBit, max_bit[i], COUNT)               # collect a few results
-             updateGraph(outFig, tPlt, cPlt, labels)                            # update graph
+             updateGraph(resTime, resCount, outFig, tPlt, cPlt, labels)         # update graph
 
 
 ############ COMMAND LINE INTERFACE #########

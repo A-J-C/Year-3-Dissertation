@@ -40,6 +40,7 @@ from ECC import baby_step
 from ECC.curves import *
 from ECC.solver import Solver
 from utils.helper import extended_gcd
+from IPython.display import display, clear_output
 
 
 ############ GLOBAL CONSTANT #########
@@ -112,9 +113,15 @@ class PHSolver(Solver):
             Gnum = self.G * num                                         # calculate two points on the curve
             Qnum = self.Q * num
 
+            # for demo purposes
+            if self.demo:
+                print(str(prime) + "^" + str(power) + ": G'=" +
+                        str(Gnum) + " Q'=" + str(Qnum) + "; ord = " +
+                        str(newOrd))
+
             # now solve the smaller problem of Qnum = k_num * Gnum with order newOrd
             # using BSGS
-            BSGS = baby_step.BGSolver(self.curve, Qnum, Gnum, False)    # initialise solver
+            BSGS = baby_step.BGSolver(self.curve, Qnum, Gnum, False)   # initialise solver
 
             # sanity check
             if Gnum == self.Q:
