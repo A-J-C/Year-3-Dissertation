@@ -36,7 +36,7 @@ def runSolver(keys, solver, name, verbose):
     solver.solve()                                                              # factor n
 
     if verbose:
-        if solver.d == keys.d:                                                  # check for correctness
+        if solver.d == keys.d and keys.n != 0:                                  # check for correctness
             print("Success!")
         else:
             print("Fail!")
@@ -48,22 +48,9 @@ def runSolver(keys, solver, name, verbose):
 
 ############ MASTER PROGRAM #########
 
-def run(k = 10, brute = True, ferm = True, pRho = True, knj = True, pMinus = True, quad = True, verbose = True):
-    """ creates a k-bit RSA key, cracks it with several algorithms, and generates
+def runMain(keys, brute = True, ferm = True, pRho = True, knj = True, pMinus = True, quad = True, verbose = True):
+    """ given a k-bit RSA key, cracks it with several algorithms, and generates
         statistics to compare their performance """
-
-    ############ KEY GENERATION #########
-    if verbose:
-        print("\n" + "="*10, "GENERATING", "="*10)
-
-    keys = generate_RSA.KeyGen(k, verbose)                                      # create new instance
-
-    sanity = keys.generateKeys()                                                # get key and primes
-
-    if not sanity:
-        if verbose:
-            print ("Please fix input and try again")
-        return False
 
     ############ BRUTE FORCE ATTACK #########
     bf_res = {}
@@ -102,6 +89,31 @@ def run(k = 10, brute = True, ferm = True, pRho = True, knj = True, pMinus = Tru
         quad_sieve = runSolver(keys, quadS, "QUADRATIC SIEVE", verbose)           # check solver
 
     return bf_res, fer_res, rho_res, knj_res, minus_res, quad_sieve
+
+
+def runSolvers(keys, brute = True, ferm = True, pRho = True, knj = True, pMinus = True, quad = True):
+    """ given a valid set of RSA_keys runs solvers """
+
+    runMain(keys, brute, ferm, pRho, knj, pMinus, quad, True)
+
+
+def run(k = 10, brute = True, ferm = True, pRho = True, knj = True, pMinus = True, quad = True, verbose = True):
+    """ creates keys then passes them to solvers """
+
+    ############ KEY GENERATION #########
+    if verbose:
+        print("\n" + "="*10, "GENERATING", "="*10)
+
+    keys = generate_RSA.KeyGen(k, verbose)                                      # create new instance
+
+    sanity = keys.generateKeys()                                                # get key and primes
+
+    if not sanity:
+        if verbose:
+            print ("Please fix input and try again")
+        return False
+
+    runMain(keys, brute, ferm, pRho, knj, pMinus, quad, verbose)
 
 
 def test(k = 50):

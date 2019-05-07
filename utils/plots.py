@@ -79,6 +79,7 @@ def dataToPlot(data, plot, labels):
     for resDic in data:
         if resDic != {}:                                                        # check for empty
             keys = sorted(list(resDic.keys()))                                  # get sorted list of keys
+            keys = [k for k in keys if resDic[k][0]]                            # remove 0 entries 
             vals = [resDic[key][0] for key in keys]                             # extract Y axis
             vals = [math.log(v,2) if v != 0 else 0 for v in vals]               # log it
 

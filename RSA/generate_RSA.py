@@ -84,6 +84,21 @@ class KeyGen:
         """ sets additional output or not """
         self.verbose = verbose
 
+    def setPrimes(self, p, q):
+        """ sets p and q and checks they are prime """
+
+        if not generate_prime.isPrime(p):
+            print("%d is not prime" % p)
+            return False
+        elif not generate_prime.isPrime(q):
+            print("%d is not prime" % q)
+            return False
+        else:
+            self.setP(p)
+            self.setQ(q)
+
+            return True
+
 
     ############ COMPUTATION FUNCTIONS #########
 
@@ -160,9 +175,11 @@ class KeyGen:
 
     def generateKeys(self):
         """ generates both public and private keys """
-        success = self.generatePrimes()
-        if not success:
-            return False                                            # unsuccessful
+
+        if self.p == 0 or self.q == 0:
+            success = self.generatePrimes()
+            if not success:
+                return False                                        # unsuccessful
 
         success = self.generatePublicKey()
         if not success:

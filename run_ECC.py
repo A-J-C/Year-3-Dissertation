@@ -47,24 +47,10 @@ def runSolver(keys, solver, name, verbose):
 
 ############ MASTER PROGRAM #########
 
-def run(k = 10, brute = True, babyStep = True, rho = True,
+def runMain(keys, brute = True, babyStep = True, rho = True,
         lamb = True, poHel = True, movAttack = True, verbose = True):
-    """ creates a k-bit ECC key, cracks it with several algorithms, and generates
+    """ given a k-bit ECC key, cracks it with several algorithms, and generates
         statistics to compare their performance """
-
-    ############ KEY GENERATION #########
-    if verbose:
-        print("\n" + "="*10, "GENERATING", "="*10)
-
-    keys = generate_ECC.KeyGen(k, verbose)                                      # create new instance
-    keys.generateCurve()                                                        # find a good curve
-
-    sanity = keys.generateKeys()                                                # get key and primes
-
-    if not sanity:
-        if verbose:
-            print("Please fix input and try again")
-        return False
 
     ############ BRUTE FORCE ATTACK #########
     bf_res = {}
@@ -103,6 +89,35 @@ def run(k = 10, brute = True, babyStep = True, rho = True,
         mov_res = runSolver(keys, movSol, "MOV ATTACK", verbose)                # check solver
 
     return bf_res, bsgs_res, rho_res, lambda_res, poh_res, mov_res
+
+
+def runSolvers(keys, brute = True, babyStep = True, rho = True,
+        lamb = True, poHel = True, movAttack = True):
+    """ runs solvers given valid set of keys """
+
+    runMain(keys, brute, babyStep, rho, lamb, poHel, movAttack, True)
+
+
+def run(k = 10, brute = True, babyStep = True, rho = True,
+        lamb = True, poHel = True, movAttack = True, verbose = True):
+    """ creates keys then passes them to solvers """
+
+    ############ KEY GENERATION #########
+    if verbose:
+        print("\n" + "="*10, "GENERATING", "="*10)
+
+    keys = generate_ECC.KeyGen(k, verbose)                                      # create new instance
+    keys.generateCurve()                                                        # find a good curve
+
+    sanity = keys.generateKeys()                                                # get key and primes
+
+    if not sanity:
+        if verbose:
+            print("Please fix input and try again")
+        return False
+
+    runMain(keys, brute, babyStep, rho, lamb, poHel, movAttack, verbose)
+
 
 
 def test(k = 10):

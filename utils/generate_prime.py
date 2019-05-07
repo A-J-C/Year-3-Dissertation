@@ -187,11 +187,14 @@ def checks(candidate, primeList, r = 10):
     return millerRabin(candidate, r)
 
 
-def isPrime(n, primes):
+def isPrime(n, primes = False):
     """ given a number n checks if it is a pseudo-prime """
 
     k = math.log(n, 2)                          # number of bits in n
     r = getRounds(k)
+
+    if not primes:
+        primes = getListOfPrimes(k)
 
     return checks(n, primes, r)                 # run checks
 

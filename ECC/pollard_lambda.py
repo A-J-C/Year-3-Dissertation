@@ -130,8 +130,6 @@ class PLSolver(Solver):
                     display("Trap: " + str(pos_T) + " Wild: " + str(pos_W))
 
                 if pos_W == pos_T:                                      # if fallen in trap
-                    if self.verbose:
-                        print(b, len_T, len_W)
 
                     self.k = (b + len_T - len_W) % order                # calculate k
                     found = True                                        # set to found

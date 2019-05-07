@@ -84,6 +84,10 @@ class KeyGen:
         """ sets public-key point value """
         self.Q = q
 
+    def setK(self, k):
+        """ sets private-key value """
+        self.k = k
+
     def setCurve(self, curve):
         """ sets curve directly """
         self.curve = curve
