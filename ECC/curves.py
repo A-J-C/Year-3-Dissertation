@@ -282,7 +282,9 @@ class Curve:
             self.card = pari(self.E).ellcard()                              # get cardinality
         except:
             if self.fp != 0:
-                print("Invalid parameters")
+                #print("Invalid parameters")
+                #print(curve)
+                pass
 
             return False
 
