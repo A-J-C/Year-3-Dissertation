@@ -32,6 +32,7 @@ if not __package__:
 
 from cypari import pari
 from utils import helper
+from utils import generate_prime
 
 ############ EXTRA FUNCTIONS #########
 
@@ -271,12 +272,17 @@ class Curve:
         """ initialises the pari version of the curve for fast implementation """
 
         curve = "["+str(self.a)+","+str(self.b)+"]"+" , "+str(self.fp)  # get string rep of curve
-        self.E = pari('ellinit(' + curve + ')')                         # create pari version of curve
+
+        if self.fp != 0 and not generate_prime.isPrime(self.fp):
+            print("%s is not prime" % self.fp)
+            return
 
         try:
+            self.E = pari('ellinit(' + curve + ')')                         # create pari version of curve
             self.card = pari(self.E).ellcard()                              # get cardinality
         except:
-            pass
+            print("Invalid parameters")
+            return False
 
 
     def pointAtInf(self):
@@ -330,10 +336,15 @@ class Curve:
 
         # else generate it
 
-        pG = pari(self.E).ellgenerators()[0]                            # get first generator using pari
-        pG = str(pG)                                                    # get string representation
-        Gx = int(pG.split(",")[0].split("(")[1])                        # extract x coord
-        Gy = int(pG.split(",")[2].split("(")[1])                        # extract y coord
+        try:
+            pG = pari(self.E).ellgenerators()[0]                        # get first generator using pari
+            pG = str(pG)                                                # get string representation
+            Gx = int(pG.split(",")[0].split("(")[1])                    # extract x coord
+            Gy = int(pG.split(",")[2].split("(")[1])                    # extract y coord
+
+        except:
+            print("Invalid parameters, can not create generator point")
+            return False
 
         G = Point(Gx, Gy, self)                                         # create as Point class
         self.G = G                                                      # store result
