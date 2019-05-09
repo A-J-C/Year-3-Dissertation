@@ -281,7 +281,9 @@ class Curve:
             self.E = pari('ellinit(' + curve + ')')                         # create pari version of curve
             self.card = pari(self.E).ellcard()                              # get cardinality
         except:
-            print("Invalid parameters")
+            if self.fp != 0:
+                print("Invalid parameters")
+
             return False
 
 
